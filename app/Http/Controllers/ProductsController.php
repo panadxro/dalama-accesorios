@@ -4,15 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Quantity;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
     public function index()
     {
+        $allProducts = Product::with(['brand', 'category', 'quantities'])->get();
+
+        return view('products.all-products',[
+            'products' => $allProducts
+        ]);
+    }
+    public function administrar()
+    {
 
         $allProducts = Product::all();
 
-        return view('products.all-products',[
+        return view('products.administracion',[
             'products' => $allProducts
         ]);
     }
@@ -25,35 +37,44 @@ class ProductsController extends Controller
     }
     public function createForm()
     {
-        return view('products.create-form');
+        return view('products.create-form', [
+            'brands' => Brand::all(),
+            'categories' => Category::all(),
+            'quantities' => Quantity::orderBy('name')->get()
+        ]);
     }
     public function createProcess(Request $request)
     {
 
         $request->validate([
             'name' => 'required|min:3',
-            'brand' => 'required',
-            'category' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'brand_fk' => 'required',
+            'category_fk' => 'required',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|min:3',
         ],[
             'name.required' => 'El título debe tener un valor.',
             'name.min' => 'El título debe tener al menos :min caracteres.',
-            'brand.required' => 'La marca debe tener un valor.',
-            'category.required' => 'La categoría debe tener un valor.',
-            'image.required' => 'La imagen debe no puede estar vacia.',
+            'brand_fk.required' => 'La marca debe tener un valor.',
+            'category_fk.required' => 'La categoría debe tener un valor.',
+            // 'image.required' => 'La imagen debe no puede estar vacia.',
             'description.required' => 'La descripción debe tener un valor.',
             'description.min' => 'La descripción debe tener al menos :min caracteres.'
         ]);
 
-        $input = $request->only(['name', 'image', 'description', 'brand', 'category']);
+        $input = $request->all();
 
-        $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('img'), $imageName);
+        $product = Product::create($input);
+        $product->quantities()->sync($input['quantity_id'] ?? []);
+
+        // if($request->hasFile('image')){
+        //     $input['image'] = $request->file('image')->store('images', 'public');
+        // }
+
+        // $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+        //     $request->file('image')->move(public_path('img'), $imageName);
     
-        $input['image'] = $imageName;
-
-        Product::create($input);
+        // $input['image'] = $imageName;
 
         return redirect()
             ->route('products.all-products')
@@ -64,7 +85,9 @@ class ProductsController extends Controller
     public function editForm(int $id)
     {
         return view('products.edit-form', [
-            'product' => Product::findOrFail($id)
+            'product' => Product::findOrFail($id),
+            'brands' => Brand::all(),
+            'categories' => Category::all()
         ]);
     }
 
@@ -74,17 +97,17 @@ class ProductsController extends Controller
 
         $request->validate([
             'name' => 'required|min:3',
-            'brand' => 'required|min:3',
-            'category' => 'required|min:3',
+            'brand_fk' => 'required',
+            'category_fk' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|min:3',
         ],[
             'name.required' => 'El título debe tener un valor.',
             'name.min' => 'El título debe tener al menos :min caracteres.',
-            'brand.required' => 'La marca debe tener un valor.',
-            'brand.min' => 'La marca debe tener al menos :min caracteres.',
-            'category.required' => 'La categoría debe tener un valor.',
-            'category.min' => 'La categoría debe tener al menos :min caracteres.',
+            'brand_fk.required' => 'La marca debe tener un valor.',
+            // 'brand_fk.min' => 'La marca debe tener al menos :min caracteres.',
+            'category_fk.required' => 'La categoría debe tener un valor.',
+            // 'category.min' => 'La categoría debe tener al menos :min caracteres.',
             'image.required' => 'La imagen debe no puede estar vacia.',
             'description.required' => 'La descripción debe tener un valor.',
             'description.min' => 'La descripción debe tener al menos :min caracteres.'
@@ -92,12 +115,17 @@ class ProductsController extends Controller
 
         // $input = $request->only(['name', 'image', 'brand', 'category', 'description']);
 
-        $input = $request->only(['name', 'image', 'description', 'brand', 'category']);
+        $input = $request->only(['name', 'image', 'description', 'brand_fk', 'category_fk']);
 
         $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('img'), $imageName);
     
         $input['image'] = $imageName;
+
+        // if($request->hasFile('image')){
+        //     $input['image'] = $request->file('image')->store('images', 'public');
+        //     Storage::delete($product->image);
+        // }
         
         $product = Product::findOrFail($id);
         $product->update($input);
@@ -111,6 +139,7 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        $product->quantities()->detach();
         $product->delete();
 
         return redirect()

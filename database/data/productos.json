@@ -1,210 +1,502 @@
 [
     {
         "id": 1,
-        "nombre" : "Escuadra E69",
-        "imagen" : "/img/products/comunello/comunello-escuadra-e69.jpg",
-        "descripcion" : "-",
-        "marca" : "Comunello",
-        "categoria" : "Escuadras"
+        "nombre": "4 MM ESCUADRA MOSQ FIJO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra Mosquitero Fijo, presentación de 100 unidades.",
+        "precio": 12321.00,
+        "marca": "-",
+        "categoria": "Escuadras",
+        "codigo": "-"
     },
     {
         "id": 2,
-        "nombre" : "Escuadra E83/8",
-        "imagen" : "/img/products/comunello/comunello-escuadra-e83.jpg",
-        "descripcion" : "-",
-        "marca" : "Comunello",
-        "categoria" : "Escuadras"
+        "nombre": "7MM AXAL ESC MOSQ MEDIANITO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra Mosquitero Medianito Axial, presentación de 500 unidades.",
+        "precio": 84437.00,
+        "marca": "Axal",
+        "categoria": "Escuadras",
+        "codigo": "-"
     },
     {
         "id": 3,
-        "nombre" : "Escuadra AA680",
-        "imagen" : "/img/products/comunello/comunello-escuadra-aa680.jpg",
-        "descripcion" : "-",
-        "marca" : "Comunello",
-        "categoria" : "Escuadras"
+        "nombre": "AA003 ESC MARCO ROT",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra Marco Rotonda, presentación de 100 unidades.",
+        "precio": 93677.00,
+        "marca": "-",
+        "categoria": "Escuadras",
+        "codigo": "-"
     },
     {
         "id": 4,
-        "nombre" : "Escuadra E97",
-        "imagen" : "/img/products/comunello/comunello-escuadra-1190f.jpg",
-        "descripcion" : "-",
-        "marca" : "Comunello",
-        "categoria" : "Escuadras"
+        "nombre": "AA202 GUIA CORR ROTOND",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Guía Corredera Rotonda, presentación de 100 unidades.",
+        "precio": 6563.00,
+        "marca": "-",
+        "categoria": "Guias",
+        "codigo": "-"
     },
     {
         "id": 5,
-        "nombre" : "Escuadra AA668",
-        "imagen" : "/img/products/comunello/comunello-escuadra-aa668.jpg",
-        "descripcion" : "-",
-        "marca" : "Comunello",
-        "categoria" : "Escuadras"
+        "nombre": "AA210 TOPE LAT ROTONDA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Tope Lateral Rotonda, presentación de 100 unidades.",
+        "precio": 18736.00,
+        "marca": "-",
+        "categoria": "Topes",
+        "codigo": "-"
     },
     {
         "id": 6,
-        "nombre" : "Soporte compás",
-        "imagen" : "/img/products/roto-frank/roto-productos-nx-soporte-compas-97x300.jpg",
-        "descripcion" : "97x300",
-        "marca" : "Roto Frank",
-        "categoria" : "NX"
+        "nombre": "AIR ALUM 5 ALETAS PESADO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aireador de Aluminio con 5 aletas, versión pesada, se vende por par.",
+        "precio": 19907.00,
+        "marca": "-",
+        "categoria": "Aireadores",
+        "codigo": "-"
     },
     {
         "id": 7,
-        "nombre" : "Pernio",
-        "imagen" : "/img/products/roto-frank/roto-productos-nx-pernio-91x300.jpg",
-        "descripcion" : "91x300",
-        "marca" : "Roto Frank",
-        "categoria" : "NX"
+        "nombre": "AIR PLASTICO 3 ALETAS",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aireador de Plástico con 3 aletas, se vende por par.",
+        "precio": 3701.00,
+        "marca": "-",
+        "categoria": "Aireadores",
+        "codigo": "-"
     },
     {
         "id": 8,
-        "nombre" : "Lock casing",
-        "imagen" : "/img/products/roto-frank/roto-productos-nx-lock-casing-158x300.jpg",
-        "descripcion" : "158x300",
-        "marca" : "Roto Frank",
-        "categoria" : "NX"
+        "nombre": "ALDABA AXAL DUOMO K BC",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aldaba Axal Duomo K Blanca, presentación de 20 unidades.",
+        "precio": 22514.00,
+        "marca": "Axal",
+        "categoria": "Aldabas",
+        "codigo": "-"
     },
     {
         "id": 9,
-        "nombre" : "Gearbox",
-        "imagen" : "/img/products/roto-frank/roto-productos-nx-gearbox-158x300.jpg",
-        "descripcion" : "158x300",
-        "marca" : "Roto Frank",
-        "categoria" : "NX"
+        "nombre": "ALDABA PLASTICA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aldaba Plástica Económica sin tornillos, presentación de 100 unidades.",
+        "precio": 8156.56,
+        "marca": "-",
+        "categoria": "Aldabas",
+        "codigo": "-"
     },
     {
         "id": 10,
-        "nombre" : "Eje soporte compás",
-        "imagen" : "/img/products/roto-frank/roto-productos-nx-eje-soporte-compas-91x300.jpg",
-        "descripcion" : "91x300",
-        "marca" : "Roto Frank",
-        "categoria" : "NX"
+        "nombre": "ANTIRRUIDO Nro. 2",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Antirruido Nro. 2, presentación de 100 unidades.",
+        "precio": 1164.92,
+        "marca": "-",
+        "categoria": "Antirruidos",
+        "codigo": "-"
     },
     {
-            "id": 11,
-            "nombre" : "Cerradero de seguridad con microventilación",
-            "imagen" : "/img/products/roto-frank/roto-productos-nx-cerradero-de-seguridad-300x96.jpg",
-            "descripcion" : "300x96",
-            "marca" : "Roto Frank",
-            "categoria" : "NX"
+        "id": 11,
+        "nombre": "B29 2MM BUR A30",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Burlete A30 de 2mm, presentación de 100 metros.",
+        "precio": 26885.00,
+        "marca": "-",
+        "categoria": "Burletes",
+        "codigo": "B29"
     },
     {
-            "id": 12,
-            "nombre" : "Brazo compás",
-            "imagen" : "/img/products/roto-frank/roto-productos-nx-brazo-compas-1024x192.jpg",
-            "descripcion" : "1024x192",
-            "marca" : "Roto Frank",
-            "categoria" : "NX"
+        "id": 12,
+        "nombre": "B48 CUÑA CHICA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cuña Chica, presentación de 50 metros.",
+        "precio": 24978.00,
+        "marca": "-",
+        "categoria": "Cuñas",
+        "codigo": "B48"
     },
     {
-            "id": 13,
-            "nombre" : "COMALL - CUT 400 A",
-            "imagen" : "/img/products/maquinas-usadas/maquinas-usadas-comall-cut-400a-portada.jpg",
-            "descripcion" : "En buen estado",
-            "marca" : "Comall",
-            "categoria" : "Maquinas Usadas"
+        "id": 13,
+        "nombre": "B67 BTE HERM DOBLE PVC",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Burlete Hermético Doble de PVC, presentación de 100 metros.",
+        "precio": 19075.00,
+        "marca": "-",
+        "categoria": "Burletes",
+        "codigo": "B67"
     },
     {
-            "id": 14,
-            "nombre" : "Elumatec - Centro mecanizado CNC",
-            "imagen" : "/img/products/maquinas-usadas/maquinas-usadas-elumatec-centro-mecanizado-cnc-portada.jpg",
-            "descripcion" : "En muy buen estado",
-            "marca" : "Elumatec",
-            "categoria" : "Maquinas Usadas"
+        "id": 14,
+        "nombre": "CERRADURA BASE",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cerradura base, presentación individual.",
+        "precio": 8650.06,
+        "marca": "-",
+        "categoria": "Cerraduras",
+        "codigo": "-"
     },
     {
-            "id": 15,
-            "nombre" : "FOM INDUSTRIE - CARR 600",
-            "imagen" : "/img/products/maquinas-usadas/maquinas-usadas-fom-carr600-portada.jpg",
-            "descripcion" : "Producto sin usar",
-            "marca" : "Fom Industrie",
-            "categoria" : "Maquinas Usadas"
+        "id": 15,
+        "nombre": "CIERRE APPLY ECO CON LLAVE",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Apply con llave, versión eco.",
+        "precio": 6810.00,
+        "marca": "-",
+        "categoria": "Cierres",
+        "codigo": "-"
     },
     {
-            "id": 16,
-            "nombre" : "OK Industrial S.R.L. - POK M3 ARQ",
-            "imagen" : "/img/products/maquinas-usadas/maquinas-usadas-ok-pok-m3-arq-portada.jpg",
-            "descripcion" : "En buen estado",
-            "marca" : "OK Industrial S.R.L",
-            "categoria" : "Maquinas Usadas"
+        "id": 16,
+        "nombre": "CIERRE AXAL MILEN MOD AUT NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Axal Milenio, modelo automático, negro.",
+        "precio": 94520.00,
+        "marca": "Axal",
+        "categoria": "Cierres",
+        "codigo": "-"
     },
     {
-            "id": 17,
-            "nombre" : "Schulz - MSV 20 SA/250",
-            "imagen" : "/img/products/maquinas-usadas/maquinas-usadas-schulz-msv20-portada.jpg",
-            "descripcion" : "En muy buen estado",
-            "marca" : "Schulz",
-            "categoria" : "Maquinas Usadas"
+        "id": 17,
+        "nombre": "CIERRE VENUS AXAL BLANCO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Venus Axal, blanco, presentación de 20 unidades.",
+        "precio": 15363.00,
+        "marca": "Axal",
+        "categoria": "Cierres",
+        "codigo": "-"
     },
     {
         "id": 18,
-        "nombre" : "H62 - Bisagras de tres alas de aluminio",
-        "imagen" : "/img/products/master/master_bisagra-agarre-rapido.jpg",
-        "descripcion" : "Bisagra del lado del marco y de la hoja de aluminio extruido, placas de zamac, casquillos y tapones de nylon, tornillos y perno de acero inoxidable.",
-        "marca" : "Master",
-        "categoria" : "Bisagra" 
+        "nombre": "CIERR IMP SUPREM MODC/KIT",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Impermeable Supremo con kit, presentación de 20 unidades.",
+        "precio": 50784.43,
+        "marca": "-",
+        "categoria": "Cierres",
+        "codigo": "-"
     },
     {
-            "id": 19,
-            "nombre" : "H45/2 - Compás oscilobatiente Ween",
-            "imagen" : "/img/products/master/master_compas_oscilobatiente_ween.jpg",
-            "descripcion" : "Levas, tornillos y prisioneros de acero inoxidable, cuerpo de zamac, sistema cortaviento de nylon.",
-            "marca" : "Master",
-            "categoria" : "Compas" 
+        "id": 19,
+        "nombre": "CIERR VENUS AXAL NEGRO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Venus Axal, negro, presentación de 20 unidades.",
+        "precio": 15363.00,
+        "marca": "Axal",
+        "categoria": "Cierres",
+        "codigo": "-"
     },
     {
         "id": 20,
-        "nombre" : "H47 Confort - Cremona 104",
-        "imagen" : "/img/products/master/master_cremona.jpg",
-        "descripcion" : "Caja y mango de aluminio fundido a presión; cremalleras, piñón y cobertura de caja de zamac galvanizado; guía y arandela de fricción de resina acetálica; tornillos de acero galvanizado; tornillos de bloqueo de la cremona sobre perfil de acero inoxidable.",
-        "marca" : "Master",
-        "categoria" : "Cremona" 
-},
-{
+        "nombre": "CP20 AXAL ALDABA BCA DER.",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aldaba blanca derecha, marca Axal.",
+        "precio": 7255.00,
+        "marca": "Axal",
+        "categoria": "Aldabas",
+        "codigo": "CP20"
+    },
+    {
         "id": 21,
-        "nombre" : "H45/7 Confort - Cremona para apertura externa",
-        "imagen" : "/img/products/master/master_cremona_apertura_externa.jpg",
-        "descripcion" : "Caja y mango de aluminio fundido a presión; cremalleras, piñón y cobertura de caja de zamac galvanizado; guía y arandela de fricción de resina acetálica; tornillos de acero galvanizado; tornillos de bloqueo de la cremona sobre perfil de acero inoxidable.",
-        "marca" : "Master",
-        "categoria" : "Cremona" 
-},
-{
+        "nombre": "CP5 ECO ALDABA NEGRA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Aldaba negra eco, presentación de 10 unidades.",
+        "precio": 4850.00,
+        "marca": "ECO",
+        "categoria": "Aldabas",
+        "codigo": "CP5"
+    },
+    {
         "id": 22,
-        "nombre" : "H91 - Manilla de presión Semplice",
-        "imagen" : "/img/products/master/master_manilla_cobertura_caja_rotacion.jpg",
-        "descripcion" : "Mango, caja y cobertura cerradero de zamac; gancho de zamac galvanizado; base cerradero y espesores de nylon; tornillos de acero galvanizado.",
-        "marca" : "Master",
-        "categoria" : "Manilla" 
-},
-{
+        "nombre": "CUÑA STANDAR",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cuña estándar, presentación de 100 metros.",
+        "precio": 17644.15,
+        "marca": "-",
+        "categoria": "Cuñas",
+        "codigo": "-"
+    },
+    {
         "id": 23,
-        "nombre" : "Goniómetro Quadranfix de 45cm",
-        "imagen" : "/img/products/metrica/metrica-producto-quadranfix45-f.jpg",
-        "descripcion" : "Dos brazos encajados, con tornillo de bloqueo. Lectura directa en grados en el cuadrante frontal. Capacidad 0-180°. Dos burbujas acrílicas (horizontal y vertical). Dos Puntas en acero templado, para uso de compas.",
-        "marca" : "Metrica",
-        "categoria" : "Sistemas de medición" 
-},
-{
+        "nombre": "ESC P/MARCO 38MM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra para marco de 38mm, presentación de 50 unidades.",
+        "precio": 19063.00,
+        "marca": "-",
+        "categoria": "Escuadras",
+        "codigo": "-"
+    },
+    {
         "id": 24,
-        "nombre" : "Flash 30 Metros",
-        "imagen" : "/img/products/metrica/metrica-producto-laser30.jpg",
-        "descripcion" : "Display retroiluminado en 4 lineas. Pantalla negra de alta visibilidad. Función de medición continua, con valores max / min siempre visibles. 4 funciones de pitágoras. Seguimiento guiado. Distancias, superficies, volúmenes.",
-        "marca" : "Metrica",
-        "categoria" : "Sistemas de medición" 
-},
-{
+        "nombre": "ESC.PARTE A STANDARD 80 MM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra parte A estándar de 80mm, presentación de 350 unidades.",
+        "precio": 101092.00,
+        "marca": "-",
+        "categoria": "Escuadras",
+        "codigo": "-"
+    },
+    {
         "id": 25,
-        "nombre" : "Flash 80 Metros",
-        "imagen" : "/img/products/metrica/metrica-producto-laser80-a.jpg",
-        "descripcion" : "Cámara de destino. Cámara con visor para ver el punto donde está midiendo. Doble inclinómetro (horizontal y vertical). Nivel electrónico multidireccional. Función de medición continua, con valores max / min siempre mostrados. 6 funciones de pitágoras. Seguimiento guiado. Distancias, superficies, volúmenes.",
-        "marca" : "Metrica",
-        "categoria" : "Sistemas de medición" 
-},
-{
+        "nombre": "H14 AXAL BANDEROLA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Banderola Axal, color blanco.",
+        "precio": 20048.00,
+        "marca": "Axal",
+        "categoria": "Banderolas",
+        "codigo": "H14"
+    },
+    {
         "id": 26,
-        "nombre" : "Láser Autonivelante Rotativo SL Green",
-        "imagen" : "/img/products/metrica/metrica-laser-rotativo-sl-red.jpg",
-        "descripcion" : "Nivel láser automático verde con rotación visible: genera un plano horizontal nivelado y la línea de plomo. Girando el dispositivo de 90°, genera un plano láser vertical nivelado y un rayo horizontal. FUNCIÓN TILT: en caso de movimiento involuntario del rayo se detendrá y después de 10 segundos, el instrumento se desconectará. Función manual y automática 5/8”. Función de rotación paso a paso.",
-        "marca" : "Metrica",
-        "categoria" : "Sistemas de medición" 
-}
+        "nombre": "H42 PASD SUNSHINE 28CM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Pasador Sunshine de 28cm.",
+        "precio": 10088.00,
+        "marca": "Sunshine",
+        "categoria": "Pasadores",
+        "codigo": "H42"
+    },
+    {
+        "id": 27,
+        "nombre": "H53 BRAZO SUNSHINE LG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Brazo largo marca Sunshine.",
+        "precio": 4599.00,
+        "marca": "Sunshine",
+        "categoria": "Brazos",
+        "codigo": "H53"
+    },
+    {
+        "id": 28,
+        "nombre": "H53 ECO BRAZO 250 MM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Brazo eco de 250mm, presentación por par.",
+        "precio": 7686.03,
+        "marca": "ECO",
+        "categoria": "Brazos",
+        "codigo": "H53"
+    },
+    {
+        "id": 29,
+        "nombre": "KIT COMP. FALLEBA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Kit completo de falleba.",
+        "precio": 3388.00,
+        "marca": "-",
+        "categoria": "Kit",
+        "codigo": "-"
+    },
+    {
+        "id": 30,
+        "nombre": "LLAVE ALLEN T 4",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Llave Allen T de 4mm.",
+        "precio": 14539.95,
+        "marca": "-",
+        "categoria": "Herramientas",
+        "codigo": "-"
+    },
+    {
+        "id": 31,
+        "nombre": "MAN CH BIPT SUNSHINE BC",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Manija chica bipt Sunshine, color blanco.",
+        "precio": 3956.00,
+        "marca": "Sunshine",
+        "categoria": "Manijas",
+        "codigo": "-"
+    },
+    {
+        "id": 32,
+        "nombre": "PAN FRAM MECHA ECO 7X7",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Pan framing mecha, eco 7x7, presentación de 1000 unidades.",
+        "precio": 10185.00,
+        "marca": "ECO",
+        "categoria": "Accesorios",
+        "codigo": "-"
+    },
+    {
+        "id": 33,
+        "nombre": "BISAGRA NYLON 60MM NEGRA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Bisagra de nylon de 60mm, color negro, presentación de 100 unidades.",
+        "precio": 3265.00,
+        "marca": "-",
+        "categoria": "Bisagras",
+        "codigo": "-"
+    },
+    {
+        "id": 34,
+        "nombre": "BISAGRA ESTRIADA P/HOJA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Bisagra estriada para hoja, presentación de 100 unidades.",
+        "precio": 4695.00,
+        "marca": "-",
+        "categoria": "Bisagras",
+        "codigo": "-"
+    },
+    {
+        "id": 35,
+        "nombre": "CIERRE SUPREM MILEN NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierre Supreme Milenio negro, presentación individual.",
+        "precio": 12876.00,
+        "marca": "-",
+        "categoria": "Cierres",
+        "codigo": "-"
+    },
+    {
+        "id": 36,
+        "nombre": "CERRADURA P/MOSQUITEROS",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cerradura para mosquiteros, presentación individual.",
+        "precio": 4875.00,
+        "marca": "-",
+        "categoria": "Cerraduras",
+        "codigo": "-"
+    },
+    {
+        "id": 37,
+        "nombre": "BRAZO RALLENTY H53 NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Brazo Rallenty, código H53, color negro.",
+        "precio": 7686.00,
+        "marca": "Sunshine",
+        "categoria": "Brazos",
+        "codigo": "H53"
+    },
+    {
+        "id": 38,
+        "nombre": "CERRADERO SUP 91X40 ZN",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cerradero superior de 91x40mm, presentación individual.",
+        "precio": 2320.00,
+        "marca": "-",
+        "categoria": "Cierres",
+        "codigo": "-"
+    },
+    {
+        "id": 39,
+        "nombre": "ESQUINERO ALUM BLANCO",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Esquinero de aluminio blanco, presentación de 50 unidades.",
+        "precio": 11525.00,
+        "marca": "-",
+        "categoria": "Esquineros",
+        "codigo": "-"
+    },
+    {
+        "id": 40,
+        "nombre": "ESC.MED.P/MARCO 50MM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Escuadra media para marco de 50mm, presentación de 50 unidades.",
+        "precio": 19830.00,
+        "marca": "-",
+        "categoria": "Escuadras",
+        "codigo": "-"
+    },
+    {
+        "id": 41,
+        "nombre": "GUARNICION PVC MEDIANA",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Guarnición de PVC mediana, presentación de 100 metros.",
+        "precio": 7562.00,
+        "marca": "-",
+        "categoria": "Guarniciones",
+        "codigo": "-"
+    },
+    {
+        "id": 42,
+        "nombre": "BISAGRA 3 ALA AXAL NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Bisagra de 3 alas marca Axal, color negro, presentación de 50 unidades.",
+        "precio": 12564.00,
+        "marca": "Axal",
+        "categoria": "Bisagras",
+        "codigo": "-"
+    },
+    {
+        "id": 43,
+        "nombre": "CIERRAPUERTAS SUPREM NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Cierrapuertas Supreme negro, presentación individual.",
+        "precio": 18457.00,
+        "marca": "-",
+        "categoria": "Puertas",
+        "codigo": "-"
+    },
+    {
+        "id": 44,
+        "nombre": "MANILLA SUPREM AXAL",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Manilla Supreme Axal, presentación individual.",
+        "precio": 9056.00,
+        "marca": "Axal",
+        "categoria": "Manijas",
+        "codigo": "-"
+    },
+    {
+        "id": 45,
+        "nombre": "TIRADOR SUPREME NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Tirador Supreme negro, presentación individual.",
+        "precio": 4562.00,
+        "marca": "-",
+        "categoria": "Tiradores",
+        "codigo": "-"
+    },
+    {
+        "id": 46,
+        "nombre": "BURLETE PVC TRANSPARENTE",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Burlete de PVC transparente, presentación de 100 metros.",
+        "precio": 15870.00,
+        "marca": "-",
+        "categoria": "Burletes",
+        "codigo": "-"
+    },
+    {
+        "id": 47,
+        "nombre": "CARRIL AXAL P/PUERTAS",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Carril Axal para puertas corredizas, presentación individual.",
+        "precio": 20100.00,
+        "marca": "Axal",
+        "categoria": "Puertas",
+        "codigo": "-"
+    },
+    {
+        "id": 48,
+        "nombre": "PERNIO ROTONDA 110X55",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Pernio para rotonda de 110x55mm, presentación individual.",
+        "precio": 8650.00,
+        "marca": "-",
+        "categoria": "Pernios",
+        "codigo": "-"
+    },
+    {
+        "id": 49,
+        "nombre": "GUIA AXAL SUPERIOR NG",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Guía superior marca Axal, color negro, presentación de 50 unidades.",
+        "precio": 16543.00,
+        "marca": "Axal",
+        "categoria": "Guias",
+        "codigo": "-"
+    },
+    {
+        "id": 50,
+        "nombre": "JUNTA DE SILICONA 10MM",
+        "imagen": "/img/products/placeholder.jpg",
+        "descripcion": "Junta de silicona de 10mm, presentación de 100 metros.",
+        "precio": 12350.00,
+        "marca": "-",
+        "categoria": "Juntas",
+        "codigo": "-"
+    }
 ]

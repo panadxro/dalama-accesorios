@@ -49,37 +49,40 @@
                     </div>
                 </div>
             <div class="grid md:grid-cols-2 gap-4 my-3.5">
+
             <div>
-                <label for="brand" class="block text-sm font-medium text-gray-700">Marca</label>
-                <input 
-                    type="text" 
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                    id="brand" 
-                    name="brand" 
-                    value="{{ old('brand') ?? $product->brand }}" 
-                >
-                @error('brand')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
-            </div>
+                    <label for="brand_fk" class="block text-sm font-medium text-gray-700">Marca</label>
+                    <select
+                        name="brand_fk"
+                        id="brand_fk"
+                        value="{{ old('brand_fk') ?? $product->brand_fk }}" 
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    >
+                        @foreach ($brands as $brand)
+                            <option value="{{ $brand->brand_id }}">
+                                {{ $brand->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700">Categoría</label>
-                <input 
-                    type="text" 
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                    id="category" 
-                    name="category" 
-                    value="{{ old('category') ?? $product->category }}" 
-                >
-                @error('category')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    <label for="category_fk" class="block text-sm font-medium text-gray-700">Categoria</label>
+                    <select
+                        name="category_fk"
+                        id="category_fk"
+                        value="{{ old('category_fk') ?? $product->category_fk }}" 
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    >
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->category_id }}">
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            </div>
+            
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
                 <textarea 

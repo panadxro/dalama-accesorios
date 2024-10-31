@@ -5,7 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Blog;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Quantity;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
@@ -17,21 +18,27 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        $json = File::get("database/data/productos.json");
-        $data = json_decode($json);
-        foreach ($data as $obj) {
-            Product::create([
-                'name' => $obj->nombre,
-                'image' => $obj->imagen,
-                'description' => $obj->descripcion,
-                'brand' => $obj->marca,
-                'category' => $obj->categoria
-            ]);
-        }
+        // $json = File::get("database/data/productos.json");
+        // $data = json_decode($json);
+        // foreach ($data as $obj) {
+        //     Product::create([
+        //         'name' => $obj->nombre,
+        //         'image' => $obj->imagen,
+        //         'description' => $obj->descripcion,
+        //         'brand' => $obj->marca,
+        //         'category' => $obj->categoria
+        //     ]);
+        // }
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            BrandSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
+            QuantitySeeder::class
+        ]);
 
         $jsonBlog = File::get("database/data/blog.json");
         $dataBlog = json_decode($jsonBlog);
@@ -40,7 +47,7 @@ class DatabaseSeeder extends Seeder
                 'title' => $objBlog->titulo,
                 'image' => $objBlog->imagen,
                 'description' => $objBlog->descripcion,
-                'aplications' => $objBlog->aplicaciones
+                'content'=> $objBlog->contenido
             ]);
         }
     }

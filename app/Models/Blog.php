@@ -17,6 +17,6 @@ class Blog extends Model
         'title',
         'image',
         'description',
-        'aplications'
+        'content'
     ];
 }

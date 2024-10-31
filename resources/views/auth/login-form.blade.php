@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="my-10 md:w-6/12 mx-auto">
+<div class="my-20 md:w-6/12 mx-auto">
         <h2 class="text-3xl font-bold text-center">Ingresar a mi cuenta</h2>
         <form 
             action="{{ route('auth.login.process') }}" 

@@ -32,27 +32,63 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- <div>
+                    <label for="image_description" class="block text-sm font-medium text-gray-700">Descripción de imagen</label>
+                    <input type="text" id="image_description" name="image_description" value="{{ old('image_description') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    @error('image_description')
+                        <div class="text-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div> -->
+
             </div>
             <div class="grid md:grid-cols-2 gap-4 my-3.5">
             <div>
-                <label for="brand" class="block text-sm font-medium text-gray-700">Marca</label>
-                <input type="text" id="brand" name="brand" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                @error('brand')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
-            </div>
+                    <label for="brand_fk" class="block text-sm font-medium text-gray-700">Marca</label>
+                    <select
+                        name="brand_fk"
+                        id="brand_fk"
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    >
+                        @foreach ($brands as $brand)
+                            <option value="{{ $brand->brand_id }}">
+                                {{ $brand->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700">Categoría</label>
-                <input type="text" id="category" name="category" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                @error('category')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    <label for="category_fk" class="block text-sm font-medium text-gray-700">Categoria</label>
+                    <select
+                        name="category_fk"
+                        id="category_fk"
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    >
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->category_id }}">
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
-            </div>
+            <fieldset>
+                @foreach ($quantities as $quantity)
+                <label>
+                    <input 
+                        type="checkbox" 
+                        name="quantity_id[]" 
+                        value="{{ $quantity->quantity_id }}"
+                        @checked(in_array($quantity->quantity_id, old('quantity_id', [])))
+                    >
+                    {{ $quantity->name }}
+                </label>
+                @endforeach
+            </fieldset>
             <div>
                 <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
                 <textarea name="description" id="description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>

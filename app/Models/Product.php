@@ -17,7 +17,30 @@ class Product extends Model
         'name',
         'image',
         'description',
-        'brand',
-        'category'
+        // 'price',
+        'brand_fk',
+        'category_fk',
+        // 'code',
+        // 'image_description'
     ];
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_fk', 'brand_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_fk', 'category_id');
+    }
+    public function quantities() {
+        return $this->belongsToMany(
+            Quantity::class,
+            'products_have_quantity',
+            'product_fk',
+            'quantity_fk',
+            'product_id',
+            'quantity_id'
+        );
+    }
+
 }

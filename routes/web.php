@@ -6,6 +6,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, "home"])
     ->name('home');
 Route::get('/products', [App\Http\Controllers\ProductsController::class, "index"])
     ->name('products.all-products');
+Route::get('/products/administrar', [App\Http\Controllers\ProductsController::class, "administrar"])
+    ->name('products.administracion');
 Route::get('/novedades', [App\Http\Controllers\HomeController::class, "blog"])
     ->name('blog');
 Route::get('/contacto', [App\Http\Controllers\HomeController::class, "contact"])

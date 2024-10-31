@@ -10,7 +10,10 @@ class HomeController extends Controller
 {
     public function home()
     {
-        return view('index');
+        $allBlogs = Blog::all();
+        return view('index',[
+            'blogs' => $allBlogs
+        ]);
         
     }
     public function blog()
