@@ -38,7 +38,7 @@ return new class extends Migration
 
         \DB::table('users')->insert([
             'name' => 'Sofia',
-            'email' => 'sofia@gmail.com',
+            'email' => 'sofia.lorenzo@davinci.edu.ar',
             'password' => \Hash::make('contraseña')
         ]);
 

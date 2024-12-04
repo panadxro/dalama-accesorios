@@ -23,6 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
+            // Elimina la clave foránea si existe
+            $table->dropForeign('category_fk');
+            // Luego elimina la columna
             $table->dropColumn('category_fk');
         });
     }

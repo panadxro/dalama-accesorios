@@ -37,18 +37,20 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
-            QuantitySeeder::class
+            QuantitySeeder::class,
+            BlogSeeder::class,
+            CartSeeder::class
         ]);
 
-        $jsonBlog = File::get("database/data/blog.json");
-        $dataBlog = json_decode($jsonBlog);
-        foreach ($dataBlog as $objBlog) {
-            Blog::create([
-                'title' => $objBlog->titulo,
-                'image' => $objBlog->imagen,
-                'description' => $objBlog->descripcion,
-                'content'=> $objBlog->contenido
-            ]);
-        }
+        // $jsonBlog = File::get("database/data/blog.json");
+        // $dataBlog = json_decode($jsonBlog);
+        // foreach ($dataBlog as $objBlog) {
+        //     Blog::create([
+        //         'title' => $objBlog->titulo,
+        //         'image' => $objBlog->imagen,
+        //         'description' => $objBlog->descripcion,
+        //         'content'=> $objBlog->contenido
+        //     ]);
+        // }
     }
 }

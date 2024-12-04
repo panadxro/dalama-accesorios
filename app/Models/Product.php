@@ -20,8 +20,6 @@ class Product extends Model
         // 'price',
         'brand_fk',
         'category_fk',
-        // 'code',
-        // 'image_description'
     ];
 
     public function brand()
@@ -42,5 +40,7 @@ class Product extends Model
             'quantity_id'
         );
     }
-
+    public function carts() {
+        return $this->belongsToMany(Cart::class, 'cart_products', 'product_id', 'cart_id')->withPivot('amount')->withTimestamps();
+    }
 }

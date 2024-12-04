@@ -9,7 +9,7 @@
 <p class="text-pretty">{{$blog->content}}</p>
 </article>
   <figure>
-    <img src="{{ $blog->image }}" alt="{{ $blog->title }}" class="flex justify-center mx-auto h-3/4 rounded-md">
+    <img src="{{Storage::url($blog->image)}}" alt="{{ $blog->title }}" class="flex justify-center mx-auto h-3/4 rounded-md">
   </figure>
 </div>
 </div>

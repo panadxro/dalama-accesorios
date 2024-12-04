@@ -21,6 +21,9 @@
             </div>
             <button type="submit" class="px-6 py-2 bg-red-800 text-white rounded-md hover:bg-red-900 hover:text-white font-semibold">Ingresar</button>
         </form>
+        <p class="text-center text-sm text-gray-500">
+            ¿No tienes una cuenta? <a href="{{ route('auth.register.form') }}" class="text-red-800 hover:underline">Regístrate</a>
+        </p>
 </div>
 
 @endsection

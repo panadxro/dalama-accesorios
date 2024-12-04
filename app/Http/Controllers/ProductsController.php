@@ -11,12 +11,30 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $allProducts = Product::with(['brand', 'category', 'quantities'])->get();
+        $productsQuery = Product::with(['brand', 'category', 'quantities']);
+        
+        $searchParams = [
+            'search' => request()->query('search'),
+            'category' => request()->query('category')
+        ];
+
+        if ($searchParams['search']) {
+            $productsQuery->where('name', 'like', '%' . $searchParams['search'] . '%');
+        }
+
+        if ($searchParams['category']) {
+            $productsQuery->where('category_fk', '=', $searchParams['category']);
+        }
+
+        $allProducts = $productsQuery->paginate(8)->withQueryString();
 
         return view('products.all-products',[
-            'products' => $allProducts
+            'products' => $allProducts,
+            'categories' => Category::all(),
+            'brand' => Brand::all(),
+            'searchParams' => $searchParams
         ]);
     }
     public function administrar()
@@ -64,12 +82,13 @@ class ProductsController extends Controller
 
         $input = $request->all();
 
+        if($request->hasFile('image')){
+            $input['image'] = $request->file('image')->store('images', 'public');
+        }
+
         $product = Product::create($input);
         $product->quantities()->sync($input['quantity_id'] ?? []);
 
-        // if($request->hasFile('image')){
-        //     $input['image'] = $request->file('image')->store('images', 'public');
-        // }
 
         // $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
         //     $request->file('image')->move(public_path('img'), $imageName);
@@ -87,7 +106,8 @@ class ProductsController extends Controller
         return view('products.edit-form', [
             'product' => Product::findOrFail($id),
             'brands' => Brand::all(),
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'quantities' => Quantity::all()
         ]);
     }
 
@@ -99,7 +119,6 @@ class ProductsController extends Controller
             'name' => 'required|min:3',
             'brand_fk' => 'required',
             'category_fk' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|min:3',
         ],[
             'name.required' => 'El título debe tener un valor.',
@@ -108,30 +127,31 @@ class ProductsController extends Controller
             // 'brand_fk.min' => 'La marca debe tener al menos :min caracteres.',
             'category_fk.required' => 'La categoría debe tener un valor.',
             // 'category.min' => 'La categoría debe tener al menos :min caracteres.',
-            'image.required' => 'La imagen debe no puede estar vacia.',
             'description.required' => 'La descripción debe tener un valor.',
             'description.min' => 'La descripción debe tener al menos :min caracteres.'
         ]);
 
-        // $input = $request->only(['name', 'image', 'brand', 'category', 'description']);
-
-        $input = $request->only(['name', 'image', 'description', 'brand_fk', 'category_fk']);
-
-        $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('img'), $imageName);
-    
-        $input['image'] = $imageName;
+        $input = $request->except(['_token', '_method']);
+        // $input = $request->only(['name', 'image', 'description', 'brand_fk', 'category_fk']);
 
         // if($request->hasFile('image')){
-        //     $input['image'] = $request->file('image')->store('images', 'public');
-        //     Storage::delete($product->image);
+        //     $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+        //     $request->file('image')->move(public_path('img'), $imageName);
+    
+        // $input['image'] = $imageName;
         // }
         
         $product = Product::findOrFail($id);
+
+        if($request->hasFile('image')){
+            $input['image'] = $request->file('image')->store('images', 'public');
+        } 
+
         $product->update($input);
+        $product->quantities()->sync($input['quantity_id'] ?? []);
 
         return redirect()
-            ->route('products.all-products')
+            ->route('products.administracion')
             ->with('feedback.message', 'El producto <b> '. e($input['name']) .'</b> fue actualizado con exito.');
     }
 

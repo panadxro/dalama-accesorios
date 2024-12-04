@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             // session()->flash('feedback.type', 'danger');
             return route('auth.login.form');
         });
+
+        $middleware->alias([
+            'recurrent-user' => \App\Http\Middleware\CheckAgeOver18::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

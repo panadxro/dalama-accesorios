@@ -2,10 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Cart;
 
 class AuthController extends Controller
 {
+    public function registerForm()
+    {
+        return view('auth.register-form');
+    }
+    public function registerProcess(Request $request)
+    {
+        // Validar los datos
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'in:user,admin',
+        ]);
+
+        // Crear el usuario
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'] ?? 'user',
+        ]);
+
+        // Iniciar sesión automáticamente despues del registro
+        auth()->login($user);
+        Cart::create(['user_id' => $user->id]);
+
+        return redirect()
+            ->route('products.all-products')
+            ->with('feedback.message', 'Registro exitoso');
+    }
     public function loginForm()
     {
         return view('auth.login-form');
@@ -39,5 +72,17 @@ class AuthController extends Controller
         return redirect()
         ->route('auth.login.form')
         ->with('feedback.message', 'Cierre de sesion exitoso');
+    }
+    public function viewUsersWithCarts()
+    {
+        // Verifica que el usuario sea admin
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Acceso no autorizado');
+        }
+
+        // Obtiene todos los usuarios y sus carritos con productos
+        $users = User::with('cart.products')->get();
+
+        return view('admin.users-carts', compact('users'));
     }
 }

@@ -3,6 +3,7 @@
 @section('title', 'Editar el producto '.e($product->name))
 
 @section('content')
+<?php $quantitiesIds = $product->quantities->pluck('quantity_id')->all() ?>
 
         <div class="my-10 md:w-4/5 mx-auto ">
             <h2 class="text-3xl font-bold text-center">Editar el producto {{ $product->name }}</h2>
@@ -81,6 +82,21 @@
                         @endforeach
                     </select>
                 </div>
+
+                <fieldset>
+                @foreach ($quantities as $quantity)
+                <label>
+                    <input 
+                        type="checkbox" 
+                        name="quantity_id[]" 
+                        value="{{ $quantity->quantity_id }}"
+                        @checked(in_array($quantity->quantity_id, old('quantity_id', $quantitiesIds)))
+                    >
+                    {{ $quantity->name }}
+                </label>
+                @endforeach
+            </fieldset>
+
             </div>
             
             <div>
