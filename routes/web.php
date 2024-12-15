@@ -46,11 +46,24 @@ Route::middleware(['auth'])->group(function () {
         ->name('cart.view');
     Route::delete('/cart/remove/{cart_product_id}', [\App\Http\Controllers\CartController::class, "removeFromCart"])
         ->name('cart.remove');
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, "profile"])
+        ->name('profile');
+    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, "editForm"])
+        ->name('profile.edit-form');
+    Route::put('/profile/edit', [App\Http\Controllers\ProfileController::class, "update"])
+        ->name('profile.update');
+    Route::get('/shop', [App\Http\Controllers\MercadoPagoController::class, 'shopForm'])->name('compra.form');
+    Route::post('/shop', [App\Http\Controllers\MercadoPagoController::class, 'processShopForm'])->name('compra.process');
+    Route::post('shop/process', [App\Http\Controllers\MercadoPagoController::class, 'processShopForm'])->name('mercadopago.processShopForm');
+    Route::get('mercadopago/success', [App\Http\Controllers\MercadoPagoController::class, 'successProcess'])->name('mercadopago.successProcess');
+    Route::get('mercadopago/pending', [App\Http\Controllers\MercadoPagoController::class, 'pendingProcess'])->name('mercadopago.pendingProcess');
+    Route::get('mercadopago/failure', [App\Http\Controllers\MercadoPagoController::class, 'failureProcess'])->name('mercadopago.failureProcess');
     
     Route::middleware(['role:admin'])->group(function () {
 /*         Route::get('/admin', function () {
             return 'Área de administradores';
         })->name('admin.dashboard'); */
+        Route::get('/admin/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/products/admin', [App\Http\Controllers\ProductsController::class, "administrar"])
             ->name('products.administracion');
         Route::get('/products/publicar', [App\Http\Controllers\ProductsController::class, "createForm"])

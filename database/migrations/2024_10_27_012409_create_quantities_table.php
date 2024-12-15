@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('quantities', function (Blueprint $table) {
             $table->smallIncrements('quantity_id');
             $table->string('name', 25);
-            $table->timestamps();
+            $table->string('measure', 25);
+            $table->integer('multiplier');
         });
     }
 

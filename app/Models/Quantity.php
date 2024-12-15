@@ -9,4 +9,8 @@ class Quantity extends Model
 {
     use HasFactory;
     protected $primaryKey = 'quantity_id';
+    public function quantities()
+{
+    return $this->belongsToMany(Quantity::class, 'products_have_quantity', 'product_id', 'quantity_id');
+}
 }

@@ -13,8 +13,12 @@
             </button>
             <div class="hidden absolute top-full md:static left-0 w-full md:block md:w-auto" id="navbar-dropdown">
                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-red-700 md:bg-transparent text-white md:text-black">
-                    <li class="block py-2 px-3 rounded">
-                        <x-nav-link route="home">Inicio</x-nav-link>
+                <li class="block py-2 px-3 rounded">
+                        @if(auth()->check() && auth()->user()->role === 'admin')
+                            <x-nav-link route="admin.dashboard">Inicio</x-nav-link>
+                        @else
+                            <x-nav-link route="home">Inicio</x-nav-link>
+                        @endif
                     </li>
                     @if (auth()->check() && auth()->user()->role === 'admin')
                     <li class="block py-2 px-3 relative">
@@ -69,6 +73,9 @@
                                 <li class="block px-4 py-2 text-center">
                                     <p>{{ auth()->user()->name }}</p>
                                     <p class="text-xs text-gray-400">{{ auth()->user()->email }}</p>
+                                </li>
+                                <li class="block px-4 py-2 hover:bg-red-700 hover:text-white">
+                                    <x-nav-link class="w-full" route="profile">Mi perfil</x-nav-link>
                                 </li>
                                 <li class="block px-4 py-2 hover:bg-red-700 hover:text-white">
                                     <x-nav-link class="w-full" route="cart.view">Mi carrito</x-nav-link>

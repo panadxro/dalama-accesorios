@@ -39,7 +39,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             QuantitySeeder::class,
             BlogSeeder::class,
-            CartSeeder::class
+            CartSeeder::class,
+            UserSeeder::class
         ]);
 
         // $jsonBlog = File::get("database/data/blog.json");

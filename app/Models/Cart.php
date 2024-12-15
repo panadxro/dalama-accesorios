@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Quantity;
 
 class Cart extends Model
 {
@@ -22,6 +23,11 @@ class Cart extends Model
     }
     
     public function products() {
-        return $this->belongsToMany(Product::class, 'cart_products', 'cart_id', 'product_id')->withPivot('id', 'amount')->withTimestamps();
+        return $this->belongsToMany(Product::class, 'cart_products', 'cart_id', 'product_id')->withPivot('id', 'amount', 'price', 'created_at', 'updated_at')->withTimestamps();
+    }
+
+    public function quantity()
+    {
+        return $this->belongsTo(Quantity::class, 'quantity_id');
     }
 }

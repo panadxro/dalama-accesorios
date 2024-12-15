@@ -1,9 +1,9 @@
 @extends('layouts.main')
 @section('title', 'Administrar usuarios')
 @section('content')
-<div class="items-center my-10 w-full max-w-screen-xl mx-auto px-4">
+<div class="items-center my-20 w-full max-w-screen-xl mx-auto px-4">
     <div class="flex w-full items-center justify-center mb-8">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center">Usuarios y sus Carritos</h2>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">Usuarios y sus Carritos</h2>
     </div>
     <div class="overflow-x-auto w-full">
         <table class="table-auto w-full border-collapse border border-gray-300">

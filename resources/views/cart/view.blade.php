@@ -2,12 +2,9 @@
 @section('title', 'Mi carrito')
 @section('content')
 <section class="min-h-dvh my-10 px-4">
-  <!-- Título -->
   <div class="flex justify-center">
     <h2 class="text-3xl lg:text-4xl font-bold text-center mb-10">Mi carrito</h2>
   </div>
-
-  <!-- Contenido -->
   <div class="flex flex-col items-center justify-center">
     @if ($products->isEmpty())
       <p class="text-lg text-gray-700">No hay productos en el carrito</p>
@@ -18,6 +15,9 @@
             <tr class="bg-gray-100 text-left">
               <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Cant</th>
               <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Producto</th>
+              <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Presentación</th>
+              <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Precio unitario</th>              
+              <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Precio</th>              
               <th class="border border-gray-300 px-4 py-2 text-sm lg:text-base">Acción</th>
             </tr>
           </thead>
@@ -30,6 +30,22 @@
                 <td class="border border-gray-300 px-4 py-2 text-sm lg:text-base">
                   <p class="text-gray-700 font-bold">{{ $product->name }}</p>
                 </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm lg:text-base">
+                  <p class="text-gray-700 font-bold">
+                    x 
+                    @php
+                      $quantity = \App\Models\Quantity::find($product->pivot->quantity_id);
+                    @endphp
+                    {{ $quantity ? $quantity->name : 'Cantidad no disponible' }}
+                  </p>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm lg:text-base">
+                  <p class="text-gray-700 font-bold">${{ number_format($product->pivot->price, 2) }}</p>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-sm lg:text-base">
+                  <p class="text-gray-700 font-bold">${{ number_format($product->pivot->price * $product->pivot->amount, 2) }}</p>
+                </td>
+                
                 <td class="border border-gray-300 px-4 py-2">
                   <form 
                     action="{{ route('cart.remove', ['cart_product_id' => $product->pivot->id]) }}" 
@@ -50,6 +66,32 @@
             @endforeach
           </tbody>
         </table>
+      </div>
+      
+      <div class="pt-10 w-full max-w-4xl flex justify-end items-center">
+        <div class="w-full max-w-sm bg-white rounded-lg shadow-sm p-6 border border-gray-300">
+          <h3 class="text-lg font-bold text-gray-800 border-b border-gray-300 pb-4 mb-4">
+            Total del carrito
+          </h3>
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-700">Total:</p>
+            <p class="text-2xl font-extrabold text-red-600">
+              ${{ number_format($total, 2) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 w-full max-w-4xl flex justify-end">
+        <form action="{{ route ('compra.form')}}" method="GET">
+          @csrf
+          <button 
+            type="submit" 
+            class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-lg text-lg"
+          >
+            Comprar
+          </button>
+        </form>
       </div>
     @endif
   </div>
