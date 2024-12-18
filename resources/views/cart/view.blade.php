@@ -6,7 +6,7 @@
     <h2 class="text-3xl lg:text-4xl font-bold text-center mb-10">Mi carrito</h2>
   </div>
   <div class="flex flex-col items-center justify-center">
-    @if ($products->isEmpty())
+    @if (empty($products))
       <p class="text-lg text-gray-700">No hay productos en el carrito</p>
     @else
       <div class="overflow-x-auto w-full max-w-4xl">
@@ -68,7 +68,7 @@
         </table>
       </div>
       
-      <div class="pt-10 w-full max-w-4xl flex justify-end items-center">
+      <div class="pt-10 w-full max-w-4xl flex justify-end items-center flex-col">
         <div class="w-full max-w-sm bg-white rounded-lg shadow-sm p-6 border border-gray-300">
           <h3 class="text-lg font-bold text-gray-800 border-b border-gray-300 pb-4 mb-4">
             Total del carrito
@@ -78,21 +78,19 @@
             <p class="text-2xl font-extrabold text-red-600">
               ${{ number_format($total, 2) }}
             </p>
+            
           </div>
         </div>
-      </div>
+        <form action="{{ route('mercadopago.show') }}" method="POST" class="my-10 mx-20">
+            @csrf
 
-      <div class="mt-6 w-full max-w-4xl flex justify-end">
-        <form action="{{ route ('compra.form')}}" method="GET">
-          @csrf
-          <button 
-            type="submit" 
-            class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-lg text-lg"
-          >
-            Comprar
-          </button>
+            <div class="col-span-2 flex justify-center">
+                <!-- Este botón redirige al proceso de MercadoPago -->
+                <button type="submit" class="px-6 py-2 bg-red-800 text-white rounded-md hover:bg-red-900 hover:text-white font-semibold">Confirmar y Pagar</button>
+            </div>
         </form>
       </div>
+
     @endif
   </div>
 </section>

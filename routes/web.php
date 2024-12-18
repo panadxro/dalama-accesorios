@@ -29,6 +29,9 @@ Route::post('/login', [\App\Http\Controllers\AuthController::class, "loginProces
     ->name('auth.login.process');
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, "logoutProcess"])
     ->name('auth.logout.process');
+Route::get('mercadopago/success', [App\Http\Controllers\MercadoPagoController::class, 'successProcess'])->name('mercadopago.successProcess');
+Route::get('mercadopago/pending', [App\Http\Controllers\MercadoPagoController::class, 'pendingProcess'])->name('mercadopago.pendingProcess');
+Route::get('mercadopago/failure', [App\Http\Controllers\MercadoPagoController::class, 'failureProcess'])->name('mercadopago.failureProcess');
 
 
 
@@ -44,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('cart.add');
     Route::get('/cart', [\App\Http\Controllers\CartController::class, "viewCart"])
         ->name('cart.view');
+    Route::post('/cart', [App\Http\Controllers\MercadoPagoController::class, 'show'])
+        ->name('mercadopago.show');
     Route::delete('/cart/remove/{cart_product_id}', [\App\Http\Controllers\CartController::class, "removeFromCart"])
         ->name('cart.remove');
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, "profile"])
@@ -52,12 +57,13 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.edit-form');
     Route::put('/profile/edit', [App\Http\Controllers\ProfileController::class, "update"])
         ->name('profile.update');
-    Route::get('/shop', [App\Http\Controllers\MercadoPagoController::class, 'shopForm'])->name('compra.form');
-    Route::post('/shop', [App\Http\Controllers\MercadoPagoController::class, 'processShopForm'])->name('compra.process');
+/*     Route::get('/shop', [App\Http\Controllers\MercadoPagoController::class, 'shopForm'])->name('compra.form');
+    Route::post('/shop', [App\Http\Controllers\MercadoPagoController::class, 'processShopForm'])->name('compra.process'); */
     Route::post('shop/process', [App\Http\Controllers\MercadoPagoController::class, 'processShopForm'])->name('mercadopago.processShopForm');
     Route::get('mercadopago/success', [App\Http\Controllers\MercadoPagoController::class, 'successProcess'])->name('mercadopago.successProcess');
     Route::get('mercadopago/pending', [App\Http\Controllers\MercadoPagoController::class, 'pendingProcess'])->name('mercadopago.pendingProcess');
     Route::get('mercadopago/failure', [App\Http\Controllers\MercadoPagoController::class, 'failureProcess'])->name('mercadopago.failureProcess');
+
     
     Route::middleware(['role:admin'])->group(function () {
 /*         Route::get('/admin', function () {
@@ -87,17 +93,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', function () {
             return 'Área de usuarios comunes';
         })->name('user.dashboard');
-
-        // Rutas de pago
-        Route::get('test/mercadopago', [\App\Http\Controllers\MercadoPagoController::class, 'show'])
-        ->name('test.mercadopago.show');
-        // Route::get('test/mercadopago/v2', [\App\Http\Controllers\MercadoPagoController::class, 'showV2'])
-        //     ->name('test.mercadopago.show.v2');
-        Route::get('test/mercadopago/success', [\App\Http\Controllers\MercadoPagoController::class, 'successProcess'])
-        ->name('test.mercadopago.successProcess');
-        Route::get('test/mercadopago/pending', [\App\Http\Controllers\MercadoPagoController::class, 'pendingProcess'])
-        ->name('test.mercadopago.pendingProcess');
-        Route::get('test/mercadopago/failure', [\App\Http\Controllers\MercadoPagoController::class, 'failureProcess'])
-        ->name('test.mercadopago.failureProcess');
     });
 });

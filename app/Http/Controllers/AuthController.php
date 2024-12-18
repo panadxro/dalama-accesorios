@@ -18,6 +18,9 @@ class AuthController extends Controller
         // Validar los datos
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:10',
+            'address' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'in:user,admin',
@@ -26,6 +29,9 @@ class AuthController extends Controller
         // Crear el usuario
         $user = User::create([
             'name' => $validated['name'],
+            'surname' => $validated['surname'],
+            'phone_number' => $validated['phone_number'],
+            'address' => $validated['address'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'] ?? 'user',
@@ -81,7 +87,7 @@ class AuthController extends Controller
         }
 
         // Obtiene todos los usuarios y sus carritos con productos
-        $users = User::with('cart.products')->get();
+        $users = User::with('orders.products')->get();
 
         return view('admin.users-carts', compact('users'));
     }

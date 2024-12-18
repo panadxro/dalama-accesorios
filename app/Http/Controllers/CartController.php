@@ -114,7 +114,7 @@ class CartController extends Controller
 
         $cart = $user->cart; // Se obtiene el carrito del usuario
         
-        if (!$cart) {
+        if (!$cart || !$cart->products->count()) {
             return view('cart.view', ['products' => []]);
         }
 

@@ -16,6 +16,18 @@
                 <input type="name" id="name" name="name" value="{{ old('name') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
             </div>
             <div>
+                <label for="surname" class="block text-sm font-medium text-gray-700">Apellido</label>
+                <input type="name" id="surname" name="surname" value="{{ old('surname') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700">Nro de teléfono</label>
+                <input type="number" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Dirección</label>
+                <input type="name" id="address" name="address" value="{{ old('address') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
             </div>
