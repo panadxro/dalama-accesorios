@@ -3,7 +3,7 @@
     <div class="md:flex md:justify-between md:items-center">
       <div class="mb-6 md:mb-0">
           <a href="#" class="flex items-center">
-            <img src="{{ asset('img/dalama-logo_footer.png') }}" class="h-12" alt="Dalama Logo" />
+            <img src="{{ asset('img/dalama-logo_footer.svg') }}" class="h-12" alt="Dalama Logo" />
           </a>
       </div>
       <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
