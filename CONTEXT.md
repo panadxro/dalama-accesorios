@@ -30,7 +30,7 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 | Módulo | Estado | Notas |
 |---|---|---|
 | Base visual y navegación | Requiere revisión | Etapa 1: tokens, kit portado, layout, rutas, bienvenida, 404. Revisión en /kit |
-| Datos de ejemplo | Pendiente | |
+| Datos de ejemplo | Requiere revisión | Etapa 2: modelo de datos, generador con semilla fija, store persistido, avisos, búsqueda y reinicio. Revisión en /kit/datos |
 | Panel de inicio | Pendiente | |
 | Bandeja de WhatsApp | Pendiente | |
 | Presupuestos | Pendiente | |
@@ -63,6 +63,13 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 14/10/2026 | Montos en centavos (enteros) | Evitar errores de redondeo en totales, IVA y saldos |
 | 14/10/2026 | Layout de celular debajo de 1024 px: cabecera ink-black, menú deslizable y barra inferior (Inicio, Bandeja, Pedidos, Entregas, Stock) | Sigue las pantallas móviles del diseño |
 | 14/10/2026 | Sesión de demo sin login: "Entrar como Laura" guarda la sesión en localStorage | Requisito de la demo |
+| 14/10/2026 | Datos generados por código con semilla fija (src/data/seed), simulando las mismas operaciones del sistema | Siempre iguales y coherentes: cada factura tiene pedido, movimiento de stock y cobro o deuda |
+| 14/10/2026 | Fechas guardadas como ISO local sin zona; al abrir la demo otro día se corren todas las fechas | "Entregas de hoy", vencimientos y mensajes recientes siguen teniendo sentido cualquier día que Laura entre |
+| 14/10/2026 | Saldos, cuenta corriente, estado "vencido" y alertas se derivan, no se guardan (domain/calculos.ts, store/selectores.ts) | Una sola fuente de verdad; ninguna acción puede dejar números desfasados |
+| 14/10/2026 | Detalle de presupuestos, pedidos y movimientos de stock solo en los últimos 60 días; facturas y cobros de 6 meses | Mantener localStorage cerca de 1 MB sin perder reportes de 6 meses |
+| 14/10/2026 | Numeración del historial termina en la del diseño (P-0997, PED-0425, FC A 0003-00002137, OC-0089) | Coherencia con las pantallas diseñadas: lo próximo es P-0998, PED-0426 y FC A 2138 |
+| 14/10/2026 | Bancos (cheques) y transportes (Vía Cargo, Andreani) con nombres reales; clientes, proveedores, CUIT, teléfonos y emails ficticios (dominio .example) | Los nombres de bancos y transportes dan realismo sin exponer datos de personas ni empresas clientes |
+| 14/10/2026 | Esquema de datos versionado (ESQUEMA_DATOS): si cambia, la demo guardada se regenera | Evitar demos rotas tras un deploy |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -75,3 +82,6 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 14/10/2026 — [Cambiado] context.md renombrado a CONTEXT.md
 - 14/10/2026 — [Agregado] Etapa 1: proyecto Vite + React + TS, Tailwind con tokens del UI kit, componentes base (Button, Input, Select, MoneyInput, DateInput, Textarea, StatusBadge, KpiCard, DataTable, Tabs, Alert, Toast, ConfirmModal, Dialog, Sheet, Menu, Popover, Tooltip, Switch, Card), estados vacío/carga/error, barra lateral, barra superior con etiqueta DEMO, buscador Ctrl K y avisos, navegación móvil, pantalla de bienvenida, 404, vercel.json y página de revisión /kit
 - 14/10/2026 — [Agregado] Páginas provisorias para todas las rutas del sistema (sin links vacíos)
+- 14/10/2026 — [Agregado] Etapa 2: modelo de datos (domain/types.ts), reglas de negocio puras (domain/calculos.ts: totales, IVA, letra A/B/C, cuenta corriente, antigüedad de deuda, stock, inactivos)
+- 14/10/2026 — [Agregado] Datos de ejemplo: 60 productos en 7 categorías, 5 proveedores, 25 clientes de zona sur, 6 meses de ventas (~465 comprobantes), cobros con efectivo/transferencia/cheque/tarjeta, cheques en cartera, presupuestos en todos los estados, 6 entregas para hoy, órdenes de compra, último conteo y 8 conversaciones de WhatsApp (+5 para simular)
+- 14/10/2026 — [Agregado] Store persistido con corrimiento automático de fechas, avisos de la campana conectados, contador de la bandeja, búsqueda global funcionando, "Reiniciar demo" en el menú de usuario y página de revisión /kit/datos

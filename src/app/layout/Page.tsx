@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { useUi } from '@/store/ui';
-import { Topbar, type Aviso } from './Topbar';
+import { Topbar } from './Topbar';
 import { MobileBar } from './MobileBars';
 
 export interface PageProps {
@@ -15,9 +15,6 @@ export interface PageProps {
   className?: string;
 }
 
-// Los avisos se conectan al store en la etapa 2.
-const AVISOS: Aviso[] = [];
-
 /** Página estándar: barra superior + contenido con márgenes del kit (space-8 en escritorio). */
 export function Page({ title, overline, children, bleed, mobileHeader, className }: PageProps) {
   const setMenuOpen = useUi((s) => s.setMenuMovilAbierto);
@@ -29,7 +26,7 @@ export function Page({ title, overline, children, bleed, mobileHeader, className
   return (
     <>
       <div className="hidden lg:block">
-        <Topbar title={title} overline={overline} avisos={AVISOS} />
+        <Topbar title={title} overline={overline} />
       </div>
       <div className="sticky top-0 z-30 lg:hidden">
         {mobileHeader ?? <MobileBar title={title} overline={overline} onMenu={() => setMenuOpen(true)} />}

@@ -28,6 +28,7 @@ const ReportesPage = lazy(() => import('@/features/reportes/pages/ReportesPage')
 const ConfiguracionPage = lazy(() => import('@/features/configuracion/pages/ConfiguracionPage'));
 const BusquedaPage = lazy(() => import('@/features/busqueda/pages/BusquedaPage'));
 const KitPage = lazy(() => import('@/features/sistema/pages/KitPage'));
+const DatosPage = lazy(() => import('@/features/sistema/pages/DatosPage'));
 const NoEncontradaPage = lazy(() => import('@/features/sistema/pages/NoEncontradaPage'));
 
 /** Sin login real: si Laura no entró desde la bienvenida, vuelve ahí. */
@@ -71,6 +72,7 @@ export const router = createBrowserRouter([
       { path: '/configuracion', element: <ConfiguracionPage /> },
       { path: '/buscar', element: <BusquedaPage /> },
       { path: '/kit', element: <KitPage /> },
+      { path: '/kit/datos', element: <DatosPage /> },
       { path: '*', element: <NoEncontradaPage /> },
     ],
   },

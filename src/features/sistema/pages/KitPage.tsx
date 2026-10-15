@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Page } from '@/app/layout/Page';
 import {
   Alert, Badge, Button, Card, ConfirmModal, DataTable, DateInput, Dialog, IconButton, KpiCard, Menu, MoneyInput,
@@ -40,7 +41,7 @@ export default function KitPage() {
   return (
     <Page title="Componentes del sistema" overline="Revisión · Etapa 1">
       <Alert tone="info" title="Página de revisión">
-        Muestra los componentes base portados del UI kit. No forma parte del recorrido de Laura.
+        Muestra los componentes base portados del UI kit. No forma parte del recorrido de Laura. <Link className="dl-link" to="/kit/datos">Ver datos de ejemplo</Link>
       </Alert>
 
       <Card className="flex flex-col gap-4">

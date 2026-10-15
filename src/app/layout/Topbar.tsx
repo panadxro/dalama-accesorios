@@ -2,8 +2,12 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Icon } from '@/components/ui/Icon';
 import { Menu, Popover } from '@/components/ui/Menu';
+import { ConfirmModal } from '@/components/ui/Dialog';
+import { toast } from '@/components/ui/Toast';
 import { EmptyState } from '@/components/shared/States';
 import { useUi, USUARIO_DEMO } from '@/store/ui';
+import { useDemo } from '@/store/demo';
+import { useAvisos, type Aviso } from '@/store/selectores';
 
 export function DemoTag() {
   return (
@@ -51,13 +55,6 @@ function GlobalSearch() {
   );
 }
 
-export interface Aviso {
-  id: string;
-  title: string;
-  text: string;
-  to?: string;
-}
-
 function Notifications({ avisos }: { avisos: Aviso[] }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -98,15 +95,42 @@ function Notifications({ avisos }: { avisos: Aviso[] }) {
   );
 }
 
+/** Confirmación para volver a los datos de ejemplo. Se usa desde el menú de usuario y desde Configuración. */
+export function ReiniciarDemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const navigate = useNavigate();
+  const reiniciar = useDemo((s) => s.reiniciar);
+  return (
+    <ConfirmModal
+      open={open}
+      destructive
+      title="¿Reiniciar la demo?"
+      confirmLabel="Reiniciar demo"
+      onCancel={onClose}
+      onConfirm={() => {
+        reiniciar();
+        onClose();
+        navigate('/inicio');
+        toast.success('Demo reiniciada', 'Se restauraron los datos de ejemplo: clientes, pedidos, facturas, stock y mensajes vuelven a su estado inicial.');
+      }}
+    >
+      Se borran los cambios que hiciste y se restauran los datos de ejemplo. Podés volver a recorrer todo desde el principio.
+    </ConfirmModal>
+  );
+}
+
 export function UserMenu({ compact }: { compact?: boolean }) {
   const navigate = useNavigate();
   const salir = useUi((s) => s.salir);
+  const [reiniciar, setReiniciar] = useState(false);
   const user = USUARIO_DEMO;
   return (
+    <>
+    <ReiniciarDemoModal open={reiniciar} onClose={() => setReiniciar(false)} />
     <Menu
       label="Menú de usuario"
       items={[
         { label: 'Configuración', icon: 'settings', onSelect: () => navigate('/configuracion') },
+        { label: 'Reiniciar demo', icon: 'reset', onSelect: () => setReiniciar(true) },
         { label: 'Salir de la demo', icon: 'log-out', separatorBefore: true, onSelect: () => { salir(); navigate('/'); } },
       ]}
       trigger={
@@ -126,17 +150,18 @@ export function UserMenu({ compact }: { compact?: boolean }) {
         )
       }
     />
+    </>
   );
 }
 
 export interface TopbarProps {
   title: string;
   overline?: string;
-  avisos?: Aviso[];
 }
 
 /** Barra superior del kit (escritorio). */
-export function Topbar({ title, overline, avisos = [] }: TopbarProps) {
+export function Topbar({ title, overline }: TopbarProps) {
+  const avisos = useAvisos();
   return (
     <header className="dl-topbar">
       <div className="dl-topbar-title min-w-0 flex-auto">

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import * as RD from '@radix-ui/react-dialog';
 import { useUi } from '@/store/ui';
+import { useDemo } from '@/store/demo';
 import { ErrorBoundary, PageSkeleton } from '@/components/shared/States';
 import { Sidebar } from './Sidebar';
 import { TabBar } from './MobileBars';
@@ -16,6 +17,8 @@ export function AppLayout() {
   const setCollapsed = useUi((s) => s.setSidebarColapsada);
   const menuOpen = useUi((s) => s.menuMovilAbierto);
   const setMenuOpen = useUi((s) => s.setMenuMovilAbierto);
+  const sinProcesar = useDemo((s) => s.datos.conversaciones.filter((c) => c.estado === 'nuevo').length);
+  const counts = { bandeja: sinProcesar };
 
   return (
     <div className="dl-root flex min-h-screen bg-fondo">
@@ -25,7 +28,7 @@ export function AppLayout() {
 
       {/* Escritorio */}
       <div className="sticky top-0 hidden h-screen shrink-0 overflow-y-auto bg-barra-lateral lg:flex">
-        <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
+        <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} counts={counts} />
       </div>
 
       {/* Celular: menú deslizable */}
@@ -35,7 +38,7 @@ export function AppLayout() {
           <RD.Content className="fixed inset-y-0 left-0 z-50 flex max-w-[85vw] animate-dl-slide overflow-y-auto bg-barra-lateral lg:hidden">
             <RD.Title className="sr-only">Menú</RD.Title>
             <RD.Description className="sr-only">Secciones del sistema</RD.Description>
-            <Sidebar collapsed={false} onNavigate={() => setMenuOpen(false)} />
+            <Sidebar collapsed={false} counts={counts} onNavigate={() => setMenuOpen(false)} />
           </RD.Content>
         </RD.Portal>
       </RD.Root>
