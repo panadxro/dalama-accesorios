@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Conteo de inventario (celular)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B81D23}
+.muted{color:#3D3833}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.big{width:64px;height:64px;border-radius:4px;border:1.5px solid #111111;background:#FFFFFF;display:grid;place-items:center;cursor:pointer;color:#111111}
+.big:hover{background:#F3EDE3}
+.quick{flex:1;min-height:44px;border-radius:4px;border:1px solid #7A726A;background:#FFFFFF;font:600 14px Montserrat,sans-serif;cursor:pointer;color:#111111}
+.tb{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:60px;font-size:11px;font-weight:600;color:#3D3833;text-decoration:none}
+.tb.on{color:#111111}
+.tb.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;background:#E11B22}
+</style>
+</helmet>
+<div class="dl-root" style="width: 390px; height: 844px; display: flex; flex-direction: column; background: #FAF7F2; overflow: hidden">
+<header style="background: #111111; color: #FFFFFF; padding: 14px 16px">
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Stock.dc.html" aria-label="Salir del conteo" style="width: 44px; height: 44px; display: grid; place-items: center; margin-left: -10px; color: #FFFFFF"><x-import component-from-global-scope="Dalama.Icon" name="chevron-left" size="{{24}}"></x-import></a>
+<div style="flex: 1"><div style="font-size: 11px; letter-spacing: .12em; color: #CFC9C2; font-weight: 600">CONTEO DE INVENTARIO</div><div style="font-size: 17px; font-weight: 600; margin-top: 2px">Estante D · Rieles</div></div>
+<span class="num" style="font-size: 13px; font-weight: 600">{{progress}}</span>
+</div>
+<div style="height: 4px; background: #3D3833; margin-top: 12px"><div style="{{progBar}}"></div></div>
+</header>
+
+<div style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{counting}}" hint-placeholder-val="{{true}}">
+<section aria-label="Producto a contar" style="background: #FFFFFF; border: 2px solid #111111; border-radius: 6px; padding: 18px; box-shadow: 0 1px 2px rgba(74,31,31,.06), 0 2px 6px rgba(74,31,31,.06)">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span class="dl-badge dl-badge-neutral">Estante {{cur.loc}}</span><span class="muted num" style="font-size: 12px">{{cur.code}}</span></div>
+<div style="font-size: 20px; line-height: 28px; font-weight: 600; margin-top: 12px">{{cur.name}}</div>
+<div class="muted" style="font-size: 13px; margin-top: 2px">{{cur.unit}} · cantidad del sistema oculta</div>
+<span class="dl-brandline"></span>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px">
+<button type="button" class="big" aria-label="Restar uno" onClick="{{dec}}"><x-import component-from-global-scope="Dalama.Icon" name="minus" size="{{24}}"></x-import></button>
+<div style="text-align: center"><div class="num" style="font-size: 52px; line-height: 56px; font-weight: 700">{{count}}</div><div class="muted" style="font-size: 12px">contadas</div></div>
+<button type="button" class="big" aria-label="Sumar uno" onClick="{{inc}}"><x-import component-from-global-scope="Dalama.Icon" name="plus" size="{{24}}"></x-import></button>
+</div>
+<div style="display: flex; gap: 8px; margin-top: 16px">
+<button type="button" class="quick" onClick="{{add5}}">+5</button>
+<button type="button" class="quick" onClick="{{add10}}">+10</button>
+<button type="button" class="quick" onClick="{{reset}}">Borrar</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px">
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="check" on-click="{{confirm}}" style="display: block">Confirmar y seguir</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="search" style="display: block">Buscar por código</x-import>
+</div>
+</section>
+</sc-if>
+<sc-if value="{{finished}}" hint-placeholder-val="{{false}}">
+<x-import component-from-global-scope="Dalama.Alert" tone="success" title="Estante D terminado">{{summary}} Laura revisa las diferencias desde la computadora antes de ajustar el stock.</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" on-click="{{restart}}">Contar otro estante</x-import>
+</sc-if>
+
+<div style="margin-top: 4px"><div class="dl-overline">Ya contados</div><span class="dl-brandline"></span></div>
+<sc-for list="{{done}}" as="d" hint-placeholder-count="2">
+<div style="background: #FFFFFF; border: 1px solid #CFC9C2; border-radius: 6px; padding: 12px 14px; display: flex; gap: 10px; align-items: center">
+<div style="flex: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">{{d.name}}</div><div class="muted num" style="font-size: 12px; margin-top: 2px">Contadas {{d.c}} · sistema {{d.s}}</div></div>
+<span class="{{d.cls}}">{{d.diff}}</span>
+</div>
+</sc-for>
+</div>
+
+<nav aria-label="Navegación" style="display: flex; background: #FFFFFF; border-top: 1px solid #CFC9C2">
+<a href="#inicio" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="home" size="{{22}}"></x-import>Inicio</a>
+<a href="BandejaMovil.dc.html" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="message" size="{{22}}"></x-import>Bandeja</a>
+<a href="#pedidos" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="package" size="{{22}}"></x-import>Pedidos</a>
+<a href="EntregasMovil.dc.html" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="truck" size="{{22}}"></x-import>Entregas</a>
+<a href="#stock" class="tb on" aria-current="page"><x-import component-from-global-scope="Dalama.Icon" name="boxes" size="{{22}}"></x-import>Stock</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const Q=[
+  {code:'RIE-HR-6M',name:'Riel inferior línea Herrero 6 m',loc:'D-01',unit:'Barras',sys:64},
+  {code:'RIE-HR-SUP',name:'Riel superior línea Herrero 6 m',loc:'D-02',unit:'Barras',sys:38},
+  {code:'RIE-MOD-6M',name:'Riel línea Módena 6 m',loc:'D-03',unit:'Barras',sys:41},
+  {code:'RIE-HR-UNI',name:'Riel unión aluminio Herrero',loc:'D-04',unit:'Unidades',sys:210}
+];
+const PRE=[{code:'RIE-HR-NG',name:'Riel inferior Herrero negro 6 m',c:18,s:18},{code:'RIE-MOD-NG',name:'Riel Módena negro 6 m',c:9,s:11}];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={i:0,count:0,done:PRE};}
+  renderVals() {
+    const st=this.state;const total=Q.length+PRE.length;const n=st.done.length;
+    const cur=Q[st.i];const set=(c)=>this.setState({count:Math.max(0,c)});
+    const done=st.done.slice().reverse().map(d=>{const df=d.c-d.s;return {name:d.name,c:d.c,s:d.s,diff:df===0?'Coincide':(df>0?'Sobran '+df:'Faltan '+(-df)),cls:df===0?'dl-badge dl-badge-success':'dl-badge dl-badge-warning'};});
+    const diffs=st.done.filter(d=>d.c!==d.s).length;
+    return {
+      counting: !!cur, finished: !cur, cur: cur||{}, count: st.count, done,
+      progress: n+' de '+total,
+      progBar: 'height: 4px; background: #E11B22; width: '+(n/total*100).toFixed(0)+'%',
+      inc: ()=>set(st.count+1), dec: ()=>set(st.count-1), add5: ()=>set(st.count+5), add10: ()=>set(st.count+10), reset: ()=>set(0),
+      confirm: ()=>{if(!cur)return;this.setState({i:st.i+1,count:0,done:st.done.concat([{code:cur.code,name:cur.name,c:st.count,s:cur.sys}])});},
+      restart: ()=>this.setState({i:0,count:0,done:PRE}),
+      summary: total+' productos contados, '+diffs+' con diferencias.'
+    };
+  }
+}
+</script>
+</body>
+</html>

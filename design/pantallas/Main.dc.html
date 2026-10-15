@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Panel de inicio</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));padding:24px;min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--arena-100,#F3EDE3)}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2)">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="inicio" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Viernes 9 de octubre de 2026" title="Buenos días, Laura" notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 32px; display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; box-sizing: border-box">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between">
+<div><div class="dl-overline">Resumen del día</div><span class="dl-brandline"></span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="wallet">Registrar cobro</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="truck">Nueva entrega</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="plus">Nuevo presupuesto</x-import>
+</div>
+</div>
+
+<section aria-label="Indicadores" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.KpiCard" label="Ventas del mes" value="$ 8.426.750" icon="chart" trend="up" delta="10,2 %" delta-label="vs. septiembre al día 9"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Pedidos nuevos" value="7" icon="message" trend="up" delta="2" delta-label="5 por WhatsApp sin procesar"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Deuda vencida" value="$ 2.847.300" icon="wallet" trend="up" positive="{{false}}" delta="4,1 %" delta-label="6 clientes · 2 con +60 días"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Stock bajo" value="9" icon="boxes" trend="flat" delta="Sin cambios" delta-label="3 productos sin stock"></x-import>
+</section>
+
+<x-import component-from-global-scope="Dalama.Alert" tone="warning" title="2 presupuestos llevan 5 días o más sin respuesta">$ 508.780,00 en juego: Carpintería Rossi (P-0981) y Juan Pérez (P-0975).</x-import>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="card" aria-label="Ventas del mes" style="flex: 2 1 560px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-start">
+<div>
+<div class="dl-overline">Ventas</div>
+<h2 class="ttl">Octubre contra septiembre</h2>
+<span class="dl-brandline"></span>
+</div>
+<div style="display: flex; gap: 18px; font-size: 12px; color: #3D3833; align-items: center">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 3px; background: #111111"></span>Octubre 2026</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 3px; background: #A8916D"></span>Septiembre 2026</span>
+</div>
+</div>
+<div style="margin-top: 16px; font-size: 13px; color: #111111; min-height: 18px; font-variant-numeric: tabular-nums; font-weight: 600">{{tip}}</div>
+<svg viewBox="0 0 660 230" role="img" aria-label="Ventas acumuladas por día: octubre en curso contra septiembre" style="width: 100%; height: auto; display: block; margin-top: 6px" onMouseLeave="{{clearHover}}">
+<sc-for list="{{grid}}" as="gl" hint-placeholder-count="3">
+<line x1="56" x2="640" y1="{{gl.y}}" y2="{{gl.y}}" stroke="#F3EDE3" stroke-width="1"></line>
+<text x="48" y="{{gl.ty}}" text-anchor="end" font-size="11" fill="#3D3833" font-family="Montserrat, sans-serif">{{gl.label}}</text>
+</sc-for>
+<sc-for list="{{ticks}}" as="tk" hint-placeholder-count="7">
+<text x="{{tk.x}}" y="222" text-anchor="middle" font-size="11" fill="#3D3833" font-family="Montserrat, sans-serif">{{tk.label}}</text>
+</sc-for>
+<line x1="{{hx}}" x2="{{hx}}" y1="14" y2="200" stroke="#7A726A" stroke-width="1" stroke-dasharray="3 3"></line>
+<polyline points="{{sepPts}}" fill="none" stroke="#A8916D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+<polyline points="{{octPts}}" fill="none" stroke="#111111" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+<circle cx="{{octEnd.x}}" cy="{{octEnd.y}}" r="5" fill="#B81D23" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="{{octEnd.lx}}" y="{{octEnd.ly}}" font-size="12" font-weight="700" fill="#111111" font-family="Montserrat, sans-serif">Oct. $ 8,4 M</text>
+<text x="636" y="{{sepEndY}}" text-anchor="end" font-size="12" font-weight="600" fill="#3D3833" font-family="Montserrat, sans-serif">Sep. $ 24,4 M</text>
+<sc-for list="{{hits}}" as="hh" hint-placeholder-count="30">
+<rect x="{{hh.x}}" y="10" width="{{hh.w}}" height="195" fill="transparent" onMouseEnter="{{hh.enter}}"></rect>
+</sc-for>
+</svg>
+</section>
+
+<section class="card" aria-label="Más vendidos" style="flex: 1 1 340px">
+<div class="dl-overline">Octubre · por facturación</div>
+<h2 class="ttl">Más vendidos</h2>
+<span class="dl-brandline"></span>
+<ol style="list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+<sc-for list="{{top}}" as="p" hint-placeholder-count="5">
+<li style="display: flex; flex-direction: column; gap: 6px" title="{{p.tip}}">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 13px"><span style="font-weight: 600">{{p.name}}</span><span class="num" style="font-weight: 600">{{p.amount}}</span></div>
+<div style="height: 8px; background: #F3EDE3; border-radius: 2px"><div style="{{p.bar}}"></div></div>
+<div class="muted" style="font-size: 12px">{{p.meta}}</div>
+</li>
+</sc-for>
+</ol>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 3 1 600px; min-width: 0">
+<x-import component-from-global-scope="Dalama.DataTable" overline="Ventas" title="Presupuestos sin respuesta" caption="Presupuestos sin respuesta" columns="{{cols}}" rows="{{pend}}" row-actions="{{pendActions}}" pagination="{{false}}"></x-import>
+</div>
+<aside style="flex: 2 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="card" aria-label="Entregas de hoy">
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start">
+<div><div class="dl-overline">Reparto</div><h2 class="ttl">Entregas de hoy</h2><span class="dl-brandline"></span></div>
+<a href="EntregasMovil.dc.html" style="font-size: 13px; font-weight: 600">1 de 6 entregadas</a>
+</div>
+<ul style="list-style: none; margin: 12px 0 0; padding: 0">
+<sc-for list="{{deliv}}" as="d" hint-placeholder-count="6">
+<li class="row">
+<span class="num" style="font-size: 13px; font-weight: 700; width: 44px; flex: none">{{d.h}}</span>
+<div style="flex: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">{{d.c}}</div><div class="muted" style="font-size: 12px">{{d.m}}</div></div>
+<span class="{{d.cls}}"><x-import component-from-global-scope="Dalama.Icon" name="{{d.icon}}" size="{{14}}"></x-import>{{d.s}}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+<section class="card" aria-label="Stock bajo">
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start">
+<div><div class="dl-overline">Depósito</div><h2 class="ttl">Stock bajo</h2><span class="dl-brandline"></span></div>
+<a href="Stock.dc.html" style="font-size: 13px; font-weight: 600">Ver stock</a>
+</div>
+<ul style="list-style: none; margin: 12px 0 16px; padding: 0">
+<sc-for list="{{low}}" as="s" hint-placeholder-count="5">
+<li class="row">
+<div style="flex: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">{{s.n}}</div><div class="muted num" style="font-size: 12px">{{s.code}} · {{s.q}} de mín. {{s.min}}</div></div>
+<x-import component-from-global-scope="Dalama.StatusBadge" status="stock-bajo">{{s.label}}</x-import>
+</li>
+</sc-for>
+</ul>
+<a href="Compras.dc.html" class="dl-btn dl-btn-secondary dl-btn-m" style="width: 100%">Generar orden de compra sugerida</a>
+</section>
+</aside>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function ars(n){return '$ '+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function el(){return window.React.createElement.apply(null,arguments);}
+class Component extends DCLogic {
+  renderVals() {
+    const DS=window.Dalama||{};
+    const X=(d)=>56+(d-1)/30*580, Y=(v)=>200-v/26000000*186;
+    const sep=[],oct=[];let s=0,o=0;
+    for(let d=1;d<=30;d++){s+=[0,1,1,1,1,1,.4][(1+d)%7];sep.push(s);}
+    for(let d=1;d<=9;d++){o+=[0,1,1,1,1,1,.4][(3+d)%7];oct.push(o);}
+    const sepV=sep.map(v=>v/s*24380900), octV=oct.map(v=>v/o*8426750);
+    const hd=this.state&&this.state.hd?this.state.hd:9;
+    const hits=[];for(let d=1;d<=30;d++){hits.push({x:(X(d)-9.6).toFixed(1),w:19.3,enter:()=>this.setState({hd:d})});}
+    const ex=X(9),ey=Y(octV[8]);
+    const top=[['Burlete EPDM 6 mm · rollo 50 m',1625400,'86 rollos · BUR-6MM-R'],['Bisagra 3 agujas aluminio negra',1174200,'412 u. · BIS-3A-NG'],['Rueda doble regulable Herrero (par)',821100,'138 pares · ROD-HR-DOB'],['Cerradura embutir corrediza 1 punto',724200,'51 u. · CER-EMC-01'],['Manija doble balancín Módena blanca',701520,'74 u. · MAN-DBM-BL']]
+      .map(t=>({name:t[0],amount:ars(t[1]),meta:t[2],tip:t[0]+': '+ars(t[1]),bar:'height: 8px; border-radius: 2px; background: #111111; width: '+(t[1]/1625400*100).toFixed(1)+'%'}));
+    const cols=[
+      {key:'n',label:'N.°',render:r=>el('strong',null,r.n)},
+      {key:'c',label:'Cliente',render:r=>el('span',null,r.c,el('span',{className:'dl-sub'},r.t))},
+      {key:'age',label:'Enviado'},
+      {key:'total',label:'Total',align:'right'},
+      {key:'s',label:'Estado',render:r=>DS.StatusBadge?el(DS.StatusBadge,{status:r.s},r.sl):r.sl}
+    ];
+    const pend=[['P-0981','Carpintería Rossi','Carpintero',412380,'Hace 6 días','vencido','Vence mañana'],['P-0975','Juan Pérez','Particular',96400,'Hace 5 días','vencido','Vence el 11/10'],['P-0990','Aluminios Mendoza Hnos.','Aberturista',1238900,'Hace 3 días','enviado','Enviado'],['P-0994','Aberturas del Sur S.R.L.','Aberturista',608000.8,'Hace 2 días','enviado','Enviado'],['P-0997','Marina Gómez','Particular',64500,'Ayer','enviado','Enviado']]
+      .map(r=>({id:r[0],label:r[0],n:r[0],c:r[1],t:r[2],total:ars(r[3]),age:r[4],s:r[5],sl:r[6]}));
+    const deliv=[['09:30','Aberturas del Sur S.R.L.','Camioneta · Lomas de Zamora','Entregado','dl-badge dl-badge-success','check'],['10:45','Carpintería Rossi','Camioneta · Temperley','Listo','dl-badge dl-badge-neutral','package'],['12:00','Aluminios Mendoza Hnos.','Vía Cargo · despacho a Mendoza','En preparación','dl-badge dl-badge-warning','clock'],['14:30','Taller Ferreyra','Camioneta · Berazategui','Listo','dl-badge dl-badge-neutral','package'],['15:00','Marina Gómez','Andreani · N.° 360002148735','Despachado','dl-badge dl-badge-info','send'],['16:00','Juan Pérez','Retiro en local','Confirmado','dl-badge dl-badge-neutral','check']]
+      .map(r=>({h:r[0],c:r[1],m:r[2],s:r[3],cls:r[4],icon:r[5]}));
+    const low=[['Cerradura embutir corrediza 1 punto','CER-EMC-01',4,20],['Felpa 7 × 5 mm gris · rollo','FEL-75-GR',0,10],['Rueda simple línea Módena (par)','ROD-MOD-SIM',12,40],['Manija simple Módena negra','MAN-MOD-NG',0,15]]
+      .map(r=>({n:r[0],code:r[1],q:r[2]+' u.',min:r[3]+' u.',label:r[2]===0?'Sin stock':'Stock bajo'}));
+    return {
+      nav: NAV, user: USER,
+      sepPts: sepV.map((v,i)=>X(i+1).toFixed(1)+','+Y(v).toFixed(1)).join(' '),
+      octPts: octV.map((v,i)=>X(i+1).toFixed(1)+','+Y(v).toFixed(1)).join(' '),
+      grid: [0,10000000,20000000].map(v=>({y:Y(v).toFixed(1),ty:(Y(v)+4).toFixed(1),label:v===0?'$ 0':'$ '+(v/1000000)+' M'})),
+      ticks: [1,5,10,15,20,25,30].map(d=>({x:X(d).toFixed(1),label:String(d)})),
+      hits, hx: X(hd).toFixed(1),
+      tip: 'Día '+hd+' · Octubre: '+(hd<=9?ars(Math.round(octV[hd-1])):'—')+' · Septiembre: '+ars(Math.round(sepV[hd-1])),
+      clearHover: ()=>this.setState({hd:null}),
+      octEnd: {x:ex.toFixed(1),y:ey.toFixed(1),lx:(ex+10).toFixed(1),ly:(ey-8).toFixed(1)},
+      sepEndY: (Y(sepV[29])-10).toFixed(1),
+      top, cols, pend, deliv, low,
+      pendActions: ()=>[{label:'Recordar por WhatsApp',icon:'send'},{label:'Ver',icon:'eye'}]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Emitir factura</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));padding:24px;min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tipo{flex:1 1 160px;display:flex;gap:12px;align-items:center;min-height:64px;padding:12px 14px;border:1px solid #7A726A;border-radius:4px;background:#FFFFFF;cursor:pointer;text-align:left;font-family:Montserrat,sans-serif;color:#111111}
+.tipo:hover{border-color:#111111}
+.tipo.on{border:2px solid #B81D23;background:#FDECEC}
+.tipo:disabled{cursor:not-allowed;background:#F2EFEB;border-color:#CFC9C2;color:#3D3833}
+.letter{width:36px;height:36px;border:2px solid currentColor;display:grid;place-items:center;font-weight:700;font-size:18px;flex:none}
+.kv dt{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#3D3833}
+.kv dd{margin:4px 0 0;font-size:14px;font-weight:600}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2); position: relative">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="facturacion" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Facturación · Pedido PED-0421" title="Emitir factura" notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+
+<x-import component-from-global-scope="Dalama.Alert" tone="success" title="Conectado con ARCA">Punto de venta 0003 (Web Services) · último autorizado FC A 0003-00002137 · certificado vigente hasta el 14/03/2027.</x-import>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 3 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="card" aria-label="Tipo de comprobante" style="display: flex; flex-direction: column; gap: 18px">
+<div><div class="dl-overline">Comprobante</div><h2 class="ttl">Tipo de comprobante</h2><span class="dl-brandline"></span></div>
+<div role="radiogroup" aria-label="Tipo de factura" style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" role="radio" aria-checked="{{aOn}}" class="{{tA}}" onClick="{{pickA}}"><span class="letter">A</span><span><span style="display: block; font-size: 14px; font-weight: 600">Factura A</span><span class="muted" style="display: block; font-size: 12px">Sugerida: cliente Resp. Inscripto</span></span></button>
+<button type="button" role="radio" aria-checked="{{bOn}}" class="{{tB}}" onClick="{{pickB}}"><span class="letter">B</span><span><span style="display: block; font-size: 14px; font-weight: 600">Factura B</span><span class="muted" style="display: block; font-size: 12px">Consumidor final o monotributo</span></span></button>
+<button type="button" role="radio" aria-checked="false" class="tipo" disabled="{{true}}"><span class="letter">C</span><span><span style="display: block; font-size: 14px; font-weight: 600">Factura C</span><span style="display: block; font-size: 12px">Solo emisores monotributistas</span></span></button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Punto de venta" options="{{pvs}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Fecha" default-value="09/10/2026"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Concepto" options="{{conceptos}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Condición de venta" options="{{condiciones}}" helper="Vence el 08/11/2026"></x-import>
+</div>
+</section>
+
+<section class="card" aria-label="Receptor">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: flex-start">
+<div><div class="dl-overline">Receptor</div><h2 class="ttl">Vidrios y Aberturas Castelli S.A.</h2><span class="dl-brandline"></span></div>
+<x-import component-from-global-scope="Dalama.StatusBadge" status="aceptado">Datos del padrón de ARCA</x-import>
+</div>
+<dl class="kv" style="margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px 24px">
+<div><dt>CUIT</dt><dd>30-70984512-3</dd></div>
+<div><dt>Condición frente al IVA</dt><dd>IVA Responsable Inscripto</dd></div>
+<div><dt>Domicilio fiscal</dt><dd>Av. Directorio 3120, CABA (C1406)</dd></div>
+<div><dt>Origen</dt><dd>PED-0421 · remito R 0002-00000876</dd></div>
+</dl>
+</section>
+
+<x-import component-from-global-scope="Dalama.DataTable" overline="Desde el pedido PED-0421" title="Detalle" caption="Detalle de la factura" columns="{{cols}}" rows="{{items}}" pagination="{{false}}"></x-import>
+
+<section class="card" aria-label="Totales" style="display: flex; justify-content: flex-end">
+<dl style="margin: 0; width: 100%; max-width: 360px; display: grid; grid-template-columns: 1fr auto; row-gap: 8px; column-gap: 16px; font-size: 14px">
+<dt class="muted">Neto gravado 21 %</dt><dd class="num" style="margin: 0; text-align: right">$ 535.880,00</dd>
+<dt class="muted">IVA 21 %</dt><dd class="num" style="margin: 0; text-align: right">$ 112.534,80</dd>
+<dt style="font-weight: 600; font-size: 16px; padding-top: 10px; border-top: 1px solid #111111">Total</dt><dd class="num" style="margin: 0; text-align: right; font-weight: 700; font-size: 24px; line-height: 32px; padding-top: 6px; border-top: 1px solid #111111">$ 648.414,80</dd>
+</dl>
+</section>
+</div>
+
+<aside style="flex: 2 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{isDraft}}" hint-placeholder-val="{{true}}">
+<section class="card" aria-label="Emitir" style="display: flex; flex-direction: column; gap: 14px">
+<div><div class="dl-overline">ARCA</div><h2 class="ttl">Solicitar CAE</h2><span class="dl-brandline"></span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px">Se pide el CAE para la <strong>Factura {{letter}} 0003-00002138</strong> por <strong class="num">$ 648.414,80</strong>.</p>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="receipt" loading="{{loading}}" on-click="{{emit}}">{{emitLabel}}</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="tertiary">Guardar como borrador</x-import>
+</section>
+</sc-if>
+
+<sc-if value="{{isOk}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-label="Factura emitida" style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Dalama.Alert" tone="success" title="Factura {{letter}} 0003-00002138 autorizada">Quedó imputada en la cuenta corriente del cliente.</x-import>
+<dl class="kv" style="margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; background: #F3EDE3; border-radius: 4px">
+<div><dt>CAE</dt><dd class="num" style="font-size: 16px">76412893054127</dd></div>
+<div><dt>Vencimiento CAE</dt><dd class="num" style="font-size: 16px">19/10/2026</dd></div>
+</dl>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="send">Enviar por WhatsApp</x-import>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="send">Enviar por email</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="download">Descargar PDF</x-import>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{isErr}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-label="Error al emitir" style="display: flex; flex-direction: column; gap: 14px">
+<x-import component-from-global-scope="Dalama.Alert" tone="error" title="La factura no se emitió">ARCA no respondió a tiempo. No se generó número ni CAE, así que no hay nada que anular. El pedido sigue pendiente de facturar.</x-import>
+<div class="muted num" style="font-size: 12px; padding: 8px 12px; background: #F2EFEB; border-radius: 4px">WSFE · FECAESolicitar · sin respuesta en 30 s · 11:24:08</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="receipt" on-click="{{retry}}">Reintentar</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary">Guardar borrador</x-import>
+</div>
+<div class="muted" style="font-size: 12px">Si sigue fallando, el sistema reintenta cada 5 minutos y te avisa.</div>
+</section>
+</sc-if>
+
+<section aria-label="Vista previa del comprobante" style="background: #FFFFFF; border: 1px solid #CFC9C2; border-radius: 4px; padding: 24px; box-shadow: 0 12px 32px rgba(74,31,31,.14), 0 2px 8px rgba(74,31,31,.08)">
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #111111">
+<img src="/_blob/ef0b3c56100ba34708759beee5b6dd12" alt="DALAMA · Accesorios para aberturas" style="width: 150px; height: auto; display: block">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="width: 40px; height: 40px; border: 2px solid #111111; display: grid; place-items: center; font-size: 20px; font-weight: 700">{{letter}}</span><span style="font-size: 9px; color: #3D3833">COD. {{code}}</span></div>
+<div style="text-align: right"><div style="font-size: 12px; font-weight: 700; letter-spacing: .12em">FACTURA</div><div class="num" style="font-size: 11px; margin-top: 3px">N.° 0003-00002138</div><div class="muted num" style="font-size: 11px">09/10/2026</div></div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 10px; line-height: 15px; padding: 12px 0; border-bottom: 1px solid #F3EDE3; color: #3D3833">
+<div><strong style="color: #111111">[RAZÓN SOCIAL DE DALAMA]</strong><br>CUIT [CUIT] · IVA Resp. Inscripto<br>[DOMICILIO COMERCIAL]</div>
+<div><strong style="color: #111111">Vidrios y Aberturas Castelli S.A.</strong><br>CUIT 30-70984512-3 · IVA Resp. Inscripto<br>Cta. cte. 30 días</div>
+</div>
+<div style="font-size: 10px; padding: 8px 0">
+<sc-for list="{{items}}" as="i" hint-placeholder-count="5">
+<div style="display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px solid #FAF7F2"><span>{{i.q}} × {{i.desc}}</span><span class="num">{{i.s}}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 16px; font-size: 11px; padding-top: 6px; align-items: baseline"><span class="muted num">Neto $ 535.880,00 · IVA $ 112.534,80</span><strong class="num" style="font-size: 13px">Total $ 648.414,80</strong></div>
+<div style="display: flex; gap: 12px; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid #F3EDE3">
+<div style="{{qrStyle}}" aria-hidden="true"></div>
+<div style="font-size: 10px; line-height: 16px">{{caeLine}}<br><span class="muted">Comprobante autorizado por ARCA</span></div>
+<span style="width: 24px; height: 3px; background: #E11B22; margin-left: auto; align-self: flex-end"></span>
+</div>
+</section>
+</aside>
+</div>
+</div>
+</main>
+<sc-if value="{{isOk}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 24px; bottom: 24px">
+<x-import component-from-global-scope="Dalama.Toast" tone="success" title="Factura {{letter}} 0003-00002138 emitida" on-close="{{noop}}">CAE 76412893054127 · vence el 19/10/2026.</x-import>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"escenario":{"editor":"enum","options":["exito","error"],"default":"exito"},"$preview":{"width":1440,"height":1300}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function ars(n){return '$ '+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function el(){return window.React.createElement.apply(null,arguments);}
+const ITEMS=[['RIE-HR-6M','Riel inferior línea Herrero 6 m',12,11840],['ROD-HR-DOB','Rueda doble regulable línea Herrero (par)',24,5236],['CER-EMC-02','Cerradura embutir corrediza 2 puntos',8,19712],['FEL-75-GR','Felpa 7 × 5 mm gris · rollo 250 m',3,22880],['ESC-AL-20','Escuadra de alineación 20 mm · bolsa x100',5,8360]];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={st:'borrador',t:'A',loading:false};}
+  renderVals() {
+    const st=this.state;const esc=this.props.escenario ?? 'exito';
+    const ok=st.st==='emitida';
+    const go=(target)=>{this.setState({loading:true});setTimeout(()=>this.setState({loading:false,st:target}),900);};
+    return {
+      nav: NAV, user: USER,
+      items: ITEMS.map(i=>({id:i[0],code:i[0],desc:i[1],q:i[2],p:ars(i[3]),s:ars(i[2]*i[3])})),
+      cols: [{key:'code',label:'Código'},{key:'desc',label:'Descripción',render:r=>el('strong',null,r.desc)},{key:'q',label:'Cant.',align:'right'},{key:'p',label:'P. unit. neto',align:'right'},{key:'iva',label:'IVA',align:'right',render:()=>'21 %'},{key:'s',label:'Subtotal',align:'right',render:r=>el('strong',null,r.s)}],
+      pvs: ['0003 · Web Services','0001 · Talonario manual'], conceptos: ['Productos','Servicios','Productos y servicios'], condiciones: ['Cta. cte. 30 días','Contado'],
+      tA: st.t==='A'?'tipo on':'tipo', tB: st.t==='B'?'tipo on':'tipo', aOn: st.t==='A'?'true':'false', bOn: st.t==='B'?'true':'false',
+      pickA: ()=>this.setState({t:'A'}), pickB: ()=>this.setState({t:'B'}),
+      letter: st.t, code: st.t==='A'?'01':'06',
+      isDraft: st.st==='borrador', isOk: ok, isErr: st.st==='error',
+      loading: st.loading, emitLabel: st.loading?'Pidiendo CAE a ARCA…':'Emitir factura',
+      emit: ()=>go(esc==='error'?'error':'emitida'), retry: ()=>{this.setState({st:'borrador'});go('emitida');},
+      noop: ()=>{},
+      caeLine: ok?'CAE N.° 76412893054127 · Vto. CAE 19/10/2026':'CAE: se asigna al emitir',
+      qrStyle: 'width: 56px; height: 56px; flex: none; border: 1px solid #CFC9C2; background: '+(ok?'repeating-linear-gradient(90deg, #111111 0 3px, #FFFFFF 3px 6px)':'#F2EFEB')
+    };
+  }
+}
+</script>
+</body>
+</html>

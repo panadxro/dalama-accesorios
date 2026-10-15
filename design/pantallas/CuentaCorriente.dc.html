@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Cuenta corriente</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));padding:24px;min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.imp{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px 12px;border:1px solid #CFC9C2;border-radius:4px;background:#FFFFFF;cursor:pointer;text-align:left;font-family:Montserrat,sans-serif;color:#111111}
+.imp:hover{border-color:#3D3833}
+.ta{width:100%;min-height:170px;padding:10px 12px;border:1px solid #7A726A;border-radius:4px;font:400 14px/20px Montserrat,sans-serif;color:#111111;resize:vertical;box-sizing:border-box}
+.ta:focus{outline:none;border-color:#B81D23;box-shadow:0 0 0 3px #FDECEC}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2); position: relative">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="cuentas" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Cuentas corrientes · Cliente N.° 0142" title="Aberturas del Sur S.R.L." notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<span class="dl-badge dl-badge-neutral">Aberturista</span><span class="dl-badge dl-badge-neutral">CUIT 30-71548293-6</span><span class="dl-badge dl-badge-neutral">Responsable Inscripto</span><span class="dl-badge dl-badge-neutral">Lista Aberturistas −12 %</span><span class="dl-badge dl-badge-neutral">Cta. cte. 30 días</span>
+<x-import component-from-global-scope="Dalama.StatusBadge" status="deuda-vencida"></x-import>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<x-import component-from-global-scope="Dalama.Button" variant="tertiary" icon="download">Estado de cuenta PDF</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="send">Recordar deuda</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="wallet" on-click="{{askConfirm}}">Registrar cobro</x-import>
+</div>
+</div>
+
+<section aria-label="Resumen de cuenta" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.KpiCard" label="Saldo total" value="$ 1.684.520" icon="wallet" trend="up" positive="{{false}}" delta="586.320" delta-label="por la factura del 03/10"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Vencido" value="$ 612.300" icon="alert-triangle" trend="up" positive="{{false}}" delta="2 facturas" delta-label="la más antigua, 36 días"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Límite de crédito usado" value="56 %" icon="chart" trend="flat" delta="$ 1.315.480" delta-label="disponible de $ 3.000.000"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Paga en promedio" value="34 días" icon="clock" trend="up" positive="{{false}}" delta="4 días" delta-label="más que el plazo pactado"></x-import>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 3 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="card" aria-label="Antigüedad de la deuda">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px">
+<div><div class="dl-overline">Cobranzas</div><h2 class="ttl">Antigüedad de la deuda</h2><span class="dl-brandline"></span></div>
+<span class="muted" style="font-size: 13px">Días desde la emisión del comprobante</span>
+</div>
+<div role="img" aria-label="0 a 30 días 1.072.220 pesos; 31 a 60 días 418.900; 61 a 90 días 193.400; más de 90 días 0" style="display: flex; gap: 2px; height: 16px; margin-top: 20px; border-radius: 2px; overflow: hidden">
+<div title="0–30 días: $ 1.072.220,00" style="flex: 1072220; background: #3D3833"></div>
+<div title="31–60 días: $ 418.900,00" style="flex: 418900; background: #C7841A"></div>
+<div title="61–90 días: $ 193.400,00" style="flex: 193400; background: #B81D23"></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 16px">
+<div><div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600"><span style="width: 10px; height: 10px; background: #3D3833"></span>0 – 30 días</div><div class="num" style="font-size: 16px; font-weight: 600; margin-top: 4px">$ 1.072.220,00</div><div class="muted" style="font-size: 12px">A vencer</div></div>
+<div><div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600"><span style="width: 10px; height: 10px; background: #C7841A"></span>31 – 60 días</div><div class="num" style="font-size: 16px; font-weight: 600; margin-top: 4px">$ 418.900,00</div><div style="font-size: 12px; color: #8A5A0E; font-weight: 600">Vencida</div></div>
+<div><div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600"><span style="width: 10px; height: 10px; background: #B81D23"></span>61 – 90 días</div><div class="num" style="font-size: 16px; font-weight: 600; margin-top: 4px">$ 193.400,00</div><div style="font-size: 12px; color: #B81D23; font-weight: 600">Vencida · crítica</div></div>
+<div><div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600"><span style="width: 10px; height: 10px; border: 1.5px solid #3D3833"></span>Más de 90 días</div><div class="num" style="font-size: 16px; font-weight: 600; margin-top: 4px">$ 0,00</div><div class="muted" style="font-size: 12px">Sin deuda</div></div>
+</div>
+</section>
+
+<x-import component-from-global-scope="Dalama.Tabs" label="Historial del cliente" default-value="mov" tabs="{{histTabs}}"></x-import>
+<x-import component-from-global-scope="Dalama.DataTable" overline="Del 01/08/2026 al 09/10/2026" title="Movimientos" caption="Movimientos de la cuenta corriente" columns="{{movCols}}" rows="{{movs}}" pagination="{{false}}"></x-import>
+<x-import component-from-global-scope="Dalama.DataTable" overline="Cartera" title="Cheques del cliente" caption="Cheques del cliente" columns="{{chqCols}}" rows="{{cheques}}" pagination="{{false}}"></x-import>
+</div>
+
+<aside style="flex: 2 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section class="card" aria-label="Registrar cobro" style="display: flex; flex-direction: column; gap: 16px">
+<div><div class="dl-overline">Cobranzas</div><h2 class="ttl">Registrar cobro</h2><span class="dl-brandline"></span></div>
+<x-import component-from-global-scope="Dalama.Tabs" label="Medio de pago" value="{{method}}" on-change="{{setMethod}}" tabs="{{methods}}"></x-import>
+<sc-if value="{{isCheque}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Banco" options="{{bancos}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="N.° de cheque" default-value="48213077"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Fecha de cobro" default-value="20/10/2026" helper="Cheque diferido"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="money" label="Importe" default-value="{{612300}}"></x-import>
+</div>
+</sc-if>
+<sc-if value="{{isTransfer}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Cuenta destino" options="{{cuentas}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="N.° de operación" placeholder="Del comprobante"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Fecha" default-value="09/10/2026"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="money" label="Importe" default-value="{{612300}}"></x-import>
+</div>
+</sc-if>
+<sc-if value="{{isCash}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Fecha" default-value="09/10/2026"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="money" label="Importe" default-value="{{612300}}"></x-import>
+</div>
+</sc-if>
+<sc-if value="{{isCard}}" hint-placeholder-val="{{false}}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Tarjeta" options="{{tarjetas}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Cuotas" options="{{cuotas}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Lote / cupón" placeholder="Del ticket del posnet"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="money" label="Importe" default-value="{{612300}}"></x-import>
+</div>
+</sc-if>
+<div>
+<div class="dl-label" style="margin-bottom: 8px">Imputar a comprobantes</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{imps}}" as="ip" hint-placeholder-count="4">
+<button type="button" class="imp" onClick="{{ip.toggle}}" aria-pressed="{{ip.on}}">
+<span style="{{ip.box}}"><x-import component-from-global-scope="Dalama.Icon" name="check" size="{{14}}" stroke-width="{{2.5}}"></x-import></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 13px; font-weight: 600">{{ip.c}}</span><span class="muted" style="display: block; font-size: 12px">{{ip.d}}</span></span>
+<span class="num" style="font-size: 13px; font-weight: 600">{{ip.amt}}</span>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 12px"><span class="muted">Imputado</span><span class="num" style="font-weight: 700">{{impTotal}}</span></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 4px"><span class="muted">Saldo después del cobro</span><span class="num" style="font-weight: 700">{{after}}</span></div>
+</div>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="check" on-click="{{askConfirm}}" style="display: block">Registrar cobro y emitir recibo</x-import>
+</section>
+
+<section class="card" aria-label="Recordatorio de deuda" style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start"><div><div class="dl-overline">WhatsApp</div><h2 class="ttl">Recordatorio de deuda</h2><span class="dl-brandline"></span></div></div>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Plantilla" options="{{plantillas}}"></x-import>
+<div class="dl-field"><label class="dl-label" for="msg-deuda">Mensaje</label>
+<textarea id="msg-deuda" class="ta">Hola Gustavo, ¿cómo estás? Te escribimos de DALAMA.
+Según nuestros registros hay 2 facturas vencidas por $ 612.300,00 (FC A 0003-00001842 y 0003-00001958).
+¿Nos confirmás cuándo podés hacer el pago? Podés transferir al alias DALAMA.ACCESORIOS. ¡Gracias!</textarea></div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: #F3EDE3; border-radius: 4px">
+<span style="font-size: 13px; line-height: 18px"><strong>Envío automático</strong><br><span class="muted">Cada 7 días mientras haya deuda vencida</span></span>
+<button type="button" role="switch" aria-checked="{{auto}}" aria-label="Envío automático" onClick="{{toggleAuto}}" style="{{autoTrack}}"><span style="{{autoKnob}}"></span></button>
+</div>
+<div class="muted" style="font-size: 12px">Último recordatorio: 02/10/2026 · leído</div>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="send">Enviar ahora a +54 9 11 4471-2093</x-import>
+</section>
+</aside>
+</div>
+</div>
+</main>
+<x-import component-from-global-scope="Dalama.ConfirmModal" open="{{confirmOpen}}" title="¿Registrar el cobro de {{impTotal}}?" confirm-label="Registrar cobro" cancel-label="Volver" on-confirm="{{doConfirm}}" on-cancel="{{cancelConfirm}}">Se emite el recibo 0003-00000431 y el saldo de Aberturas del Sur S.R.L. pasa a {{after}}.</x-import>
+<sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 24px; bottom: 24px">
+<x-import component-from-global-scope="Dalama.Toast" tone="success" title="Cobro registrado" on-close="{{closeToast}}">Recibo 0003-00000431 por {{impTotal}}. Saldo actual: {{after}}.</x-import>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function ars(n){return '$ '+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function el(){return window.React.createElement.apply(null,arguments);}
+const MOVS=[
+  ['01/08/2026','Saldo inicial','','',0,0,null,''],
+  ['04/08/2026','Factura A 0003-00001842','PED-0352 · bisagras y rieles','03/09/2026',193400,0,'deuda-vencida','Vencida · 36 días'],
+  ['18/08/2026','Factura A 0003-00001901','PED-0371 · burletes y felpas','17/09/2026',356800,0,'pagado','Cancelada'],
+  ['25/08/2026','Recibo 0003-00000412','Cheque Banco Nación N.° 00739214 · cobro 24/09','',0,356800,null,''],
+  ['29/08/2026','Factura A 0003-00001958','PED-0384 · cerraduras y manijas','28/09/2026',418900,0,'deuda-vencida','Vencida · 11 días'],
+  ['12/09/2026','Factura A 0003-00002034','PED-0402 · ruedas y escuadras','12/10/2026',524600,0,'vencido','Vence en 3 días'],
+  ['19/09/2026','Nota de crédito A 0003-00000087','Devolución de 3 manijas Módena · aplica a FC 2034','',0,38700,null,''],
+  ['03/10/2026','Factura A 0003-00002117','PED-0418 · pedido mensual','02/11/2026',586320,0,null,'A vencer']
+];
+const IMPS=[['1842','FC A 0003-00001842','Vencida · 36 días',193400],['1958','FC A 0003-00001958','Vencida · 11 días',418900],['2034','FC A 0003-00002034','Saldo tras NC · vence 12/10',485900],['2117','FC A 0003-00002117','Vence 02/11',586320]];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={m:'cheque',imp:{'1842':true,'1958':true},auto:true,confirm:false,done:false};}
+  renderVals() {
+    const st=this.state;const DS=window.Dalama||{};
+    const badge=(s,t)=>s&&DS.StatusBadge?el(DS.StatusBadge,{status:s},t):el('span',{className:'muted',style:{fontSize:13}},t);
+    let saldo=0;
+    const movs=MOVS.map((r,i)=>{saldo+=r[4]-r[5];return {id:'m'+i,f:r[0],c:r[1],d:r[2],v:r[3]||'—',debe:r[4]?ars(r[4]):'',haber:r[5]?ars(r[5]):'',saldo:ars(saldo),s:r[6],e:r[7]};});
+    let tot=0;
+    const imps=IMPS.map(i=>{const on=!!st.imp[i[0]];if(on)tot+=i[3];return {c:i[1],d:i[2],amt:ars(i[3]),on:on?'true':'false',
+      box:'width: 22px; height: 22px; border-radius: 4px; flex: none; display: grid; place-items: center; color: #FFFFFF; '+(on?'background: #111111; border: 1.5px solid #111111':'background: #FFFFFF; border: 1.5px solid #7A726A; color: #FFFFFF'),
+      toggle:()=>this.setState({imp:Object.assign({},st.imp,{[i[0]]:!on})})};});
+    return {
+      nav: NAV, user: USER, movs,
+      histTabs: [{id:'mov',label:'Movimientos'},{id:'pres',label:'Presupuestos',count:9},{id:'ped',label:'Pedidos',count:14},{id:'fac',label:'Facturas',count:12},{id:'pag',label:'Pagos',count:8},{id:'che',label:'Cheques',count:3}],
+      movCols: [
+        {key:'f',label:'Fecha'},
+        {key:'c',label:'Comprobante',render:r=>el('span',null,el('strong',null,r.c),r.d?el('span',{className:'dl-sub'},r.d):null)},
+        {key:'v',label:'Vence'},
+        {key:'debe',label:'Debe',align:'right'},
+        {key:'haber',label:'Haber',align:'right'},
+        {key:'saldo',label:'Saldo',align:'right',render:r=>el('strong',null,r.saldo)},
+        {key:'e',label:'Estado',render:r=>r.e?badge(r.s,r.e):null}
+      ],
+      chqCols: [{key:'b',label:'Banco'},{key:'n',label:'N.° de cheque'},{key:'f',label:'Fecha de cobro'},{key:'i',label:'Importe',align:'right'},{key:'s',label:'Estado',render:r=>badge('pagado',r.s)}],
+      cheques: [{id:'c1',b:'Banco de la Nación Argentina',n:'00739214',f:'24/09/2026',i:'$ 356.800,00',s:'Depositado'},{id:'c2',b:'Banco Provincia · e-cheq',n:'11520874',f:'30/07/2026',i:'$ 250.000,00',s:'Acreditado'},{id:'c3',b:'Banco Galicia',n:'40318825',f:'15/06/2026',i:'$ 198.450,00',s:'Acreditado'}],
+      method: st.m, setMethod: (v)=>this.setState({m:v}),
+      methods: [{id:'efectivo',label:'Efectivo'},{id:'transferencia',label:'Transferencia'},{id:'cheque',label:'Cheque'},{id:'tarjeta',label:'Tarjeta'}],
+      isCheque: st.m==='cheque', isTransfer: st.m==='transferencia', isCash: st.m==='efectivo', isCard: st.m==='tarjeta',
+      bancos: ['Banco Galicia','Banco de la Nación Argentina','Banco Provincia','Banco Santander','BBVA','Banco Macro'],
+      cuentas: ['Galicia · cuenta corriente en pesos','Mercado Pago'],
+      tarjetas: ['Visa débito','Visa crédito','Mastercard crédito','Cabal débito'],
+      cuotas: ['1 cuota','3 cuotas','6 cuotas'],
+      plantillas: ['Deuda vencida · tono amable','Deuda vencida · segundo aviso','Aviso de vencimiento próximo'],
+      imps, impTotal: ars(tot), after: ars(1684520-tot),
+      auto: st.auto?'true':'false', toggleAuto: ()=>this.setState({auto:!st.auto}),
+      autoTrack: 'width: 48px; height: 28px; border-radius: 4px; border: 0; cursor: pointer; position: relative; flex: none; background: '+(st.auto?'#B81D23':'#7A726A'),
+      autoKnob: 'position: absolute; top: 4px; width: 20px; height: 20px; border-radius: 2px; background: #FFFFFF; left: '+(st.auto?'24px':'4px'),
+      confirmOpen: st.confirm, askConfirm: ()=>this.setState({confirm:true}), cancelConfirm: ()=>this.setState({confirm:false}),
+      doConfirm: ()=>this.setState({confirm:false,done:true}),
+      done: st.done, closeToast: ()=>this.setState({done:false})
+    };
+  }
+}
+</script>
+</body>
+</html>

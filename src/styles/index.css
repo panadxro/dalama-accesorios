@@ -1,0 +1,27 @@
+@import './tokens.css';
+@import './dalama.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Montserrat, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Foco visible por defecto en cualquier control que no tenga uno propio */
+  :focus-visible { outline: 2px solid var(--foco); outline-offset: 2px; }
+  ::selection { background: var(--arena-200); }
+}
+
+@layer utilities {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}

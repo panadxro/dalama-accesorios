@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Bandeja de WhatsApp</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.conv{display:flex;gap:12px;width:100%;padding:14px 16px;border:0;border-bottom:1px solid #F3EDE3;background:#FFFFFF;text-align:left;cursor:pointer;font-family:Montserrat,sans-serif;color:#111111;position:relative}
+.conv:hover{background:#FAF7F2}
+.conv.sel{background:#F3EDE3}
+.conv.sel::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;background:#E11B22}
+.av{width:40px;height:40px;border-radius:4px;flex:none;display:grid;place-items:center;font-size:13px;font-weight:700;background:#D1C0A6;color:#111111}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:10px 12px;border:1px solid #7A726A;border-radius:4px;background:#FFFFFF;cursor:pointer;text-align:left;font-family:Montserrat,sans-serif;color:#111111}
+.opt:hover{border-color:#B81D23;background:#FDECEC}
+.step{display:flex;align-items:center;gap:4px;justify-content:center}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2); position: relative">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="bandeja" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Operación · Pedidos entrantes" title="Bandeja de WhatsApp" notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 24px 32px 40px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center">
+<x-import component-from-global-scope="Dalama.Tabs" label="Filtrar conversaciones" default-value="sin" tabs="{{tabs}}"></x-import>
+<span class="dl-badge dl-badge-success"><x-import component-from-global-scope="Dalama.Icon" name="check-circle" size="{{14}}"></x-import>WhatsApp Business vinculado</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<section class="card" aria-label="Conversaciones" style="flex: 1 1 290px; overflow: hidden; display: flex; flex-direction: column">
+<div style="padding: 16px">
+<x-import component-from-global-scope="Dalama.Input" kind="search" label="Buscar conversación" placeholder="Nombre o teléfono"></x-import>
+</div>
+<sc-for list="{{convs}}" as="c" hint-placeholder-count="6">
+<button type="button" class="{{c.cls}}">
+<span class="av" style="{{c.avs}}">{{c.ini}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.name}}</span><span class="muted num" style="font-size: 12px">{{c.time}}</span></span>
+<span class="muted" style="font-size: 12px">{{c.biz}} · {{c.type}}</span>
+<span style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.msg}}</span>
+<span style="margin-top: 2px"><span class="{{c.scls}}"><x-import component-from-global-scope="Dalama.Icon" name="{{c.icon}}" size="{{14}}"></x-import>{{c.status}}</span></span>
+</span>
+</button>
+</sc-for>
+</section>
+
+<section class="card" aria-label="Conversación con Carpintería Rossi" style="flex: 1.2 1 340px; display: flex; flex-direction: column; overflow: hidden">
+<div style="padding: 16px 20px; border-bottom: 1px solid #CFC9C2; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span class="av" style="background: #111111; color: #FFFFFF">MR</span>
+<div style="flex: 1; min-width: 0"><h2 class="ttl">Martín Rossi</h2><div class="muted" style="font-size: 13px">+54 9 11 5832-4417 · Carpintería Rossi</div></div>
+<a href="CuentaCorriente.dc.html" class="dl-btn dl-btn-secondary dl-btn-s">Ver ficha</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<span class="dl-badge dl-badge-neutral">Carpintero</span><span class="dl-badge dl-badge-neutral">Resp. Inscripto · CUIT 20-28456731-4</span><span class="dl-badge dl-badge-neutral">Lista Carpinteros −10 %</span>
+<x-import component-from-global-scope="Dalama.StatusBadge" status="pagado">Sin deuda</x-import>
+</div>
+</div>
+<div style="flex: 1; padding: 20px; background: #F3EDE3; display: flex; flex-direction: column; gap: 12px">
+<div style="align-self: center; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: #3D3833; background: #FFFFFF; padding: 2px 10px; border-radius: 4px">HOY</div>
+<div style="align-self: flex-start; max-width: 88%; background: #FFFFFF; border-radius: 0 6px 6px 6px; padding: 12px 14px; font-size: 14px; line-height: 21px; white-space: pre-line; box-shadow: 0 1px 2px rgba(74,31,31,.08)">Buen día Dario! Necesito para mañana si se puede:
+- 20 bisagras de 3 agujas negras
+- 10 manijas doble balancín módena blancas
+- 6 cerraduras de embutir para corrediza
+- 4 tiras de burlete de 6mm
+- 2 kits de ruedas para la línea herrero
+Y pasame precio de mosquitero enrollable 1,20 x 1,50. Gracias!
+<span class="muted" style="display: block; text-align: right; font-size: 12px; margin-top: 4px">09:42</span></div>
+<x-import component-from-global-scope="Dalama.Alert" tone="info" title="La IA leyó 6 pedidos en el mensaje">{{aiSummary}}</x-import>
+</div>
+<div style="padding: 12px 16px; border-top: 1px solid #CFC9C2; display: flex; gap: 8px; align-items: flex-end">
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Responder" placeholder="Escribir respuesta…" style="flex: 1"></x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="send" aria-label="Enviar respuesta"></x-import>
+</div>
+</section>
+
+<section class="card" aria-label="Presupuesto borrador generado por IA" style="flex: 2 1 560px; display: flex; flex-direction: column">
+<div style="padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: flex-start">
+<div>
+<div class="dl-overline">Generado por IA · revisar</div>
+<div style="display: flex; align-items: center; gap: 10px"><h2 class="ttl">Presupuesto P-0998</h2><x-import component-from-global-scope="Dalama.StatusBadge" status="borrador"></x-import></div>
+<span class="dl-brandline"></span>
+</div>
+<div class="muted" style="font-size: 13px; text-align: right; line-height: 18px">Precios lista general, sin IVA<br>Válido hasta el 16/10/2026</div>
+</div>
+
+<div class="dl-table-scroll">
+<table class="dl-table" style="min-width: 640px">
+<thead><tr><th>Producto detectado</th><th style="text-align: center">Cant.</th><th class="is-right">P. unit.</th><th class="is-right">Subtotal</th></tr></thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<tr style="{{r.trs}}">
+<td>
+<div class="muted" style="font-size: 12px; font-style: italic">“{{r.said}}”</div>
+<div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap"><span style="font-weight: 600">{{r.name}}</span><span class="{{r.ccls}}"><x-import component-from-global-scope="Dalama.Icon" name="{{r.cicon}}" size="{{14}}"></x-import>{{r.conf}}</span></div>
+<div class="muted" style="font-size: 12px; margin-top: 2px">{{r.code}}</div>
+</td>
+<td>
+<div class="step">
+<button type="button" class="dl-iconbtn" aria-label="Restar uno" onClick="{{r.dec}}" style="border: 1px solid #7A726A"><x-import component-from-global-scope="Dalama.Icon" name="minus" size="{{16}}"></x-import></button>
+<span class="num" style="min-width: 32px; text-align: center; font-weight: 700">{{r.qty}}</span>
+<button type="button" class="dl-iconbtn" aria-label="Sumar uno" onClick="{{r.inc}}" style="border: 1px solid #7A726A"><x-import component-from-global-scope="Dalama.Icon" name="plus" size="{{16}}"></x-import></button>
+</div>
+<div class="muted" style="font-size: 12px; text-align: center; margin-top: 2px">{{r.unit}}</div>
+</td>
+<td class="is-right">{{r.price}}</td>
+<td class="is-right" style="font-weight: 700">{{r.sub}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+
+<sc-if value="{{unresolved}}" hint-placeholder-val="{{true}}">
+<div style="margin: 16px 24px 0; display: flex; flex-direction: column; gap: 8px">
+<x-import component-from-global-scope="Dalama.Alert" tone="warning" title="No pudimos identificar un producto">El cliente pidió “2 kits de ruedas para la línea herrero”. Elegí cuál es.</x-import>
+<sc-for list="{{cands}}" as="o" hint-placeholder-count="3">
+<button type="button" class="opt" onClick="{{o.pick}}">
+<span style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #3D3833; flex: none"></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 14px; font-weight: 600">{{o.name}}</span><span class="muted" style="display: block; font-size: 12px">{{o.code}} · {{o.stock}}</span></span>
+<span class="num" style="font-weight: 600">{{o.price}}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 20px 24px; align-items: flex-start; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 12px; flex: 1 1 240px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Entrega" options="{{entregas}}" helper="Mañana 10/10 en la recorrida de la mañana."></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Nota para el cliente" default-value="El mosquitero se fabrica a medida: 72 h hábiles."></x-import>
+</div>
+<dl style="margin: 0; flex: 1 1 280px; max-width: 360px; display: grid; grid-template-columns: 1fr auto; row-gap: 8px; column-gap: 16px; font-size: 14px">
+<dt class="muted">Subtotal</dt><dd class="num" style="margin: 0; text-align: right">{{t.sub}}</dd>
+<dt class="muted">Desc. lista Carpinteros 10 %</dt><dd class="num" style="margin: 0; text-align: right">− {{t.disc}}</dd>
+<dt class="muted">Neto gravado</dt><dd class="num" style="margin: 0; text-align: right">{{t.net}}</dd>
+<dt class="muted">IVA 21 %</dt><dd class="num" style="margin: 0; text-align: right">{{t.iva}}</dd>
+<dt style="font-weight: 600; font-size: 16px; padding-top: 10px; border-top: 1px solid #111111">Total</dt><dd class="num" style="margin: 0; text-align: right; font-weight: 700; font-size: 24px; line-height: 32px; padding-top: 6px; border-top: 1px solid #111111">{{t.total}}</dd>
+</dl>
+</div>
+
+<div style="margin-top: auto; padding: 16px 24px; border-top: 1px solid #CFC9C2; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: #FAF7F2; border-radius: 0 0 6px 6px">
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="send" disabled="{{unresolved}}" on-click="{{send}}">Confirmar y enviar por WhatsApp</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="download">Enviar PDF por email</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="tertiary">Guardar borrador</x-import>
+<span class="muted" style="font-size: 13px; flex: 1 1 200px; text-align: right">{{footNote}}</span>
+</div>
+</section>
+</div>
+</div>
+</main>
+<sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 24px; bottom: 24px">
+<x-import component-from-global-scope="Dalama.Toast" tone="success" title="Presupuesto P-0998 enviado" on-close="{{closeToast}}">Carpintería Rossi lo recibió por WhatsApp · {{t.total}}.</x-import>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function ars(n){return '$ '+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+const OK=['dl-badge dl-badge-success','check'], WARN=['dl-badge dl-badge-warning','alert-triangle'], ERR=['dl-badge dl-badge-error','alert-circle'], INFO=['dl-badge dl-badge-info','info'];
+const BASE=[
+  {id:'bis',said:'20 bisagras de 3 agujas negras',name:'Bisagra 3 agujas aluminio negra · Herrero',code:'BIS-3A-NG · stock 340 u.',qty:20,unit:'unidades',price:2850,conf:'Alta coincidencia',b:OK},
+  {id:'man',said:'10 manijas doble balancín módena blancas',name:'Manija doble balancín Módena blanca',code:'MAN-DBM-BL · stock 58 u.',qty:10,unit:'unidades',price:9480,conf:'Alta coincidencia',b:OK},
+  {id:'cer',said:'6 cerraduras de embutir para corrediza',name:'Cerradura embutir corrediza 1 punto',code:'CER-EMC-01 · stock 4 u., faltan 2',qty:6,unit:'unidades',price:14200,conf:'Stock insuficiente',b:ERR},
+  {id:'bur',said:'4 tiras de burlete de 6mm',name:'Burlete EPDM 6 mm · rollo 50 m',code:'BUR-6MM-R · ¿“tiras” son rollos? Confirmar',qty:4,unit:'rollos',price:18900,conf:'Revisar unidad',b:WARN},
+  {id:'mos',said:'precio de mosquitero enrollable 1,20 x 1,50',name:'Mosquitero enrollable a medida 1,20 × 1,50 m',code:'MOS-ENR-MED · pidió solo precio',qty:1,unit:'unidad',price:64500,conf:'Consulta de precio',b:INFO}
+];
+const CANDS=[
+  {id:'sim',name:'Rueda simple con rulemán · línea Herrero (par)',code:'ROD-HR-SIM',stock:'Stock 85 pares',price:3600},
+  {id:'dob',name:'Rueda doble regulable · línea Herrero (par)',code:'ROD-HR-DOB',stock:'Stock 112 pares',price:5950},
+  {id:'mod',name:'Rueda regulable · línea Módena (par)',code:'ROD-MOD-RG',stock:'Stock 12 pares',price:7400}
+];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={pick:null,q:{},sent:false};}
+  renderVals() {
+    const st=this.state;const q=st.q;
+    const setQ=(id,v)=>this.setState({q:Object.assign({},q,{[id]:Math.max(0,v)})});
+    const list=BASE.slice();
+    if(st.pick){const c=CANDS.find(x=>x.id===st.pick);list.splice(4,0,{id:'rue',said:'2 kits de ruedas para la línea herrero',name:c.name,code:c.code+' · elegido por vos',qty:2,unit:'pares',price:c.price,conf:'Confirmado',b:OK});}
+    let sub=0;
+    const rows=list.map(r=>{const qty=q[r.id]!=null?q[r.id]:r.qty;const s=qty*r.price;sub+=s;return {said:r.said,name:r.name,code:r.code,qty,unit:r.unit,price:ars(r.price),sub:ars(s),conf:r.conf,ccls:r.b[0],cicon:r.b[1],trs:r.id==='rue'?'background: #EFF7F2':'',inc:()=>setQ(r.id,qty+1),dec:()=>setQ(r.id,qty-1)};});
+    const disc=Math.round(sub*10)/100, net=sub-disc, iva=Math.round(net*21)/100;
+    const un=!st.pick;
+    const convs=[
+      ['MR','Martín Rossi','Carpintería Rossi','09:42','Buen día Dario! Necesito para mañana si se puede…','Carpintero','Presupuesto IA listo','dl-badge dl-badge-info','file-text',true],
+      ['GI','Gabriela Ibáñez','Aberturas GI','09:18','Hola, ¿tienen burlete de 8 mm? Necesito 3 rollos','Aberturista','Sin procesar','dl-badge dl-badge-warning','clock',false],
+      ['RS','Roberto Sánchez','Cliente particular','08:55','Se me rompió la manija de la ventana, te mando foto','Particular','Foto adjunta','dl-badge dl-badge-warning','clock',false],
+      ['AM','Aluminios Mendoza Hnos.','Ezequiel Mendoza','Ayer 19:04','Confirmamos el P-0990, despachen por Vía Cargo','Aberturista','Aceptó presupuesto','dl-badge dl-badge-success','check',false],
+      ['TF','Taller Ferreyra','Hugo Ferreyra','Ayer 17:30','Pasame lista de precios de rieles','Carpintero','Sin procesar','dl-badge dl-badge-warning','clock',false],
+      ['+','+54 9 11 3847-2210','Contacto nuevo','Ayer 15:12','Hola, ¿venden por menor?','Sin clasificar','Cliente nuevo','dl-badge dl-badge-neutral','users',false]
+    ].map(c=>({ini:c[0],name:c[1],biz:c[2],time:c[3],msg:c[4],type:c[5],status:c[6],scls:c[7],icon:c[8],cls:c[9]?'conv sel':'conv',avs:c[9]?'background: #111111; color: #FFFFFF':''}));
+    return {
+      nav: NAV, user: USER, convs, rows, unresolved: un, sent: st.sent,
+      tabs: [{id:'sin',label:'Sin procesar',count:5},{id:'pres',label:'Con presupuesto',count:3},{id:'resp',label:'Respondidos'},{id:'todos',label:'Todos',count:14}],
+      entregas: ['Camioneta propia','Retiro en local','Andreani','Vía Cargo','Expreso'],
+      cands: CANDS.map(c=>({name:c.name,code:c.code,stock:c.stock,price:ars(c.price),pick:()=>this.setState({pick:c.id})})),
+      t: {sub:ars(sub),disc:ars(disc),net:ars(net),iva:ars(iva),total:ars(net+iva)},
+      aiSummary: un?'Identificó 5 productos: 2 necesitan revisión y 1 no lo pudo identificar.':'Todos los productos están identificados. Revisá cantidades y confirmá.',
+      footNote: un?'Elegí el producto sin identificar para poder enviar.':'Se envía el PDF con la marca DALAMA a +54 9 11 5832-4417.',
+      send: ()=>this.setState({sent:true}),
+      closeToast: ()=>this.setState({sent:false})
+    };
+  }
+}
+</script>
+</body>
+</html>

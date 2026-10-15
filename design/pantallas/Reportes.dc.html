@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Reportes</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));padding:24px;min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2)">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="reportes" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Análisis · Julio a septiembre de 2026" title="Reportes" notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+
+<section aria-label="Filtros" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between">
+<x-import component-from-global-scope="Dalama.Tabs" label="Período" default-value="tri" tabs="{{periods}}"></x-import>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Tipo de cliente" options="{{tipos}}" style="width: 200px"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Categoría" options="{{categorias}}" style="width: 200px"></x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="download">Exportar todo a Excel</x-import>
+</div>
+</section>
+
+<section aria-label="Indicadores" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.KpiCard" label="Ventas" value="$ 70.880.900" icon="chart" trend="up" delta="11,8 %" delta-label="vs. abril a junio"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Margen bruto" value="34,6 %" icon="tag" trend="down" delta="1,3 pts" delta-label="abril a junio: 35,9 %"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Ticket promedio" value="$ 312.250" icon="receipt" trend="up" delta="5,2 %" delta-label="227 comprobantes"></x-import>
+<x-import component-from-global-scope="Dalama.KpiCard" label="Clientes que compraron" value="118" icon="users" trend="up" delta="12 nuevos" delta-label="23 inactivos hace +60 días"></x-import>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="card" aria-label="Ventas por mes" style="flex: 3 1 520px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px"><div><div class="dl-overline">Facturado con IVA</div><h2 class="ttl">Ventas por mes</h2><span class="dl-brandline"></span></div><span class="num" style="font-size: 14px; font-weight: 600">{{tip}}</span></div>
+<div style="display: flex; gap: 12px; margin-top: 24px">
+<div class="muted num" style="display: flex; flex-direction: column; justify-content: space-between; height: 196px; margin-top: -6px; font-size: 12px; text-align: right; min-width: 52px"><span>$ 25 M</span><span>$ 12,5 M</span><span>$ 0</span></div>
+<div style="flex: 1; height: 184px; display: flex; gap: 16px; border-bottom: 1px solid #3D3833; position: relative" onMouseLeave="{{clear}}">
+<div style="position: absolute; left: 0; right: 0; top: 0; border-top: 1px solid #F3EDE3"></div>
+<div style="position: absolute; left: 0; right: 0; top: 92px; border-top: 1px solid #F3EDE3"></div>
+<sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+<div class="bar" onMouseEnter="{{m.enter}}" title="{{m.tip}}">
+<div style="{{m.bar}}"></div>
+<span style="font-size: 12px; font-weight: 600; height: 18px; margin-bottom: -26px; margin-top: 8px">{{m.label}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="muted" style="font-size: 12px; margin-top: 36px">Octubre en arena: mes en curso, datos al día 9.</div>
+</section>
+
+<section class="card" aria-label="Ventas por categoría" style="flex: 2 1 360px">
+<div class="dl-overline">Trimestre</div><h2 class="ttl">Por categoría</h2><span class="dl-brandline"></span>
+<div style="display: flex; flex-direction: column; gap: 14px; margin-top: 20px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="7">
+<div title="{{c.tip}}">
+<div style="display: flex; justify-content: space-between; font-size: 13px; gap: 10px"><span style="font-weight: 600">{{c.n}}</span><span class="num">{{c.v}} · <span class="muted">{{c.p}}</span></span></div>
+<div style="height: 8px; background: #F3EDE3; margin-top: 6px"><div style="{{c.bar}}"></div></div>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 3 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<x-import component-from-global-scope="Dalama.DataTable" overline="Trimestre" title="Margen por producto" caption="Margen por producto" columns="{{mCols}}" rows="{{margins}}" pagination="{{false}}"></x-import>
+<div class="muted" style="font-size: 12px">Margen bajo el 30 % en amarillo: candidatos para revisar el precio de lista.</div>
+<x-import component-from-global-scope="Dalama.DataTable" overline="Trimestre" title="Mejores clientes" caption="Mejores clientes" columns="{{cCols}}" rows="{{clients}}" pagination="{{false}}"></x-import>
+</div>
+
+<section class="card" aria-label="Libro IVA Ventas" style="flex: 2 1 380px; display: flex; flex-direction: column; gap: 16px">
+<div><div class="dl-overline">Para la parte contable</div><h2 class="ttl">Libro IVA Ventas</h2><span class="dl-brandline"></span></div>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Período" options="{{meses}}"></x-import>
+<dl style="margin: 0; display: grid; grid-template-columns: 1fr auto; row-gap: 8px; column-gap: 16px; font-size: 14px">
+<dt class="muted">Comprobantes</dt><dd class="num" style="margin: 0; text-align: right">230 · 186 FA · 41 FB · 3 NC</dd>
+<dt class="muted">Neto gravado 21 %</dt><dd class="num" style="margin: 0; text-align: right">$ 20.149.504,13</dd>
+<dt class="muted">IVA débito fiscal</dt><dd class="num" style="margin: 0; text-align: right">$ 4.231.395,87</dd>
+<dt style="font-weight: 600; padding-top: 10px; border-top: 1px solid #111111">Total</dt><dd class="num" style="margin: 0; text-align: right; font-weight: 700; font-size: 18px; padding-top: 8px; border-top: 1px solid #111111">$ 24.380.900,00</dd>
+</dl>
+<x-import component-from-global-scope="Dalama.Alert" tone="success" title="Sin diferencias con ARCA">Los 230 comprobantes coinciden con los autorizados.</x-import>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="download">Exportar a Excel</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="download">TXT Libro IVA Digital</x-import>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1460}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function ars(n){return '$ '+n.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function pct(n){return n.toFixed(1).replace('.',',')+' %';}
+function el(){return window.React.createElement.apply(null,arguments);}
+const MONTHS=[['May','Mayo 2026',19800000],['Jun','Junio 2026',21400000],['Jul','Julio 2026',22900000],['Ago','Agosto 2026',23600000],['Sep','Septiembre 2026',24380900],['Oct','Octubre 2026 (al día 9)',8426750]];
+const CATS=[['Burletes',15900000],['Rieles',14200000],['Cerraduras',12600000],['Bisagras',10800000],['Manijas',9100000],['Accesorios',5400000],['Mosquiteros',2880900]];
+const MARG=[['Bisagra 3 agujas aluminio negra','BIS-3A-NG',1240,2850,40.0],['Rueda doble regulable Herrero (par)','ROD-HR-DOB',410,5950,35.0],['Burlete EPDM 6 mm · rollo 50 m','BUR-6MM-R',268,18900,30.0],['Cerradura embutir corrediza 1 punto','CER-EMC-01',160,14200,30.0],['Manija simple Módena negra','MAN-MOD-NG',205,6200,27.1],['Felpa 7 × 5 mm gris · rollo 250 m','FEL-75-GR',92,26000,25.0]];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={h:4};}
+  renderVals() {
+    const h=this.state.h==null?4:this.state.h;
+    const tot=CATS.reduce((a,c)=>a+c[1],0);
+    return {
+      nav: NAV, user: USER,
+      periods: [{id:'mes',label:'Mes'},{id:'tri',label:'Trimestre'},{id:'anio',label:'Año'},{id:'pers',label:'Personalizado'}],
+      tipos: ['Todos los clientes','Carpinteros','Aberturistas','Particulares'],
+      categorias: ['Todas las categorías','Bisagras','Manijas','Cerraduras','Rieles','Burletes','Mosquiteros','Accesorios'],
+      meses: ['Septiembre 2026','Agosto 2026','Julio 2026'],
+      months: MONTHS.map((m,i)=>({label:m[0],tip:m[1]+': '+ars(m[2]),enter:()=>this.setState({h:i}),
+        bar:'width: 100%; max-width: 56px; height: '+(m[2]/25000000*184).toFixed(0)+'px; background: '+(i===5?'#A8916D':(i===h?'#B81D23':'#111111'))})),
+      tip: MONTHS[h][1]+' · '+ars(MONTHS[h][2]),
+      clear: ()=>this.setState({h:4}),
+      cats: CATS.map(c=>({n:c[0],v:'$ '+(c[1]/1000000).toFixed(1).replace('.',',')+' M',p:pct(c[1]/tot*100),tip:c[0]+': '+ars(c[1]),bar:'height: 8px; background: #111111; width: '+(c[1]/CATS[0][1]*100).toFixed(1)+'%'})),
+      mCols: [
+        {key:'n',label:'Producto',render:r=>el('span',null,el('strong',null,r.n),el('span',{className:'dl-sub'},r.c))},
+        {key:'u',label:'Unidades',align:'right'},{key:'v',label:'Ventas netas',align:'right'},
+        {key:'m',label:'Margen',align:'right',render:r=>el('span',{className:'dl-badge '+(r.mv<30?'dl-badge-warning':'dl-badge-neutral')},r.m)},
+        {key:'k',label:'Contribución',align:'right',render:r=>el('strong',null,r.k)}
+      ],
+      margins: MARG.map(m=>{const v=m[2]*m[3];return {id:m[1],n:m[0],c:m[1],u:m[2].toLocaleString('es-AR'),v:ars(v),m:pct(m[4]),mv:m[4],k:ars(Math.round(v*m[4]/100))};}),
+      cCols: [{key:'r',label:'#'},{key:'n',label:'Cliente',render:r=>el('span',null,el('strong',null,r.n),el('span',{className:'dl-sub'},r.t))},{key:'v',label:'Ventas',align:'right',render:r=>el('strong',null,r.v)}],
+      clients: [
+        {id:'1',r:'1',n:'Aluminios Mendoza Hnos.',t:'Aberturista · 14 compras',v:'$ 6.840.000,00'},
+        {id:'2',r:'2',n:'Aberturas del Sur S.R.L.',t:'Aberturista · 11 compras',v:'$ 5.920.000,00'},
+        {id:'3',r:'3',n:'Vidrios y Aberturas Castelli S.A.',t:'Aberturista · 9 compras',v:'$ 4.710.000,00'},
+        {id:'4',r:'4',n:'Carpintería Rossi',t:'Carpintero · 16 compras',v:'$ 3.180.000,00'},
+        {id:'5',r:'5',n:'Taller Ferreyra',t:'Carpintero · 10 compras',v:'$ 2.040.000,00'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Entregas del día (celular)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B81D23}
+.muted{color:#3D3833}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tb{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:60px;font-size:11px;font-weight:600;color:#3D3833;text-decoration:none}
+.tb.on{color:#111111}
+.tb.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;background:#E11B22}
+</style>
+</helmet>
+<div class="dl-root" style="width: 390px; height: 844px; display: flex; flex-direction: column; background: #FAF7F2; overflow: hidden">
+<header style="background: #111111; color: #FFFFFF; padding: 16px 18px">
+<div style="display: flex; align-items: center; gap: 12px">
+<img src="/_blob/702d10810fda6e988269bdcba50b75c4" alt="DALAMA" style="width: 28px; height: auto">
+<div style="flex: 1"><div style="font-size: 11px; letter-spacing: .12em; color: #CFC9C2; font-weight: 600">REPARTO · CAMIONETA</div><div style="font-size: 18px; font-weight: 600; margin-top: 2px">Entregas de hoy</div></div>
+<span class="num" style="font-size: 12px; color: #CFC9C2">Vie 9/10</span>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 16px"><span style="font-weight: 600">{{doneLabel}}</span><span style="color: #CFC9C2">Chofer: Nahuel</span></div>
+<div style="display: flex; gap: 3px; margin-top: 8px">
+<sc-for list="{{bars}}" as="bb" hint-placeholder-count="4"><span style="{{bb.s}}"></span></sc-for>
+</div>
+</header>
+
+<div style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{stops}}" as="s" hint-placeholder-count="4">
+<article style="{{s.card}}">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span style="{{s.dot}}">{{s.n}}</span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center"><span class="muted num" style="font-size: 12px; font-weight: 600">{{s.h}}</span><span class="{{s.cls}}">{{s.st}}</span></div>
+<div style="font-size: 16px; font-weight: 600; margin-top: 4px">{{s.c}}</div>
+<div class="muted" style="font-size: 13px; margin-top: 2px">{{s.a}}</div>
+</div>
+</div>
+<sc-if value="{{s.open}}" hint-placeholder-val="{{true}}">
+<dl style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 0; padding: 10px 12px; background: #F3EDE3; border-radius: 4px; font-size: 12px">
+<div><dt class="muted">Remito</dt><dd class="num" style="margin: 2px 0 0; font-weight: 600">{{s.r}}</dd></div>
+<div><dt class="muted">Bultos</dt><dd style="margin: 2px 0 0; font-weight: 600">{{s.bu}}</dd></div>
+<div style="grid-column: 1 / -1"><dt class="muted">Cobro</dt><dd style="{{s.paySt}}">{{s.pay}}</dd></div>
+</dl>
+<div style="display: flex; gap: 8px; margin-top: 12px">
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" style="flex: 1">Cómo llegar</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="check" on-click="{{s.mark}}" style="flex: 1">Entregado</x-import>
+</div>
+</sc-if>
+<sc-if value="{{s.done}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 12px; color: #2F7D4F; font-weight: 600; margin-top: 8px; padding-left: 44px">{{s.doneTxt}}</div>
+</sc-if>
+</article>
+</sc-for>
+<div class="muted" style="font-size: 12px; text-align: center; padding: 4px 0">Orden sugerido según el recorrido</div>
+</div>
+
+<nav aria-label="Navegación" style="display: flex; background: #FFFFFF; border-top: 1px solid #CFC9C2">
+<a href="#inicio" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="home" size="{{22}}"></x-import>Inicio</a>
+<a href="BandejaMovil.dc.html" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="message" size="{{22}}"></x-import>Bandeja</a>
+<a href="#pedidos" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="package" size="{{22}}"></x-import>Pedidos</a>
+<a href="#entregas" class="tb on" aria-current="page"><x-import component-from-global-scope="Dalama.Icon" name="truck" size="{{22}}"></x-import>Entregas</a>
+<a href="ConteoMovil.dc.html" class="tb"><x-import component-from-global-scope="Dalama.Icon" name="boxes" size="{{22}}"></x-import>Stock</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+const STOPS=[
+  {id:1,h:'09:30',c:'Aberturas del Sur S.R.L.',a:'Av. H. Yrigoyen 8450, Lomas de Zamora',r:'R 0002-00000877',bu:'5 bultos',pay:'Cuenta corriente',cash:false},
+  {id:2,h:'10:45',c:'Carpintería Rossi',a:'Pasco 1270, Temperley',r:'R 0002-00000879',bu:'3 bultos',pay:'Cuenta corriente',cash:false},
+  {id:3,h:'12:00',c:'Vía Cargo · Aluminios Mendoza Hnos.',a:'[SUCURSAL DE DESPACHO VÍA CARGO]',r:'R 0002-00000880',bu:'8 bultos · cargar guía',pay:'Flete a cargo del cliente',cash:false},
+  {id:4,h:'14:30',c:'Taller Ferreyra',a:'Calle 12 N.° 845, Berazategui',r:'R 0002-00000881',bu:'2 bultos',pay:'Cobrar $ 87.450,00 en efectivo',cash:true}
+];
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={done:{1:'09:41'}};}
+  renderVals() {
+    const d=this.state.done;const n=Object.keys(d).length;
+    const nextId=(STOPS.find(s=>!d[s.id])||{}).id;
+    const stops=STOPS.map((s,i)=>{const done=!!d[s.id];const next=s.id===nextId;return {
+      n:i+1,h:s.h,c:s.c,a:s.a,r:s.r,bu:s.bu,pay:s.pay,
+      paySt:'margin: 2px 0 0; font-weight: 700; '+(s.cash?'color: #B81D23':''),
+      open:!done,done,doneTxt:done?'Entregado a las '+d[s.id]+' · remito firmado':'',
+      st:done?'Entregado':(next?'Próxima':'Pendiente'),
+      cls:done?'dl-badge dl-badge-success':(next?'dl-badge dl-badge-warning':'dl-badge dl-badge-neutral'),
+      card:'background: #FFFFFF; border-radius: 6px; padding: 16px; box-shadow: 0 1px 2px rgba(74,31,31,.06), 0 2px 6px rgba(74,31,31,.06); '+(next?'border: 2px solid #111111':'border: 1px solid #CFC9C2'),
+      dot:'width: 32px; height: 32px; border-radius: 4px; display: grid; place-items: center; font-size: 14px; font-weight: 700; flex: none; '+(done?'background: #EFF7F2; color: #2F7D4F':(next?'background: #B81D23; color: #FFFFFF':'background: #F3EDE3; color: #111111')),
+      mark:()=>{const t=new Date();this.setState({done:Object.assign({},d,{[s.id]:String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')})});}
+    };});
+    return {
+      stops, doneLabel: n+' de '+STOPS.length+' entregadas',
+      bars: STOPS.map(s=>({s:'flex: 1; height: 4px; background: '+(d[s.id]?'#E11B22':'#3D3833')}))
+    };
+  }
+}
+</script>
+</body>
+</html>

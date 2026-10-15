@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>DALAMA · Configuración</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/dalama/components/bundle.css">
+<script src="ds/dalama/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAF7F2}
+a{color:#B81D23}a:hover{color:#4A1F1F}
+.card{background:var(--superficie,#FFFFFF);border:1px solid var(--borde,#CFC9C2);border-radius:var(--radius-md,6px);box-shadow:var(--sombra-1,0 1px 2px rgba(74,31,31,.06),0 2px 6px rgba(74,31,31,.06));padding:24px;min-width:0}
+.ttl{margin:0;font-size:16px;line-height:24px;font-weight:600;color:#111111}
+.muted{color:var(--neutro-700,#3D3833)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.lvl{min-height:32px;min-width:104px;padding:0 10px;border-radius:4px;font:600 12px Montserrat,sans-serif;cursor:pointer;border:1px solid transparent}
+.lvl:disabled{cursor:default}
+.tpl{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:12px 14px;border:1px solid #CFC9C2;border-radius:4px;background:#FFFFFF;cursor:pointer;text-align:left;font-family:Montserrat,sans-serif;color:#111111;position:relative}
+.tpl:hover{border-color:#3D3833}
+.tpl.on{border:2px solid #B81D23;background:#FDECEC}
+.ta{width:100%;min-height:130px;padding:10px 12px;border:1px solid #7A726A;border-radius:4px;font:400 14px/20px Montserrat,sans-serif;color:#111111;resize:vertical;box-sizing:border-box}
+.ta:focus{outline:none;border-color:#B81D23;box-shadow:0 0 0 3px #FDECEC}
+.var{font:600 12px Montserrat,sans-serif;padding:4px 8px;border-radius:4px;border:1px dashed #7A726A;background:#FAF7F2;color:#111111;cursor:pointer}
+.rule{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;padding:16px 0;border-bottom:1px solid #F3EDE3}
+</style>
+</helmet>
+<div class="dl-root" style="display: flex; flex-wrap: wrap; min-height: 100vh; background: var(--fondo, #FAF7F2); position: relative">
+<div style="flex: 0 0 auto; display: flex; background: #111111">
+<x-import component-from-global-scope="Dalama.Sidebar" active="configuracion" groups="{{nav}}" logo-src="/_blob/4dffc346c044dd51e189d2a555626260" isotipo-src="/_blob/702d10810fda6e988269bdcba50b75c4"></x-import>
+</div>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<x-import component-from-global-scope="Dalama.Topbar" overline="Análisis · Ajustes del sistema" title="Configuración" notifications="{{3}}" user="{{user}}"></x-import>
+<div style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; max-width: 1180px">
+
+<x-import component-from-global-scope="Dalama.Tabs" label="Secciones de configuración" value="{{sec}}" on-change="{{setSec}}" tabs="{{secs}}"></x-import>
+
+<sc-if value="{{isUsers}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-end; flex-wrap: wrap">
+<div><div class="dl-overline">5 personas</div><h2 class="ttl">Usuarios</h2><span class="dl-brandline"></span></div>
+<x-import component-from-global-scope="Dalama.Button" variant="primary" icon="plus">Invitar usuario</x-import>
+</div>
+<x-import component-from-global-scope="Dalama.DataTable" columns="{{uCols}}" rows="{{users}}" row-actions="{{uActions}}" pagination="{{false}}" caption="Usuarios"></x-import>
+<section class="card" aria-label="Permisos por rol" style="padding: 0; overflow: hidden">
+<div style="padding: 24px 24px 12px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: flex-end">
+<div><div class="dl-overline">Roles</div><h2 class="ttl">Permisos por rol</h2><span class="dl-brandline"></span></div>
+<span class="muted" style="font-size: 13px">Tocá un permiso para cambiarlo. El administrador siempre tiene acceso total.</span>
+</div>
+<div class="dl-table-scroll">
+<table class="dl-table">
+<thead><tr><th>Módulo</th><th style="text-align: center">Administrador</th><th style="text-align: center">Ventas</th><th style="text-align: center">Depósito y entregas</th></tr></thead>
+<tbody>
+<sc-for list="{{matrix}}" as="m" hint-placeholder-count="9">
+<tr>
+<td style="font-weight: 600">{{m.mod}}</td>
+<sc-for list="{{m.cells}}" as="c" hint-placeholder-count="3">
+<td style="text-align: center"><button type="button" class="lvl" style="{{c.s}}" onClick="{{c.cycle}}" disabled="{{c.locked}}" aria-label="{{c.aria}}">{{c.l}}</button></td>
+</sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isFiscal}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<section class="card" aria-label="Datos fiscales" style="display: flex; flex-direction: column; gap: 18px">
+<div><div class="dl-overline">Empresa</div><h2 class="ttl">Datos fiscales</h2><span class="dl-brandline"></span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Razón social" placeholder="[RAZÓN SOCIAL]" required="{{true}}" style="grid-column: 1 / -1"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="CUIT" placeholder="[CUIT]" required="{{true}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Condición frente al IVA" options="{{ivas}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Ingresos Brutos" placeholder="[N.° IIBB o Convenio Multilateral]"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Inicio de actividades" placeholder="dd/mm/aaaa"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="Domicilio comercial" placeholder="[CALLE, NÚMERO, LOCALIDAD, PROVINCIA]" style="grid-column: 1 / -1"></x-import>
+</div>
+</section>
+<section class="card" aria-label="Conexión con ARCA" style="display: flex; flex-direction: column; gap: 16px">
+<div><div class="dl-overline">Factura electrónica</div><h2 class="ttl">Conexión con ARCA</h2><span class="dl-brandline"></span></div>
+<x-import component-from-global-scope="Dalama.Alert" tone="success" title="{{arcaTitle}}">Punto de venta 0003 · Web Services · entorno de producción. Último comprobante: FC A 0003-00002138.</x-import>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<x-import component-from-global-scope="Dalama.Input" kind="select" label="Punto de venta" options="{{pvs}}"></x-import>
+<x-import component-from-global-scope="Dalama.Input" kind="date" label="Vencimiento del certificado" default-value="14/03/2027" disabled="{{true}}" helper="Te avisamos 30 días antes."></x-import>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="check-circle" loading="{{testing}}" on-click="{{test}}">Probar conexión</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="tertiary">Renovar certificado</x-import>
+<x-import component-from-global-scope="Dalama.Button" variant="tertiary" icon="plus">Agregar punto de venta</x-import>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isTpl}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-label="Plantillas de WhatsApp" style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: flex-end"><div><div class="dl-overline">WhatsApp</div><h2 class="ttl">Plantillas de mensajes</h2><span class="dl-brandline"></span></div><x-import component-from-global-scope="Dalama.Button" variant="secondary" icon="plus">Nueva plantilla</x-import></div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{tpls}}" as="t" hint-placeholder-count="5">
+<button type="button" class="{{t.cls}}" onClick="{{t.pick}}"><span style="font-size: 14px; font-weight: 600">{{t.n}}</span><span class="muted" style="font-size: 12px">{{t.w}}</span></button>
+</sc-for>
+</div>
+<div style="flex: 2 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div class="dl-field"><label class="dl-label" for="tpl-msg">Mensaje</label><textarea id="tpl-msg" class="ta" value="{{cur.text}}"></textarea></div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="muted" style="font-size: 12px; margin-right: 4px">Insertar dato:</span><sc-for list="{{cur.vars}}" as="v" hint-placeholder-count="4"><button type="button" class="var">{{v}}</button></sc-for></div>
+<div style="background: #F3EDE3; border-radius: 4px; padding: 16px">
+<div class="dl-overline" style="margin-bottom: 8px">Vista previa con datos de ejemplo</div>
+<div style="background: #FFFFFF; border-radius: 0 6px 6px 6px; padding: 10px 12px; font-size: 14px; line-height: 20px; max-width: 92%; white-space: pre-line; box-shadow: 0 1px 2px rgba(74,31,31,.08)">{{cur.preview}}</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><x-import component-from-global-scope="Dalama.Button" variant="primary" icon="check">Guardar plantilla</x-import><x-import component-from-global-scope="Dalama.Button" variant="tertiary" icon="send">Enviarme una prueba</x-import></div>
+</div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{isRules}}" hint-placeholder-val="{{false}}">
+<section class="card" aria-label="Seguimiento y alertas">
+<div><div class="dl-overline">Automatizaciones</div><h2 class="ttl">Seguimiento y alertas</h2><span class="dl-brandline"></span></div>
+<div style="margin-top: 8px">
+<sc-for list="{{rules}}" as="r" hint-placeholder-count="5">
+<div class="rule">
+<div style="flex: 1 1 320px"><div style="font-size: 14px; font-weight: 600">{{r.t}}</div><div class="muted" style="font-size: 13px; margin-top: 2px">{{r.d}}</div></div>
+<x-import component-from-global-scope="Dalama.Input" kind="text" label="{{r.u}}" default-value="{{r.v}}" style="width: 120px"></x-import>
+</div>
+</sc-for>
+</div>
+<div style="margin-top: 16px"><x-import component-from-global-scope="Dalama.Button" variant="primary" icon="check">Guardar cambios</x-import></div>
+</section>
+</sc-if>
+</div>
+</main>
+<sc-if value="{{tested}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; right: 24px; bottom: 24px">
+<x-import component-from-global-scope="Dalama.Toast" tone="success" title="Conexión con ARCA verificada" on-close="{{closeToast}}">El servicio de factura electrónica respondió en 1,2 s.</x-import>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+const NAV=[{label:'Operación',items:[{id:'inicio',label:'Inicio',icon:'home',href:'Main.dc.html'},{id:'bandeja',label:'Bandeja WhatsApp',icon:'message',count:5,href:'WhatsApp.dc.html'},{id:'presupuestos',label:'Presupuestos',icon:'file-text',href:'Presupuestos.dc.html'},{id:'pedidos',label:'Pedidos y entregas',icon:'truck',href:'EntregasMovil.dc.html'}]},{label:'Administración',items:[{id:'facturacion',label:'Facturación',icon:'receipt',href:'Factura.dc.html'},{id:'clientes',label:'Clientes',icon:'users',href:'#clientes'},{id:'cuentas',label:'Cuentas corrientes',icon:'wallet',href:'CuentaCorriente.dc.html'}]},{label:'Catálogo',items:[{id:'productos',label:'Productos y precios',icon:'tag',href:'Productos.dc.html'},{id:'stock',label:'Stock',icon:'boxes',href:'Stock.dc.html'},{id:'compras',label:'Compras',icon:'cart',href:'Compras.dc.html'}]},{label:'Análisis',items:[{id:'reportes',label:'Reportes',icon:'chart',href:'Reportes.dc.html'},{id:'configuracion',label:'Configuración',icon:'settings',href:'Configuracion.dc.html'}]}];
+const USER={name:'Laura M.',role:'Administradora',initials:'LM'};
+function el(){return window.React.createElement.apply(null,arguments);}
+const LV=['Total','Editar','Ver','Sin acceso'];
+const LVS={'Total':'background: #111111; color: #FFFFFF','Editar':'background: #E6EEF6; color: #2E5E8C','Ver':'background: #F2EFEB; color: #3D3833; border-color: #CFC9C2','Sin acceso':'background: #FFFFFF; color: #3D3833; border-color: #7A726A; border-style: dashed'};
+const MODS=[['Bandeja WhatsApp y presupuestos','Total','Sin acceso'],['Pedidos y entregas','Total','Editar'],['Facturación (ARCA)','Ver','Sin acceso'],['Cuentas corrientes y cobranzas','Ver','Sin acceso'],['Productos y precios','Ver','Ver'],['Stock y conteos','Ver','Editar'],['Compras y recepción','Sin acceso','Editar'],['Reportes','Ver','Sin acceso'],['Configuración','Sin acceso','Sin acceso']];
+const SAMPLE={cliente:'Martín',numero:'P-0998',total:'$ 423.621,00',vencimiento:'16/10',link_pdf:'[enlace al PDF]',pedido:'PED-0421',transporte:'Andreani',seguimiento:'360002148735',comprobante:'FC A 0003-00002138',vencimiento_pago:'08/11',deuda:'$ 612.300,00',facturas:'2 facturas'};
+const TPLS=[
+  ['Presupuesto enviado','Al enviar un presupuesto','Hola {cliente}, te paso el presupuesto {numero} por {total}. Vale hasta el {vencimiento}.\nLo ves acá: {link_pdf}\nCualquier duda, avisame. Gracias. DALAMA',['{cliente}','{numero}','{total}','{vencimiento}','{link_pdf}']],
+  ['Recordatorio de presupuesto','A los 5 días sin respuesta','Hola {cliente}, ¿pudiste ver el presupuesto {numero}? Vence el {vencimiento}.\nSi necesitás cambiar algo, lo ajustamos. DALAMA',['{cliente}','{numero}','{vencimiento}']],
+  ['Deuda vencida','Cada 7 días con deuda vencida','Hola {cliente}, te escribimos de DALAMA. Tenés {facturas} vencidas por {deuda}.\n¿Nos confirmás cuándo podés hacer el pago? Gracias.',['{cliente}','{facturas}','{deuda}']],
+  ['Pedido despachado','Al despachar un pedido','Hola {cliente}, tu pedido {pedido} salió hoy por {transporte}.\nN.° de seguimiento: {seguimiento}',['{cliente}','{pedido}','{transporte}','{seguimiento}']],
+  ['Factura emitida','Al emitir una factura','Hola {cliente}, te enviamos la factura {comprobante} por {total}. Vence el {vencimiento_pago}.\n{link_pdf}',['{cliente}','{comprobante}','{total}','{vencimiento_pago}','{link_pdf}']]
+];
+const ROLE={Administrador:'dl-badge dl-badge-neutral','Ventas':'dl-badge dl-badge-info','Depósito y entregas':'dl-badge dl-badge-neutral'};
+class Component extends DCLogic {
+  constructor(p){super(p);this.state={sec:'usuarios',m:MODS.map(x=>[x[1],x[2]]),t:0,testing:false,tested:false};}
+  renderVals() {
+    const st=this.state;const DS=window.Dalama||{};
+    const cur=TPLS[st.t];
+    return {
+      nav: NAV, user: USER, sec: st.sec, setSec: (v)=>this.setState({sec:v}),
+      secs: [{id:'usuarios',label:'Usuarios y permisos'},{id:'fiscal',label:'Datos fiscales y ARCA'},{id:'plantillas',label:'Plantillas de WhatsApp',count:5},{id:'alertas',label:'Seguimiento y alertas'}],
+      isUsers: st.sec==='usuarios', isFiscal: st.sec==='fiscal', isTpl: st.sec==='plantillas', isRules: st.sec==='alertas',
+      uCols: [
+        {key:'n',label:'Nombre',render:r=>el('span',{style:{display:'flex',alignItems:'center',gap:10}},el('span',{className:'dl-avatar',style:{width:32,height:32,fontSize:12}},r.ini),el('strong',null,r.n))},
+        {key:'r',label:'Rol',render:r=>el('span',{className:ROLE[r.r]},r.r)},
+        {key:'d',label:'Usa principalmente'},{key:'a',label:'Último acceso'},
+        {key:'s',label:'Estado',render:r=>DS.StatusBadge?el(DS.StatusBadge,{status:r.pend?'enviado':'aceptado'},r.pend?'Invitación enviada':'Activo'):null}
+      ],
+      users: [
+        {id:'u1',label:'Laura M.',ini:'LM',n:'Laura M.',r:'Administrador',d:'Computadora',a:'Hoy 11:20'},
+        {id:'u2',label:'Dario',ini:'DA',n:'Dario',r:'Administrador',d:'Celular',a:'Hoy 09:44'},
+        {id:'u3',label:'Sofía L.',ini:'SL',n:'Sofía L.',r:'Ventas',d:'Computadora',a:'Ayer 18:02'},
+        {id:'u4',label:'Nahuel R.',ini:'NR',n:'Nahuel R.',r:'Depósito y entregas',d:'Celular',a:'Hoy 09:41'},
+        {id:'u5',label:'Matías G.',ini:'MG',n:'Matías G.',r:'Depósito y entregas',d:'—',a:'—',pend:true}
+      ],
+      uActions: (r)=>r.pend?[{label:'Reenviar invitación',icon:'send'},{label:'Cancelar invitación',icon:'trash',danger:true}]:[{label:'Editar',icon:'pencil'},{label:'Desactivar',icon:'trash',danger:true}],
+      matrix: MODS.map((x,i)=>({mod:x[0],cells:[{l:'Total',s:LVS['Total'],locked:true,aria:x[0]+', Administrador: Total',cycle:null}].concat([0,1].map(j=>{const l=st.m[i][j];return {l,s:LVS[l],locked:false,aria:x[0]+', '+(j===0?'Ventas':'Depósito')+': '+l+'. Cambiar',cycle:()=>{const m=st.m.map(r=>r.slice());m[i][j]=LV[(LV.indexOf(l)+1)%LV.length];this.setState({m});}};}))})),
+      ivas: ['IVA Responsable Inscripto','Monotributo'], pvs: ['0003 · Web Services','0001 · Talonario manual'],
+      arcaTitle: st.tested?'Conexión verificada recién':'Conectado con ARCA',
+      testing: st.testing, test: ()=>{this.setState({testing:true});setTimeout(()=>this.setState({testing:false,tested:true}),900);},
+      tested: st.tested, closeToast: ()=>this.setState({tested:false}),
+      tpls: TPLS.map((t,i)=>({n:t[0],w:t[1],cls:st.t===i?'tpl on':'tpl',pick:()=>this.setState({t:i})})),
+      cur: {text:cur[2],vars:cur[3],preview:cur[2].replace(/\{(\w+)\}/g,(a,k)=>SAMPLE[k]||a)},
+      rules: [
+        {t:'Recordar presupuestos sin respuesta',d:'Muestra la alerta y propone el recordatorio por WhatsApp',v:'5',u:'Días'},
+        {t:'Validez de los presupuestos',d:'Pasan a Vencido automáticamente',v:'7',u:'Días'},
+        {t:'Cliente inactivo',d:'Sin compras en este plazo: se sugiere contactarlo',v:'60',u:'Días'},
+        {t:'Recordatorio de deuda vencida',d:'Frecuencia del envío automático',v:'7',u:'Días'},
+        {t:'Aviso de vencimiento del certificado de ARCA',d:'Antes de la fecha de vencimiento',v:'30',u:'Días'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

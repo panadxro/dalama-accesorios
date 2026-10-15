@@ -1,0 +1,33 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Artboard-vyvl.dc.html": {"h": 600, "page": "page-3fz6mt", "title": "Artboard 1", "w": 800, "x": 0, "y": 0},
+    "BandejaMovil.dc.html": {"h": 844, "is_interactive": true, "title": "Celular · Pedido de WhatsApp (Dario)", "w": 390, "x": 0, "y": 3960},
+    "Compras.dc.html": {"expand": "fill", "h": 1340, "is_interactive": true, "title": "8 · Compras y proveedores", "w": 1440, "x": 4560, "y": 1820},
+    "Configuracion.dc.html": {"expand": "fill", "h": 1700, "is_interactive": true, "title": "10 · Configuración", "w": 1440, "x": 7600, "y": 1820},
+    "ConteoMovil.dc.html": {"h": 844, "is_interactive": true, "title": "Celular · Conteo de inventario", "w": 390, "x": 940, "y": 3960},
+    "CuentaCorriente.dc.html": {"expand": "fill", "h": 1400, "is_interactive": true, "title": "3 · Cuenta corriente del cliente", "w": 1440, "x": 3040, "y": 0},
+    "EntregasMovil.dc.html": {"h": 844, "is_interactive": true, "title": "Celular · Entregas del día (camioneta)", "w": 390, "x": 470, "y": 3960},
+    "Factura.dc.html": {"expand": "fill", "h": 1300, "is_interactive": true, "title": "4 · Emisión de factura (ARCA)", "w": 1440, "x": 4560, "y": 0},
+    "Main.dc.html": {"expand": "fill", "h": 1400, "is_interactive": true, "title": "1 · Panel de inicio", "w": 1440, "x": 0, "y": 0},
+    "Presupuestos.dc.html": {"expand": "fill", "h": 1260, "is_interactive": true, "title": "5 · Presupuestos", "w": 1440, "x": 0, "y": 1820},
+    "Productos.dc.html": {"expand": "fill", "h": 1460, "is_interactive": true, "title": "6 · Productos y precios", "w": 1440, "x": 1520, "y": 1820},
+    "Reportes.dc.html": {"expand": "fill", "h": 1460, "is_interactive": true, "title": "9 · Reportes", "w": 1440, "x": 6080, "y": 1820},
+    "Stock.dc.html": {"expand": "fill", "h": 1260, "is_interactive": true, "title": "7 · Stock", "w": 1440, "x": 3040, "y": 1820},
+    "WhatsApp.dc.html": {"expand": "fill", "h": 1240, "is_interactive": true, "title": "2 · Bandeja de WhatsApp + presupuesto IA", "w": 1440, "x": 1520, "y": 0}
+  },
+  "createdOnFiles": {"at": "2026-10-09T15:00:00Z", "v": 1},
+  "designSystems": [
+    {"title": "DALAMA UI Kit", "namespace": "dalama", "artifact": "https://claude.ai/artifact/Cn4vJeLe8JHxwu5PTJ18ab", "version": "1791944929-c649", "copiedAt": "2026-10-14T02:40:00Z"}
+  ],
+  "launch": {"view": "canvas"},
+  "notes": {
+    "tEsc": {"kind": "title1", "maxW": 6000, "text": "DALAMA · Sistema de gestión — pantallas prioritarias", "w": 240, "x": 0, "y": -300},
+    "tGes": {"kind": "title1", "maxW": 8000, "text": "Gestión — presupuestos, catálogo, stock, compras, reportes y configuración", "w": 240, "x": 0, "y": 1520},
+    "tMov": {"kind": "title1", "maxW": 1330, "text": "Celular — pedidos, reparto y conteo", "w": 240, "x": 0, "y": 3660}
+  },
+  "order": ["Main.dc.html", "WhatsApp.dc.html", "CuentaCorriente.dc.html", "Factura.dc.html", "Presupuestos.dc.html", "Productos.dc.html", "Stock.dc.html", "Compras.dc.html", "Reportes.dc.html", "Configuracion.dc.html", "BandejaMovil.dc.html", "EntregasMovil.dc.html", "ConteoMovil.dc.html", "Artboard-vyvl.dc.html"],
+  "pages": [{"id": "page-1", "name": "Page 1"}, {"id": "page-3fz6mt", "name": "Page 2"}],
+  "title": "DALAMA CRM"
+}
