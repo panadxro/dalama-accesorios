@@ -28,7 +28,8 @@ export function KpiCard({ label, value, delta, deltaLabel, trend = 'flat', posit
         </div>
         {icon && <Icon name={icon} size={20} />}
       </div>
-      <div className="dl-kpi-value">{value}</div>
+      {/* Montos largos ("$ 27.242.064") bajan un poco de tamaño para no partirse en dos líneas. */}
+      <div className={cn('dl-kpi-value', typeof value === 'string' && value.length >= 11 && 'whitespace-nowrap text-[clamp(22px,1.9vw,30px)]')}>{value}</div>
       {delta && (
         <div className="dl-kpi-foot">
           <span className={cn('dl-delta', cls)}>

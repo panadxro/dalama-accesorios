@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import * as RD from '@radix-ui/react-dialog';
 import { useUi } from '@/store/ui';
@@ -19,6 +19,11 @@ export function AppLayout() {
   const setMenuOpen = useUi((s) => s.setMenuMovilAbierto);
   const sinProcesar = useDemo((s) => s.datos.conversaciones.filter((c) => c.estado === 'nuevo').length);
   const counts = { bandeja: sinProcesar };
+
+  // Cada pantalla nueva arranca desde arriba.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className="dl-root flex min-h-screen bg-fondo">

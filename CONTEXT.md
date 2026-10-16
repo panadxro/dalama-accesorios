@@ -32,12 +32,12 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 | Base visual y navegación | Requiere revisión | Etapa 1: tokens, kit portado, layout, rutas, bienvenida, 404. Revisión en /kit |
 | Datos de ejemplo | Requiere revisión | Etapa 2: modelo de datos, generador con semilla fija, store persistido, avisos, búsqueda y reinicio. Revisión en /kit/datos |
 | Panel de inicio | Pendiente | |
-| Bandeja de WhatsApp | Pendiente | |
-| Presupuestos | Pendiente | |
-| Pedidos y entregas | Pendiente | |
-| Facturación | Pendiente | |
+| Bandeja de WhatsApp | Requiere revisión | Etapa 3: lista, chat, IA por reglas con confianza, alta rápida de cliente, simular mensaje y respuesta, celular |
+| Presupuestos | Requiere revisión | Etapa 3: listado con KPI y filtros, nuevo, detalle editable, PDF, envío, recordatorio, convertir en pedido |
+| Pedidos y entregas | Requiere revisión | Etapa 3: listado, detalle con estados, remito PDF, entrega editable, Entregas de hoy (celular), cobro al entregar |
+| Facturación | En progreso | Etapa 3: emisión A/B con CAE simulado y error de ARCA, PDF, listado y detalle. Falta nota de crédito (etapa 4) |
 | Clientes | Pendiente | |
-| Cuentas corrientes | Pendiente | |
+| Cuentas corrientes | En progreso | Etapa 3: cuenta del cliente, antigüedad, cobros con 4 medios, recibo PDF, recordatorio. Falta listado general y cartera (etapa 4) |
 | Productos y precios | Pendiente | |
 | Stock | Pendiente | |
 | Compras | Pendiente | |
@@ -70,6 +70,14 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 14/10/2026 | Numeración del historial termina en la del diseño (P-0997, PED-0425, FC A 0003-00002137, OC-0089) | Coherencia con las pantallas diseñadas: lo próximo es P-0998, PED-0426 y FC A 2138 |
 | 14/10/2026 | Bancos (cheques) y transportes (Vía Cargo, Andreani) con nombres reales; clientes, proveedores, CUIT, teléfonos y emails ficticios (dominio .example) | Los nombres de bancos y transportes dan realismo sin exponer datos de personas ni empresas clientes |
 | 14/10/2026 | Esquema de datos versionado (ESQUEMA_DATOS): si cambia, la demo guardada se regenera | Evitar demos rotas tras un deploy |
+| 15/10/2026 | El stock se descuenta al facturar; entre pedido y factura queda "reservado" (derivado) | Pedido explícito del flujo: la factura impacta en cuenta corriente y stock |
+| 15/10/2026 | Se permite facturar con stock insuficiente, con aviso de faltante | Realista para una distribuidora que repone; no bloquea la demo |
+| 15/10/2026 | IA simulada por reglas (services/ia/interpretarPedido.ts): sinónimos, raíces, colores, líneas, medidas y cantidades; confianza por línea; empates entre variantes de color se proponen y marcan "Revisar" | Funciona sin servicios externos y con la misma salida que tendría un modelo real |
+| 15/10/2026 | La respuesta del cliente al presupuesto se simula con botones "El cliente acepta / no acepta" | En la demo no llegan mensajes reales; deja claro qué pasaría |
+| 15/10/2026 | Bandeja: lista y chat arriba, presupuesto abajo a todo el ancho (tres columnas desde 1700 px) | En 1440 px el diseño ya hace pasar el panel a una segunda fila; la tabla necesita ancho |
+| 15/10/2026 | "Cómo llegar" copia la dirección en lugar de abrir mapas | Ningún dato sale del navegador |
+| 15/10/2026 | ARCA simulado con opción visible "Simular que ARCA no responde" | Mostrar el estado de error diseñado |
+| 15/10/2026 | PDF con jsPDF y fuentes estándar (Helvetica); logo reducido a JPEG (~30 KB por PDF) | Sin cargar fuentes externas; Montserrat queda para la interfaz |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -85,3 +93,7 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 14/10/2026 — [Agregado] Etapa 2: modelo de datos (domain/types.ts), reglas de negocio puras (domain/calculos.ts: totales, IVA, letra A/B/C, cuenta corriente, antigüedad de deuda, stock, inactivos)
 - 14/10/2026 — [Agregado] Datos de ejemplo: 60 productos en 7 categorías, 5 proveedores, 25 clientes de zona sur, 6 meses de ventas (~465 comprobantes), cobros con efectivo/transferencia/cheque/tarjeta, cheques en cartera, presupuestos en todos los estados, 6 entregas para hoy, órdenes de compra, último conteo y 8 conversaciones de WhatsApp (+5 para simular)
 - 14/10/2026 — [Agregado] Store persistido con corrimiento automático de fechas, avisos de la campana conectados, contador de la bandeja, búsqueda global funcionando, "Reiniciar demo" en el menú de usuario y página de revisión /kit/datos
+- 15/10/2026 — [Agregado] Etapa 3, flujo principal completo: bandeja de WhatsApp con presupuesto por IA (animación, confianza por línea, elección de productos dudosos), envío por WhatsApp con vista previa y confirmación, respuesta del cliente simulada, conversión en pedido con entrega sugerida, estados del pedido con remito, emisión de factura A/B con CAE simulado (y error de ARCA), descuento de stock, cuenta corriente con antigüedad, cobros (efectivo, transferencia, cheque, tarjeta) con imputación y recibo, entregas de hoy para celular con cobro al entregar
+- 15/10/2026 — [Agregado] PDF de presupuesto, factura/nota de crédito, remito y recibo; exportación a CSV de presupuestos, pedidos y comprobantes; búsqueda de productos tipo combobox
+- 15/10/2026 — [Cambiado] Datos de ejemplo (esquema 2): más presupuestos rechazados y vencidos para una tasa de aceptación realista
+- 15/10/2026 — [Corregido] Barra superior en una sola línea con títulos largos; montos largos en tarjetas KPI; scroll al inicio al cambiar de pantalla

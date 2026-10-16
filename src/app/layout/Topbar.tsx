@@ -163,7 +163,7 @@ export interface TopbarProps {
 export function Topbar({ title, overline }: TopbarProps) {
   const avisos = useAvisos();
   return (
-    <header className="dl-topbar">
+    <header className="dl-topbar flex-nowrap">
       <div className="dl-topbar-title min-w-0 flex-auto">
         {overline && <div className="dl-overline truncate">{overline}</div>}
         <h1 className="truncate">{title}</h1>

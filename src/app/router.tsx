@@ -8,6 +8,7 @@ import BienvenidaPage from '@/features/bienvenida/pages/BienvenidaPage';
 const InicioPage = lazy(() => import('@/features/inicio/pages/InicioPage'));
 const WhatsAppPage = lazy(() => import('@/features/whatsapp/pages/WhatsAppPage'));
 const PresupuestosPage = lazy(() => import('@/features/presupuestos/pages/PresupuestosPage'));
+const NuevoPresupuestoPage = lazy(() => import('@/features/presupuestos/pages/NuevoPresupuestoPage'));
 const PresupuestoDetallePage = lazy(() => import('@/features/presupuestos/pages/PresupuestoDetallePage'));
 const PedidosPage = lazy(() => import('@/features/pedidos/pages/PedidosPage'));
 const PedidoDetallePage = lazy(() => import('@/features/pedidos/pages/PedidoDetallePage'));
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
       { path: '/whatsapp', element: <WhatsAppPage /> },
       { path: '/whatsapp/:conversacionId', element: <WhatsAppPage /> },
       { path: '/presupuestos', element: <PresupuestosPage /> },
+      { path: '/presupuestos/nuevo', element: <NuevoPresupuestoPage /> },
       { path: '/presupuestos/:id', element: <PresupuestoDetallePage /> },
       { path: '/pedidos', element: <PedidosPage /> },
       { path: '/pedidos/:id', element: <PedidoDetallePage /> },

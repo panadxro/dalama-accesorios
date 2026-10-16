@@ -20,7 +20,7 @@ import { CONVERSACIONES_SEED } from './conversaciones';
 import { AJUSTES, EMPRESA, PLANTILLAS } from './empresa';
 
 /** Si cambia la forma de los datos, subir este número: las demos guardadas se regeneran. */
-export const ESQUEMA_DATOS = 1;
+export const ESQUEMA_DATOS = 2;
 
 const SEMILLA = 20261014;
 const DIAS_HISTORIA = 182;
@@ -312,14 +312,16 @@ export function generarDatos(ahora = new Date()): DatosDemo {
   /* Presupuestos que no se convirtieron (rechazados y vencidos) en los últimos 60 días: tasa de aceptación realista. */
   const MOTIVOS = ['Le resultó caro', 'Compró en otro lado', 'Se postergó la obra', 'Pidió otra línea'];
   for (let d = DIAS_DETALLE; d >= 10; d--) {
-    if (!rnd.chance(0.32)) continue;
-    const c = rnd.elegir(clientes.filter((x) => seeds.get(x.id)!.perfil !== 'inactivo'));
-    const fecha = conHora(sumarDias(hoy, -d), rnd.entero(9, 17), 15);
-    const ren = armarRenglones(ctx, c, seeds.get(c.id)!, factorPrecio(d));
-    if (rnd.chance(0.55)) {
-      crearPresupuesto(c, fecha, ren, { estado: 'rechazado', respondidoEl: aISO(sumarDias(fecha, rnd.entero(1, 4))), motivoRechazo: rnd.elegir(MOTIVOS) });
-    } else {
-      crearPresupuesto(c, fecha, ren, { estado: 'enviado', recordatorio: { activo: true, dias: 5, ultimoEl: aISO(sumarDias(fecha, 5)) } });
+    if (sumarDias(hoy, -d).getDay() === 0) continue;
+    for (let k = rnd.entero(1, 4); k > 0; k--) {
+      const c = rnd.elegir(clientes.filter((x) => seeds.get(x.id)!.perfil !== 'inactivo'));
+      const fecha = conHora(sumarDias(hoy, -d), rnd.entero(9, 17), 15);
+      const ren = armarRenglones(ctx, c, seeds.get(c.id)!, factorPrecio(d));
+      if (rnd.chance(0.7)) {
+        crearPresupuesto(c, fecha, ren, { estado: 'rechazado', respondidoEl: aISO(sumarDias(fecha, rnd.entero(1, 4))), motivoRechazo: rnd.elegir(MOTIVOS) });
+      } else {
+        crearPresupuesto(c, fecha, ren, { estado: 'enviado', recordatorio: { activo: true, dias: 5, ultimoEl: aISO(sumarDias(fecha, 5)) } });
+      }
     }
   }
 

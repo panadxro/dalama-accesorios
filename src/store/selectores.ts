@@ -24,6 +24,8 @@ export interface Derivados {
   presupuestosSinRespuesta: Presupuesto[];
   entregasHoy: Pedido[];
   mensajesSinProcesar: number;
+  /** Unidades comprometidas en pedidos que todavía no se facturaron (el stock se descuenta al facturar). */
+  reservado: Map<ID, number>;
 }
 
 const cache = new WeakMap<DatosDemo, Derivados>();
@@ -62,9 +64,15 @@ export function derivar(d: DatosDemo, ahora = new Date()): Derivados {
 
   const mensajesSinProcesar = d.conversaciones.filter((c) => c.estado === 'nuevo').length;
 
+  const reservado = new Map<ID, number>();
+  for (const p of d.pedidos) {
+    if (p.estado === 'cancelado' || p.comprobanteId) continue;
+    for (const r of p.renglones) if (r.productoId) reservado.set(r.productoId, (reservado.get(r.productoId) ?? 0) + r.cantidad);
+  }
+
   const r: Derivados = {
     hoy: ahora, clientePorId, productoPorId, pendientes, cuentas, ultimaCompra, inactivos, conDeudaVencida, stockBajo,
-    presupuestosSinRespuesta, entregasHoy, mensajesSinProcesar,
+    presupuestosSinRespuesta, entregasHoy, mensajesSinProcesar, reservado,
   };
   cache.set(d, r);
   return r;
