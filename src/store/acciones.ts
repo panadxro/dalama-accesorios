@@ -6,7 +6,7 @@
 import { useDemo } from './demo';
 import { estadoStock, letraPara, numeroFiscal, totales } from '@/domain/calculos';
 import type {
-  Actividad, Canal, Cheque, Cliente, Cobro, Comprobante, Conversacion, DatosDemo, Entrega, EstadoPedido, ID,
+  Actividad, Canal, Cheque, Cliente, Cobro, Comprobante, Conteo, Conversacion, DatosDemo, Entrega, EstadoPedido, ID,
   Imputacion, LetraComprobante, Mensaje, MovimientoStock, Pedido, Presupuesto, Producto, Renglon,
 } from '@/domain/types';
 import { aISO, ahoraISO, conHora, sumarDias, type FechaISO } from '@/lib/fechas';
@@ -425,7 +425,7 @@ export function confirmarEntrega(
 }
 
 /** Envía un documento (factura, recibo, estado de cuenta) por WhatsApp: queda en la conversación del cliente. */
-export function enviarDocumento(d: DatosDemo, clienteId: ID, texto: string, adjunto: NonNullable<Mensaje['adjunto']>): Resultado<{ conversacionId: ID }> {
+export function enviarDocumento(d: DatosDemo, clienteId: ID, texto: string, adjunto?: Mensaje['adjunto']): Resultado<{ conversacionId: ID }> {
   const cliente = d.clientes.find((c) => c.id === clienteId)!;
   const { conv, nueva } = conversacionDe(d, cliente);
   const msg: Mensaje = { id: id('msg'), de: 'dalama', texto, fecha: ahoraISO(), leido: true, adjunto };
@@ -433,5 +433,126 @@ export function enviarDocumento(d: DatosDemo, clienteId: ID, texto: string, adju
   return {
     datos: { ...d, conversaciones: nueva ? [actualizada, ...d.conversaciones] : reemplazar(d.conversaciones, actualizada) },
     r: { conversacionId: conv.id },
+  };
+}
+
+/* ───────────── Etapa 4: clientes, notas de crédito, cheques, catálogo y stock ───────────── */
+
+export function actualizarCliente(d: DatosDemo, c: Cliente): Resultado<Cliente> {
+  return { datos: { ...d, clientes: reemplazar(d.clientes, c) }, r: c };
+}
+
+/** Nota de crédito sobre una factura (devolución o bonificación). Si reingresa mercadería, vuelve al stock. */
+export function emitirNotaCredito(
+  d: DatosDemo,
+  facturaId: ID,
+  datos: { renglones: Renglon[]; motivo: string; reingresaStock: boolean; cae: string; caeVence: FechaISO },
+): Resultado<Comprobante> {
+  const f = d.comprobantes.find((c) => c.id === facturaId)!;
+  const cliente = d.clientes.find((c) => c.id === f.clienteId)!;
+  const t = totales(datos.renglones, f.descuentoPct, d.ajustes.ivaPct);
+  const fecha = ahoraISO();
+  const nc: Comprobante = {
+    id: id('cmp'), clase: 'nota_credito', letra: f.letra, puntoVenta: f.puntoVenta, numero: d.secuencias.notaCredito[f.letra],
+    fecha, clienteId: f.clienteId, asociadoId: f.id, renglones: datos.renglones.map((r) => ({ ...r, id: id('r') })), descuentoPct: f.descuentoPct,
+    neto: t.neto, iva: t.iva, total: t.total, cae: datos.cae, caeVence: datos.caeVence, condicionVenta: f.condicionVenta, vencePago: fecha,
+    motivo: datos.motivo, reingresaStock: datos.reingresaStock,
+  };
+  let productos = d.productos;
+  const movimientos: MovimientoStock[] = [];
+  if (datos.reingresaStock) {
+    productos = d.productos.map((p) => ({ ...p }));
+    for (const r of datos.renglones) {
+      const prod = productos.find((p) => p.id === r.productoId);
+      if (!prod) continue;
+      prod.stock += r.cantidad;
+      movimientos.push({ id: id('mov'), productoId: prod.id, fecha, cantidad: r.cantidad, tipo: 'devolucion', referencia: { tipo: 'comprobante', id: nc.id, numero: `NC ${nc.letra} ${numeroFiscal(nc.puntoVenta, nc.numero)}` }, motivo: datos.motivo, usuario: 'Laura M.', stockResultante: prod.stock });
+    }
+  }
+  return {
+    datos: {
+      ...d,
+      comprobantes: [nc, ...d.comprobantes],
+      productos,
+      movimientosStock: [...movimientos, ...d.movimientosStock],
+      secuencias: { ...d.secuencias, notaCredito: { ...d.secuencias.notaCredito, [f.letra]: d.secuencias.notaCredito[f.letra] + 1 } },
+      actividad: conActividad(d, { tipo: 'nota_credito', titulo: `Nota de crédito ${f.letra} ${numeroFiscal(nc.puntoVenta, nc.numero)} emitida`, detalle: `${cliente.razonSocial} · ${datos.motivo}`, ruta: `/facturacion/${nc.id}` }),
+    },
+    r: nc,
+  };
+}
+
+export function cambiarEstadoCheque(d: DatosDemo, chequeId: ID, estado: 'depositado' | 'endosado', destino: string): Resultado<Cheque> {
+  const ch0 = d.cheques.find((c) => c.id === chequeId)!;
+  const ch: Cheque = { ...ch0, estado, destino };
+  return {
+    datos: { ...d, cheques: reemplazar(d.cheques, ch), actividad: conActividad(d, { tipo: 'cobro', titulo: `Cheque ${ch.numero} ${estado}`, detalle: `${ch.banco} · ${destino}`, ruta: '/cuentas/cheques' }) },
+    r: ch,
+  };
+}
+
+/** Actualización masiva de precios: aplica un % y redondea a múltiplos de $ 10. */
+export function actualizarPrecios(d: DatosDemo, productoIds: ID[], porcentaje: number, conCosto: boolean): Resultado<{ cantidad: number }> {
+  const redondear = (c: number) => Math.round(c / 1000) * 1000;
+  const set = new Set(productoIds);
+  const productos = d.productos.map((p) =>
+    set.has(p.id)
+      ? { ...p, precioLista: redondear(p.precioLista * (1 + porcentaje / 100)), costo: conCosto ? redondear(p.costo * (1 + porcentaje / 100)) : p.costo }
+      : p,
+  );
+  return {
+    datos: { ...d, productos, actividad: conActividad(d, { tipo: 'precio', titulo: `Precios actualizados ${porcentaje > 0 ? '+' : ''}${porcentaje.toLocaleString('es-AR')} %`, detalle: `${productoIds.length} productos`, ruta: '/productos' }) },
+    r: { cantidad: productoIds.length },
+  };
+}
+
+export function guardarProducto(d: DatosDemo, p: Producto): Resultado<Producto> {
+  const existe = d.productos.some((x) => x.id === p.id);
+  return {
+    datos: {
+      ...d,
+      productos: existe ? reemplazar(d.productos, p) : [...d.productos, p],
+      actividad: existe ? d.actividad : conActividad(d, { tipo: 'precio', titulo: 'Producto nuevo', detalle: `${p.codigo} · ${p.nombre}`, ruta: `/productos?q=${encodeURIComponent(p.codigo)}` }),
+    },
+    r: p,
+  };
+}
+
+export const nuevoIdProducto = (codigo: string) => `prod-${codigo.toLowerCase()}-${Date.now().toString(36)}`;
+
+/** Ajuste manual de stock (rotura, faltante, error de carga). */
+export function ajustarStock(d: DatosDemo, productoId: ID, cantidad: number, motivo: string): Resultado<Producto> {
+  const p0 = d.productos.find((p) => p.id === productoId)!;
+  const p = { ...p0, stock: p0.stock + cantidad };
+  const mov: MovimientoStock = { id: id('mov'), productoId, fecha: ahoraISO(), cantidad, tipo: 'ajuste', motivo, usuario: 'Laura M.', stockResultante: p.stock };
+  return {
+    datos: { ...d, productos: reemplazar(d.productos, p), movimientosStock: [mov, ...d.movimientosStock], actividad: conActividad(d, { tipo: 'stock', titulo: `Ajuste de stock ${cantidad > 0 ? '+' : ''}${cantidad}`, detalle: `${p.nombre} · ${motivo}`, ruta: '/stock' }) },
+    r: p,
+  };
+}
+
+/** Cierra un conteo: guarda lo contado y ajusta las diferencias. */
+export function cerrarConteo(d: DatosDemo, estante: string, items: Array<{ productoId: ID; contado: number }>): Resultado<{ diferencias: number; unidades: number }> {
+  const fecha = ahoraISO();
+  const conteoId = id('cnt');
+  const productos = d.productos.map((p) => ({ ...p }));
+  const movimientos: MovimientoStock[] = [];
+  const registro = items.map((it) => {
+    const p = productos.find((x) => x.id === it.productoId)!;
+    const sistema = p.stock;
+    const dif = it.contado - sistema;
+    if (dif !== 0) {
+      p.stock = it.contado;
+      movimientos.push({ id: id('mov'), productoId: p.id, fecha, cantidad: dif, tipo: 'conteo', motivo: `Diferencia de conteo · ${estante.toLowerCase()}`, referencia: { tipo: 'conteo', id: conteoId, numero: estante }, usuario: 'Nahuel R.', stockResultante: p.stock });
+    }
+    return { productoId: p.id, sistema, contado: it.contado };
+  });
+  const conteo: Conteo = { id: conteoId, fecha, estante, items: registro, estado: 'cerrado', usuario: 'Nahuel R.' };
+  return {
+    datos: {
+      ...d, productos, conteos: [conteo, ...d.conteos], movimientosStock: [...movimientos, ...d.movimientosStock],
+      actividad: conActividad(d, { tipo: 'stock', titulo: `Conteo de ${estante.toLowerCase()} cerrado`, detalle: `${movimientos.length} diferencias ajustadas`, ruta: '/stock' }),
+    },
+    r: { diferencias: movimientos.length, unidades: movimientos.reduce((a, m) => a + Math.abs(m.cantidad), 0) },
   };
 }

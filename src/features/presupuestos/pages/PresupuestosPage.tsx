@@ -120,7 +120,7 @@ export default function PresupuestosPage() {
           rowLabel={(f) => f.p.numero}
           pageSize={12}
           columns={[
-            { key: 'n', label: 'N.°', render: (f) => <Link to={`/presupuestos/${f.p.id}`} className="font-bold text-texto hover:text-bold-red">{f.p.numero}</Link> },
+            { key: 'n', label: 'N.°', render: (f) => <Link to={`/presupuestos/${f.p.id}`} className="whitespace-nowrap font-bold text-texto hover:text-bold-red">{f.p.numero}</Link> },
             { key: 'c', label: 'Cliente', render: (f) => <span>{f.cliente.razonSocial}<span className="dl-sub">{TIPO_CLIENTE[f.cliente.tipo]} · {f.p.origen === 'whatsapp' ? 'WhatsApp' : 'Manual'}</span></span> },
             { key: 'e', label: 'Enviado', render: (f) => <span>{haceTexto(f.p.enviadoEl)}<span className="dl-sub">{f.estado === 'vencido' ? `Venció el ${formatFecha(f.p.validoHasta)}` : f.p.estado === 'enviado' ? `Vence el ${formatFecha(f.p.validoHasta)}` : formatFecha(f.p.fecha)}</span></span> },
             { key: 't', label: 'Total', align: 'right', render: (f) => formatARS(f.total) },

@@ -9,11 +9,12 @@ const LISTA_POR_TIPO: Record<TipoCliente, string> = { aberturista: 'lista-abertu
 
 /** Alta rápida de un cliente que escribió por WhatsApp por primera vez. */
 export function ClienteRapido({
-  open, onClose, nombreInicial = '', telefono = '', onCrear,
+  open, onClose, nombreInicial = '', telefono: telefonoInicial, onCrear,
 }: {
   open: boolean;
   onClose: () => void;
   nombreInicial?: string;
+  /** Si viene de WhatsApp, el teléfono ya se conoce y no se edita. */
   telefono?: string;
   onCrear: (c: Omit<Cliente, 'id' | 'altaEl'>) => void;
 }) {
@@ -24,10 +25,11 @@ export function ClienteRapido({
   const [localidad, setLocalidad] = useState('');
   const [direccion, setDireccion] = useState('');
   const [error, setError] = useState<string>();
+  const [telefono, setTelefono] = useState(telefonoInicial ?? '+54 9 11 ');
 
   useEffect(() => {
-    if (open) { setNombre(nombreInicial); setError(undefined); }
-  }, [open, nombreInicial]);
+    if (open) { setNombre(nombreInicial); setError(undefined); setTelefono(telefonoInicial ?? '+54 9 11 '); }
+  }, [open, nombreInicial, telefonoInicial]);
 
   const enviar = (e: FormEvent) => {
     e.preventDefault();
@@ -64,7 +66,7 @@ export function ClienteRapido({
           <Select label="Tipo de cliente" value={tipo} onChange={(e) => setTipo(e.target.value as TipoCliente)} options={[{ value: 'particular', label: 'Particular' }, { value: 'carpintero', label: 'Carpintero' }, { value: 'aberturista', label: 'Aberturista' }]} />
           <Select label="Condición frente al IVA" value={iva} onChange={(e) => setIva(e.target.value as CondicionIVA)} options={(Object.keys(CONDICION_IVA) as CondicionIVA[]).map((k) => ({ value: k, label: CONDICION_IVA[k] }))} />
           <TextInput label="CUIT o DNI" value={doc} onChange={(e) => setDoc(e.target.value)} inputMode="numeric" helper="Opcional para consumidor final." />
-          <TextInput label="Teléfono" value={telefono} disabled />
+          <TextInput label="Teléfono (WhatsApp)" value={telefono} disabled={!!telefonoInicial} onChange={(e) => setTelefono(e.target.value)} inputMode="tel" />
           <TextInput label="Dirección" value={direccion} onChange={(e) => setDireccion(e.target.value)} />
           <TextInput label="Localidad" value={localidad} onChange={(e) => setLocalidad(e.target.value)} placeholder="Ej.: Lanús" />
         </div>

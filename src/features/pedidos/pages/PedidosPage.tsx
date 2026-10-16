@@ -106,7 +106,7 @@ export default function PedidosPage() {
           rowLabel={(p) => p.numero}
           pageSize={12}
           columns={[
-            { key: 'n', label: 'Pedido', render: (p) => <span><Link to={`/pedidos/${p.id}`} className="font-bold text-texto hover:text-bold-red">{p.numero}</Link><span className="dl-sub">{p.remito?.numero ?? 'Sin remito'}</span></span> },
+            { key: 'n', label: 'Pedido', render: (p) => <span><Link to={`/pedidos/${p.id}`} className="whitespace-nowrap font-bold text-texto hover:text-bold-red">{p.numero}</Link><span className="dl-sub">{p.remito?.numero ?? 'Sin remito'}</span></span> },
             { key: 'c', label: 'Cliente', render: (p) => der.clientePorId.get(p.clienteId)?.razonSocial },
             { key: 'e', label: 'Entrega', render: (p) => <span className="tabular">{cuandoEntrega(p.entrega.fecha)}<span className="dl-sub">{METODO_ENTREGA[p.entrega.metodo]}{p.entrega.empresa ? ` · ${p.entrega.empresa}` : ''}</span></span> },
             { key: 'f', label: 'Factura', render: (p) => { const c = cmp(p.comprobanteId); return c ? <Link to={`/facturacion/${c.id}`} className="tabular hover:text-bold-red">{codigoComprobante(c)}</Link> : <Badge tone="warning" icon="receipt">Sin facturar</Badge>; } },

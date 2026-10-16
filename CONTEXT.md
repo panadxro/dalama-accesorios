@@ -31,15 +31,15 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 |---|---|---|
 | Base visual y navegación | Requiere revisión | Etapa 1: tokens, kit portado, layout, rutas, bienvenida, 404. Revisión en /kit |
 | Datos de ejemplo | Requiere revisión | Etapa 2: modelo de datos, generador con semilla fija, store persistido, avisos, búsqueda y reinicio. Revisión en /kit/datos |
-| Panel de inicio | Pendiente | |
+| Panel de inicio | Requiere revisión | Etapa 4: KPI, gráfico de ventas acumuladas (Recharts), más vendidos, presupuestos para seguir, actividad reciente, entregas, stock bajo, inactivos, cobro rápido |
 | Bandeja de WhatsApp | Requiere revisión | Etapa 3: lista, chat, IA por reglas con confianza, alta rápida de cliente, simular mensaje y respuesta, celular |
 | Presupuestos | Requiere revisión | Etapa 3: listado con KPI y filtros, nuevo, detalle editable, PDF, envío, recordatorio, convertir en pedido |
 | Pedidos y entregas | Requiere revisión | Etapa 3: listado, detalle con estados, remito PDF, entrega editable, Entregas de hoy (celular), cobro al entregar |
-| Facturación | En progreso | Etapa 3: emisión A/B con CAE simulado y error de ARCA, PDF, listado y detalle. Falta nota de crédito (etapa 4) |
-| Clientes | Pendiente | |
-| Cuentas corrientes | En progreso | Etapa 3: cuenta del cliente, antigüedad, cobros con 4 medios, recibo PDF, recordatorio. Falta listado general y cartera (etapa 4) |
-| Productos y precios | Pendiente | |
-| Stock | Pendiente | |
+| Facturación | Requiere revisión | Etapas 3-4: emisión A/B con CAE simulado y error de ARCA, PDF, listado, detalle y notas de crédito (con reingreso al stock) |
+| Clientes | Requiere revisión | Etapa 4: listado con filtros, inactivos con mensaje de reactivación (individual o a todos), ficha con historial y lo que más compra, edición, alta |
+| Cuentas corrientes | Requiere revisión | Etapas 3-4: listado con antigüedad general, cuenta por cliente, cobros con 4 medios, recibo PDF, recordatorios, cartera de cheques (depositar, endosar) |
+| Productos y precios | Requiere revisión | Etapa 4: catálogo con variantes, costo/precio/margen, alta y edición (con sinónimos para la IA), actualización masiva con vista previa, exportar lista |
+| Stock | Requiere revisión | Etapa 4: stock con nivel vs. mínimo y reservado, movimientos con origen, ajustes, conteos; conteo a ciegas para celular |
 | Compras | Pendiente | |
 | Reportes | Pendiente | |
 | Configuración | Pendiente | |
@@ -78,6 +78,11 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 15/10/2026 | "Cómo llegar" copia la dirección en lugar de abrir mapas | Ningún dato sale del navegador |
 | 15/10/2026 | ARCA simulado con opción visible "Simular que ARCA no responde" | Mostrar el estado de error diseñado |
 | 15/10/2026 | PDF con jsPDF y fuentes estándar (Helvetica); logo reducido a JPEG (~30 KB por PDF) | Sin cargar fuentes externas; Montserrat queda para la interfaz |
+| 16/10/2026 | Gráfico de ventas con los colores del diseño (ink-black vs. arena-500). El validador de paleta marca falta de matiz, pero la separación es alta (ΔE 48) y lleva leyenda y totales directos | Es "mes actual vs. anterior" (énfasis), no categorías; se respeta el diseño |
+| 16/10/2026 | Semilla de datos 20261013 (esquema 3), elegida entre 60 por dar comparaciones mes a mes creíbles (+6 % a +11 %) y deuda vencida ≈ $ 2,8 M como el diseño | Con la anterior, octubre daba +107 % contra septiembre por azar |
+| 16/10/2026 | Actualización masiva de precios y ajustes en paneles laterales; columnas laterales bajan debajo de la tabla en menos de 1600 px | Las tablas de catálogo y stock necesitan el ancho a 1440 px |
+| 16/10/2026 | Conteo a ciegas: la cantidad del sistema se muestra recién en el resumen de diferencias | Como pide el diseño; evita contar "para que dé" |
+| 16/10/2026 | Cheques: depositar y endosar. El rechazo de cheques queda fuera de la demo | Requiere débito y reversión de cobro; no suma al recorrido de Laura |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -97,3 +102,9 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 15/10/2026 — [Agregado] PDF de presupuesto, factura/nota de crédito, remito y recibo; exportación a CSV de presupuestos, pedidos y comprobantes; búsqueda de productos tipo combobox
 - 15/10/2026 — [Cambiado] Datos de ejemplo (esquema 2): más presupuestos rechazados y vencidos para una tasa de aceptación realista
 - 15/10/2026 — [Corregido] Barra superior en una sola línea con títulos largos; montos largos en tarjetas KPI; scroll al inicio al cambiar de pantalla
+- 16/10/2026 — [Agregado] Etapa 4: panel de inicio con KPI, gráfico de ventas acumuladas, más vendidos, actividad reciente, entregas, stock bajo, clientes inactivos y cobro rápido
+- 16/10/2026 — [Agregado] Clientes (listado, ficha, edición, alta, reactivación de inactivos por WhatsApp), listado de cuentas corrientes y cartera de cheques
+- 16/10/2026 — [Agregado] Productos y precios (catálogo con variantes y márgenes, alta/edición, actualización masiva con vista previa), Stock (movimientos, ajustes, conteos) y conteo de inventario para celular
+- 16/10/2026 — [Agregado] Notas de crédito desde la factura, con reingreso de mercadería al stock
+- 16/10/2026 — [Cambiado] Semilla de los datos de ejemplo (esquema 3) para comparaciones mensuales realistas
+- 16/10/2026 — [Corregido] Números de documento que se partían en dos líneas; textos "hace 1 días" y "hace 0 días"

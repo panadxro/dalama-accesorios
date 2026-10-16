@@ -14,12 +14,14 @@ import { pdfComprobante } from '@/services/pdf/documentos';
 import { ejecutar, enviarDocumento } from '@/store/acciones';
 import { datosActuales, useDemo } from '@/store/demo';
 import { useDerivados } from '@/store/selectores';
+import { EmitirNotaCredito } from '../EmitirNotaCredito';
 
 export default function ComprobantePage() {
   const { id } = useParams();
   const datos = useDemo((s) => s.datos);
   const der = useDerivados();
   const [enviar, setEnviar] = useState(false);
+  const [nc, setNc] = useState(false);
   const c = datos.comprobantes.find((x) => x.id === id);
 
   if (!c) {
@@ -43,6 +45,7 @@ export default function ComprobantePage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link to="/facturacion" className="dl-link inline-flex items-center gap-1 text-body-small"><Icon name="arrow-left" size={16} />Todos los comprobantes</Link>
         <div className="flex flex-wrap gap-2">
+          {c.clase === 'factura' && <Button variant="tertiary" icon="undo" onClick={() => setNc(true)}>Emitir nota de crédito</Button>}
           <BotonPDF nombre={nombreComprobante(c)} generar={() => pdfComprobante(datosActuales(), c)} />
           <Button icon="send" onClick={() => setEnviar(true)}>Enviar por WhatsApp</Button>
         </div>
@@ -123,6 +126,7 @@ export default function ComprobantePage() {
         </aside>
       </div>
 
+      {c.clase === 'factura' && <EmitirNotaCredito factura={c} open={nc} onClose={() => setNc(false)} />}
       <EnviarWhatsApp
         open={enviar}
         onClose={() => setEnviar(false)}
