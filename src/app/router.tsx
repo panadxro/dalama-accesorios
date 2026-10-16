@@ -28,9 +28,15 @@ const ComprasPage = lazy(() => import('@/features/compras/pages/ComprasPage'));
 const ReportesPage = lazy(() => import('@/features/reportes/pages/ReportesPage'));
 const ConfiguracionPage = lazy(() => import('@/features/configuracion/pages/ConfiguracionPage'));
 const BusquedaPage = lazy(() => import('@/features/busqueda/pages/BusquedaPage'));
-const KitPage = lazy(() => import('@/features/sistema/pages/KitPage'));
-const DatosPage = lazy(() => import('@/features/sistema/pages/DatosPage'));
 const NoEncontradaPage = lazy(() => import('@/features/sistema/pages/NoEncontradaPage'));
+
+/** Páginas de revisión del equipo (/kit y /kit/datos): solo en desarrollo; el build de producción las descarta. */
+function rutasDeRevision() {
+  if (!import.meta.env.DEV) return [];
+  const KitPage = lazy(() => import('@/features/sistema/pages/KitPage'));
+  const DatosPage = lazy(() => import('@/features/sistema/pages/DatosPage'));
+  return [{ path: '/kit', element: <KitPage /> }, { path: '/kit/datos', element: <DatosPage /> }];
+}
 
 /** Sin login real: si Laura no entró desde la bienvenida, vuelve ahí. */
 function RequiereSesion({ children }: { children: ReactNode }) {
@@ -73,8 +79,7 @@ export const router = createBrowserRouter([
       { path: '/reportes', element: <ReportesPage /> },
       { path: '/configuracion', element: <ConfiguracionPage /> },
       { path: '/buscar', element: <BusquedaPage /> },
-      { path: '/kit', element: <KitPage /> },
-      { path: '/kit/datos', element: <DatosPage /> },
+      ...rutasDeRevision(),
       { path: '*', element: <NoEncontradaPage /> },
     ],
   },

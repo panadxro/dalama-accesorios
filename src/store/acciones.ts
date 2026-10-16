@@ -7,7 +7,7 @@ import { useDemo } from './demo';
 import { estadoStock, letraPara, numeroFiscal, totales } from '@/domain/calculos';
 import type {
   Actividad, Canal, Cheque, Cliente, Cobro, Comprobante, Conteo, Conversacion, DatosDemo, Entrega, EstadoPedido, ID,
-  Imputacion, LetraComprobante, Mensaje, MovimientoStock, Pedido, Presupuesto, Producto, Renglon,
+  Imputacion, LetraComprobante, Mensaje, MovimientoStock, OrdenCompra, Pedido, Presupuesto, Producto, Renglon,
 } from '@/domain/types';
 import { aISO, ahoraISO, conHora, sumarDias, type FechaISO } from '@/lib/fechas';
 
@@ -555,4 +555,75 @@ export function cerrarConteo(d: DatosDemo, estante: string, items: Array<{ produ
     },
     r: { diferencias: movimientos.length, unidades: movimientos.reduce((a, m) => a + Math.abs(m.cantidad), 0) },
   };
+}
+
+/* ───────────── Etapa 5: compras y configuración ───────────── */
+
+/** Crea y envía una orden de compra al proveedor (el envío es simulado). */
+export function crearOrdenCompra(d: DatosDemo, proveedorId: ID, renglones: Array<{ productoId: ID; cantidad: number }>): Resultado<OrdenCompra> {
+  const prov = d.proveedores.find((p) => p.id === proveedorId)!;
+  const ahora = new Date();
+  const oc: OrdenCompra = {
+    id: id('oc'),
+    numero: `OC-${pad4(d.secuencias.ordenCompra)}`,
+    proveedorId,
+    fecha: aISO(ahora),
+    estado: 'enviada',
+    renglones: renglones.map((r) => ({ ...r, costo: d.productos.find((p) => p.id === r.productoId)!.costo, recibido: 0 })),
+    llegaEl: aISO(conHora(sumarDias(ahora, prov.plazoEntregaDias), 12)),
+  };
+  return {
+    datos: {
+      ...d,
+      ordenesCompra: [oc, ...d.ordenesCompra],
+      secuencias: { ...d.secuencias, ordenCompra: d.secuencias.ordenCompra + 1 },
+      actividad: conActividad(d, { tipo: 'compra', titulo: `${oc.numero} enviada`, detalle: `${prov.razonSocial} · ${renglones.length} productos`, ruta: '/compras' }),
+    },
+    r: oc,
+  };
+}
+
+/** Recibe la mercadería de una orden: suma al stock lo recibido y deja la orden como recibida. */
+export function recibirOrden(d: DatosDemo, ocId: ID, recibidos: Record<ID, number>, remitoProveedor: string): Resultado<{ unidades: number; reponen: Producto[] }> {
+  const oc0 = d.ordenesCompra.find((o) => o.id === ocId)!;
+  const prov = d.proveedores.find((p) => p.id === oc0.proveedorId)!;
+  const fecha = ahoraISO();
+  const productos = d.productos.map((p) => ({ ...p }));
+  const movimientos: MovimientoStock[] = [];
+  const reponen: Producto[] = [];
+  let unidades = 0;
+  const renglones = oc0.renglones.map((r) => {
+    const q = Math.max(0, recibidos[r.productoId] ?? r.cantidad);
+    const p = productos.find((x) => x.id === r.productoId)!;
+    const antes = estadoStock(p);
+    p.stock += q;
+    unidades += q;
+    if (q > 0) movimientos.push({ id: id('mov'), productoId: p.id, fecha, cantidad: q, tipo: 'ingreso', referencia: { tipo: 'orden_compra', id: oc0.id, numero: oc0.numero }, usuario: 'Nahuel R.', stockResultante: p.stock });
+    if (antes !== 'ok' && estadoStock(p) === 'ok') reponen.push(p);
+    return { ...r, recibido: q };
+  });
+  const oc: OrdenCompra = { ...oc0, renglones, estado: 'recibida', recibidaEl: fecha, remitoProveedor };
+  return {
+    datos: {
+      ...d,
+      productos,
+      ordenesCompra: reemplazar(d.ordenesCompra, oc),
+      movimientosStock: [...movimientos, ...d.movimientosStock],
+      actividad: conActividad(d, { tipo: 'compra', titulo: `${oc.numero} recibida`, detalle: `${prov.razonSocial} · se sumó al stock`, ruta: '/compras' }),
+    },
+    r: { unidades, reponen },
+  };
+}
+
+export function actualizarEmpresa(d: DatosDemo, empresa: DatosDemo['empresa']): Resultado<void> {
+  return { datos: { ...d, empresa, actividad: conActividad(d, { tipo: 'sistema', titulo: 'Datos de la empresa actualizados', ruta: '/configuracion' }) }, r: undefined };
+}
+
+export function guardarPlantilla(d: DatosDemo, plantilla: DatosDemo['plantillas'][number]): Resultado<void> {
+  const existe = d.plantillas.some((p) => p.id === plantilla.id);
+  return { datos: { ...d, plantillas: existe ? reemplazar(d.plantillas, plantilla) : [...d.plantillas, plantilla] }, r: undefined };
+}
+
+export function actualizarAjustes(d: DatosDemo, ajustes: DatosDemo['ajustes']): Resultado<void> {
+  return { datos: { ...d, ajustes }, r: undefined };
 }

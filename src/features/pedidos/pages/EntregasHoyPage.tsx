@@ -115,7 +115,7 @@ export default function EntregasHoyPage() {
 
   return (
     <Page title="Entregas de hoy" overline="Reparto · Camioneta" mobileHeader={cabecera}>
-      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-3">
+      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-3" data-tour="entregas">
         <div className="hidden items-center justify-between gap-3 lg:flex">
           <span className="text-body text-texto-secundario">{hechas} de {todas.length} entregadas · chofer Nahuel</span>
           <ButtonLink to="/pedidos" variant="tertiary" icon="package">Todos los pedidos</ButtonLink>

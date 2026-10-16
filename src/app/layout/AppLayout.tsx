@@ -6,6 +6,7 @@ import { useDemo } from '@/store/demo';
 import { ErrorBoundary, PageSkeleton } from '@/components/shared/States';
 import { Sidebar } from './Sidebar';
 import { TabBar } from './MobileBars';
+import { Recorrido } from '@/features/tour/Recorrido';
 
 /**
  * Esqueleto de la app: barra lateral (escritorio), menú deslizable y navegación inferior (celular).
@@ -55,6 +56,8 @@ export function AppLayout() {
           </Suspense>
         </ErrorBoundary>
       </div>
+
+      <Recorrido />
 
       <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
         <TabBar />

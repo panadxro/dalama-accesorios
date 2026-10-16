@@ -45,6 +45,8 @@ export interface DataTableProps<R> {
   emptyIcon?: IconName;
   emptyAction?: ReactNode;
   rowClassName?: (row: R) => string | undefined;
+  /** Ancho mínimo de la tabla antes de desplazarse horizontalmente (640 por defecto, como el kit). */
+  minWidth?: number;
   className?: string;
 }
 
@@ -53,7 +55,7 @@ const srOnly = 'sr-only';
 export function DataTable<R>({
   title, overline, headerAction, caption, columns, rows, rowKey, rowLabel, rowActions,
   pageSize = 10, page: pageProp, total: totalProp, onPageChange, pagination = true, loading,
-  emptyTitle = 'Todavía no hay datos', emptyText, emptyIcon = 'inbox', emptyAction, rowClassName, className,
+  emptyTitle = 'Todavía no hay datos', emptyText, emptyIcon = 'inbox', emptyAction, rowClassName, minWidth, className,
 }: DataTableProps<R>) {
   const controlled = onPageChange != null;
   const [innerPage, setInnerPage] = useState(1);
@@ -97,7 +99,7 @@ export function DataTable<R>({
   } else {
     body = (
       <div className="dl-table-scroll">
-        <table className="dl-table">
+        <table className="dl-table" style={minWidth ? { minWidth } : undefined}>
           <caption className={srOnly}>{caption ?? title}</caption>
           <thead>
             <tr>

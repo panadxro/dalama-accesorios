@@ -53,7 +53,7 @@ export default function NuevoPresupuestoPage() {
           </ul>
         )}
         {lista.length > 15 && <p className="m-0 text-caption text-texto-secundario">Mostrando 15 de {lista.length}. Escribí para filtrar.</p>}
-        <div><Button variant="tertiary" icon="message" onClick={() => navigate('/whatsapp')}>O generalo con IA desde un mensaje de WhatsApp</Button></div>
+        <div><Button variant="tertiary" icon="message" className="h-auto whitespace-normal py-2 text-left" onClick={() => navigate('/whatsapp')}>O generalo con IA desde un mensaje de WhatsApp</Button></div>
       </Card>
     </Page>
   );

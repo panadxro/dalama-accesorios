@@ -8,6 +8,7 @@ import { EmptyState } from '@/components/shared/States';
 import { useUi, USUARIO_DEMO } from '@/store/ui';
 import { useDemo } from '@/store/demo';
 import { useAvisos, type Aviso } from '@/store/selectores';
+import { useTour } from '@/features/tour/tour';
 
 export function DemoTag() {
   return (
@@ -122,6 +123,7 @@ export function UserMenu({ compact }: { compact?: boolean }) {
   const navigate = useNavigate();
   const salir = useUi((s) => s.salir);
   const [reiniciar, setReiniciar] = useState(false);
+  const abrirTour = useTour((s) => s.abrir);
   const user = USUARIO_DEMO;
   return (
     <>
@@ -129,6 +131,7 @@ export function UserMenu({ compact }: { compact?: boolean }) {
     <Menu
       label="Menú de usuario"
       items={[
+        { label: 'Recorrido guiado', icon: 'play', onSelect: abrirTour },
         { label: 'Configuración', icon: 'settings', onSelect: () => navigate('/configuracion') },
         { label: 'Reiniciar demo', icon: 'reset', onSelect: () => setReiniciar(true) },
         { label: 'Salir de la demo', icon: 'log-out', separatorBefore: true, onSelect: () => { salir(); navigate('/'); } },

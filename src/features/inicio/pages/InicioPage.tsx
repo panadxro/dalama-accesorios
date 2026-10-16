@@ -81,7 +81,7 @@ export default function InicioPage() {
         <ButtonLink to="/presupuestos/nuevo" variant="primary" icon="plus">Nuevo presupuesto</ButtonLink>
       </PageActions>
 
-      <section aria-label="Indicadores" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]">
+      <section aria-label="Indicadores" data-tour="kpis" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]">
         <KpiCard label="Ventas del mes" value={formatARSKpi(k.ventasMes)} icon="chart" trend={variacion >= 0 ? 'up' : 'down'} delta={formatPct(Math.abs(variacion))} deltaLabel={`vs. ${mesAnt} al día ${hoy.getDate()}`} />
         <KpiCard label="Pedidos de la semana" value={k.pedidosSemana} icon="package" trend={k.pedidosSemana >= k.pedidosSemanaAnt ? 'up' : 'down'} delta={String(Math.abs(k.pedidosSemana - k.pedidosSemanaAnt))} deltaLabel={`${der.mensajesSinProcesar} por WhatsApp sin procesar`} />
         <KpiCard label="Deuda vencida" value={formatARSKpi(k.vencido)} icon="wallet" trend="flat" delta={`${der.conDeudaVencida.length} clientes`} deltaLabel={`${k.criticos} con más de 30 días de atraso`} />

@@ -258,3 +258,12 @@
   .dl-sheet, .dl-menu, .dl-popover, .dl-toaster .dl-toast { animation: none; }
   .dl-skeleton { animation: none; }
 }
+
+/* Recorrido guiado: resalta la zona del paso sin taparla */
+.dl-tour-objetivo { outline: 3px solid var(--rojo-dalama); outline-offset: 4px; border-radius: var(--radius-md); transition: outline-offset .2s; }
+@media (prefers-reduced-motion: reduce) { .dl-tour-objetivo { transition: none; } }
+
+/* Los textos solo para lectores de pantalla (position: absolute) dentro de tablas y pestañas
+   quedan contenidos en su contenedor con scroll; si no, estiran la página en celular. */
+.dl-table-scroll, .dl-tabs { position: relative; }
+.dl-tabs { max-width: 100%; }

@@ -29,7 +29,7 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 ## Estado de módulos
 | Módulo | Estado | Notas |
 |---|---|---|
-| Base visual y navegación | Requiere revisión | Etapa 1: tokens, kit portado, layout, rutas, bienvenida, 404. Revisión en /kit |
+| Base visual y navegación | Requiere revisión | Etapas 1 y 5: tokens, kit portado, layout, rutas, bienvenida, 404; verificado sin desborde a 390 px en las 23 rutas. /kit y /kit/datos solo en desarrollo |
 | Datos de ejemplo | Requiere revisión | Etapa 2: modelo de datos, generador con semilla fija, store persistido, avisos, búsqueda y reinicio. Revisión en /kit/datos |
 | Panel de inicio | Requiere revisión | Etapa 4: KPI, gráfico de ventas acumuladas (Recharts), más vendidos, presupuestos para seguir, actividad reciente, entregas, stock bajo, inactivos, cobro rápido |
 | Bandeja de WhatsApp | Requiere revisión | Etapa 3: lista, chat, IA por reglas con confianza, alta rápida de cliente, simular mensaje y respuesta, celular |
@@ -40,12 +40,12 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 | Cuentas corrientes | Requiere revisión | Etapas 3-4: listado con antigüedad general, cuenta por cliente, cobros con 4 medios, recibo PDF, recordatorios, cartera de cheques (depositar, endosar) |
 | Productos y precios | Requiere revisión | Etapa 4: catálogo con variantes, costo/precio/margen, alta y edición (con sinónimos para la IA), actualización masiva con vista previa, exportar lista |
 | Stock | Requiere revisión | Etapa 4: stock con nivel vs. mínimo y reservado, movimientos con origen, ajustes, conteos; conteo a ciegas para celular |
-| Compras | Pendiente | |
-| Reportes | Pendiente | |
-| Configuración | Pendiente | |
-| Recorrido guiado | Pendiente | |
+| Compras | Requiere revisión | Etapa 5: órdenes en curso, sugeridas por stock mínimo (descuenta lo que viene en camino), envío simulado, recepción con remito y faltantes, proveedores |
+| Reportes | Requiere revisión | Etapa 5: filtros por período, tipo de cliente y categoría; ventas por mes y por categoría, margen por producto, mejores clientes, Libro IVA Ventas; exportación CSV |
+| Configuración | Requiere revisión | Etapa 5: datos fiscales, plantillas de WhatsApp con vista previa, plazos de seguimiento y alertas, ARCA (simulado), recorrido y reinicio de la demo |
+| Recorrido guiado | Requiere revisión | Etapa 5: 6 pasos por el flujo principal, se ofrece al entrar, se puede saltear y reabrir (menú de usuario o Configuración) |
 
-Todas las rutas existen desde la Etapa 1: las secciones sin construir muestran "En preparación · etapa N" con lo que van a hacer y links a secciones relacionadas (sin links vacíos).
+Todas las secciones están construidas: no quedan pantallas "en preparación" ni links vacíos.
 
 Estados: Pendiente · En progreso · Listo · Requiere revisión
 
@@ -83,6 +83,9 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 16/10/2026 | Actualización masiva de precios y ajustes en paneles laterales; columnas laterales bajan debajo de la tabla en menos de 1600 px | Las tablas de catálogo y stock necesitan el ancho a 1440 px |
 | 16/10/2026 | Conteo a ciegas: la cantidad del sistema se muestra recién en el resumen de diferencias | Como pide el diseño; evita contar "para que dé" |
 | 16/10/2026 | Cheques: depositar y endosar. El rechazo de cheques queda fuera de la demo | Requiere débito y reversión de cobro; no suma al recorrido de Laura |
+| 16/10/2026 | Recorrido guiado como tarjeta flotante que no bloquea la pantalla, con resaltado de la zona (data-tour) | Laura puede hacer lo que pide cada paso mientras lo lee |
+| 16/10/2026 | En reportes, el margen es real (después de descuentos de lista) y se marca bajo el 25 %; en Productos, el margen de lista se marca bajo el 30 % | Son dos medidas distintas; con un único umbral casi todo quedaba marcado |
+| 16/10/2026 | Páginas de revisión /kit y /kit/datos solo en desarrollo (el build de producción no las incluye) | No deben aparecer en la demo publicada |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -108,3 +111,7 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 16/10/2026 — [Agregado] Notas de crédito desde la factura, con reingreso de mercadería al stock
 - 16/10/2026 — [Cambiado] Semilla de los datos de ejemplo (esquema 3) para comparaciones mensuales realistas
 - 16/10/2026 — [Corregido] Números de documento que se partían en dos líneas; textos "hace 1 días" y "hace 0 días"
+- 16/10/2026 — [Agregado] Etapa 5: Compras (órdenes sugeridas, envío simulado, recepción), Reportes (ventas, categorías, margen, clientes, Libro IVA, CSV) y Configuración (empresa, plantillas, alertas, ARCA, demo)
+- 16/10/2026 — [Agregado] Recorrido guiado de 6 pasos, ofrecido al entrar y disponible desde el menú de usuario y Configuración
+- 16/10/2026 — [Corregido] Desborde horizontal en celular causado por textos para lectores de pantalla dentro de tablas; pestañas y botones largos en pantallas angostas
+- 16/10/2026 — [Eliminado] Componente provisorio "En preparación" (todas las secciones están construidas) y páginas de revisión del build de producción

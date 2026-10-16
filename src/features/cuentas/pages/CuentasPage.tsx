@@ -78,7 +78,7 @@ export default function CuentasPage() {
         <Button icon="wallet" onClick={() => setCobrar('')}>Registrar cobro</Button>
       </PageActions>
 
-      <section aria-label="Indicadores" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+      <section aria-label="Indicadores" data-tour="cuentas" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
         <KpiCard label="Total a cobrar" value={formatARSKpi(totales.saldo)} icon="wallet" trend="flat" delta={`${datos.clientes.filter((c) => der.cuentas.get(c.id)!.saldo > 0).length} clientes`} deltaLabel="con saldo" />
         <KpiCard label="Vencido" value={formatARSKpi(totales.vencido)} icon="alert-triangle" trend="flat" delta={`${der.conDeudaVencida.length} clientes`} deltaLabel={`${formatARS(a.d61_90 + a.d90, { sinCentavos: true })} con más de 60 días`} />
         <KpiCard label="Cobrado este mes" value={formatARSKpi(totales.cobradoMes)} icon="check-circle" trend="flat" delta={`${datos.cobros.filter((c) => diasEntre(c.fecha, der.hoy) <= 30).length} recibos`} deltaLabel="en los últimos 30 días" />

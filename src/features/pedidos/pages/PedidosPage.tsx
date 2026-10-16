@@ -67,7 +67,7 @@ export default function PedidosPage() {
         <ButtonLink to="/entregas" variant="primary" icon="truck">Entregas de hoy</ButtonLink>
       </PageActions>
 
-      <section aria-label="Indicadores" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+      <section aria-label="Indicadores" data-tour="pedidos" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
         <KpiCard label="Pedidos en curso" value={enCurso.length} icon="package" delta={formatARSKpi(enCurso.reduce((a, p) => a + totalPedido(p, iva), 0))} deltaLabel="a entregar" />
         <KpiCard label="Para facturar" value={paraFacturar.length} icon="receipt" trend="flat" delta={formatARSKpi(paraFacturar.reduce((a, p) => a + totalPedido(p, iva), 0))} deltaLabel="sin factura emitida" />
         <KpiCard label="Entregas de hoy" value={`${entregadosHoy} de ${hoy.length}`} icon="truck" trend="flat" delta={`${hoy.filter((p) => p.entrega.metodo === 'camioneta').length} en camioneta`} deltaLabel={`${hoy.filter((p) => p.entrega.metodo === 'retiro').length} retiran en el local`} />

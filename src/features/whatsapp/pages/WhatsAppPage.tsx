@@ -283,7 +283,7 @@ export default function WhatsAppPage() {
         {seleccionada ? (
           <>
             <Chat conv={seleccionada} onVolver={() => navigate('/whatsapp')} />
-            <PanelPresupuestoIA conv={seleccionada} />
+            <div data-tour="ia"><PanelPresupuestoIA conv={seleccionada} /></div>
           </>
         ) : (
           <ListaConversaciones convs={lista} onElegir={elegir} />
@@ -300,7 +300,7 @@ export default function WhatsAppPage() {
             <div className="flex h-[min(560px,calc(100vh-200px))] min-w-0 flex-col min-[1700px]:h-[min(760px,calc(100vh-200px))]">
               <Chat conv={activa} />
             </div>
-            <div className="min-w-0 lg:col-span-2 min-[1700px]:col-span-1">
+            <div className="min-w-0 lg:col-span-2 min-[1700px]:col-span-1" data-tour="ia">
               <PanelPresupuestoIA key={activa.id} conv={activa} />
             </div>
           </>
