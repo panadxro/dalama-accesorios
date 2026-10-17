@@ -332,7 +332,7 @@ export function emitirFactura(
     unidades += r.cantidad;
     movimientos.push({
       id: id('mov'), productoId: prod.id, fecha, cantidad: -r.cantidad, tipo: 'venta',
-      referencia: { tipo: 'pedido', id: pedido.id, numero: pedido.numero }, usuario: 'Laura M.', stockResultante: prod.stock,
+      referencia: { tipo: 'pedido', id: pedido.id, numero: pedido.numero }, usuario: 'Laura V.', stockResultante: prod.stock,
     });
     if (antes === 'ok' && estadoStock(prod) !== 'ok' && !faltantes.includes(prod)) quedaronBajos.push(prod);
   }
@@ -466,7 +466,7 @@ export function emitirNotaCredito(
       const prod = productos.find((p) => p.id === r.productoId);
       if (!prod) continue;
       prod.stock += r.cantidad;
-      movimientos.push({ id: id('mov'), productoId: prod.id, fecha, cantidad: r.cantidad, tipo: 'devolucion', referencia: { tipo: 'comprobante', id: nc.id, numero: `NC ${nc.letra} ${numeroFiscal(nc.puntoVenta, nc.numero)}` }, motivo: datos.motivo, usuario: 'Laura M.', stockResultante: prod.stock });
+      movimientos.push({ id: id('mov'), productoId: prod.id, fecha, cantidad: r.cantidad, tipo: 'devolucion', referencia: { tipo: 'comprobante', id: nc.id, numero: `NC ${nc.letra} ${numeroFiscal(nc.puntoVenta, nc.numero)}` }, motivo: datos.motivo, usuario: 'Laura V.', stockResultante: prod.stock });
     }
   }
   return {
@@ -524,7 +524,7 @@ export const nuevoIdProducto = (codigo: string) => `prod-${codigo.toLowerCase()}
 export function ajustarStock(d: DatosDemo, productoId: ID, cantidad: number, motivo: string): Resultado<Producto> {
   const p0 = d.productos.find((p) => p.id === productoId)!;
   const p = { ...p0, stock: p0.stock + cantidad };
-  const mov: MovimientoStock = { id: id('mov'), productoId, fecha: ahoraISO(), cantidad, tipo: 'ajuste', motivo, usuario: 'Laura M.', stockResultante: p.stock };
+  const mov: MovimientoStock = { id: id('mov'), productoId, fecha: ahoraISO(), cantidad, tipo: 'ajuste', motivo, usuario: 'Laura V.', stockResultante: p.stock };
   return {
     datos: { ...d, productos: reemplazar(d.productos, p), movimientosStock: [mov, ...d.movimientosStock], actividad: conActividad(d, { tipo: 'stock', titulo: `Ajuste de stock ${cantidad > 0 ? '+' : ''}${cantidad}`, detalle: `${p.nombre} · ${motivo}`, ruta: '/stock' }) },
     r: p,

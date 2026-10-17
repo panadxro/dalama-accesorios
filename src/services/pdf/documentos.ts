@@ -29,7 +29,7 @@ let logoCache: { data: string; w: number; h: number } | null = null;
 async function cargarLogo() {
   if (logoCache) return logoCache;
   const img = new Image();
-  img.src = '/brand/dalama-logo.png';
+  img.src = '/brand/dalama-logo.svg';
   await img.decode();
   // Reducido y en JPEG sobre blanco: el PDF queda liviano (el logo original pesa cientos de KB).
   const ancho = 600;

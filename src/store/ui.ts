@@ -34,4 +34,4 @@ export const useUi = create<UiState>()(
 );
 
 /** Usuario de la demo (sin login real). */
-export const USUARIO_DEMO = { name: 'Laura M.', role: 'Administradora', initials: 'LM' } as const;
+export const USUARIO_DEMO = { name: 'Laura V.', role: 'Administradora', initials: 'LV' } as const;

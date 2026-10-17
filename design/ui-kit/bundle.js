@@ -313,7 +313,7 @@
 
   /* 7. Barra superior */
   function Topbar(props) {
-    var user = props.user || { name: "Laura M.", role: "Administradora", initials: "LM" };
+    var user = props.user || { name: "Laura V.", role: "Administradora", initials: "LM" };
     return h("header", { className: cx("dl-topbar", props.className) },
       h("div", { className: "dl-topbar-title" },
         props.overline ? h("div", { className: "dl-overline" }, props.overline) : null,

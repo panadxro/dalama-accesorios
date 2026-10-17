@@ -96,7 +96,7 @@ export default function EntregasHoyPage() {
         <button type="button" className="dl-iconbtn -ml-2 h-11 w-11 text-neutro-300 hover:bg-neutro-0/10 hover:text-neutro-0" aria-label="Abrir menú" onClick={() => setMenu(true)}>
           <Icon name="menu" size={24} />
         </button>
-        <img src="/brand/dalama-isotipo-negativo.png" alt="" className="w-7" />
+        <img src="/brand/dalama-isotipo-negativo.svg" alt="" className="w-7" />
         <div className="flex-1">
           <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutro-300">Reparto · Camioneta</div>
           <h1 className="m-0 text-[18px] font-semibold leading-6">Entregas de hoy</h1>

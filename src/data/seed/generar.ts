@@ -622,7 +622,7 @@ export function generarDatos(ahora = new Date(), semilla = SEMILLA): DatosDemo {
 
   // Ajustes manuales.
   movimientos.push({ id: nuevoId(ctx, 'mov'), productoId: prod('MAN-MOD-NG').id, fecha: aISO(conHora(sumarDias(hoy, -7), 17, 40)), cantidad: -3, tipo: 'ajuste', motivo: 'Rotura en el depósito', usuario: 'Nahuel R.', stockResultante: 0 });
-  movimientos.push({ id: nuevoId(ctx, 'mov'), productoId: prod('SIL-NEU-280').id, fecha: aISO(conHora(sumarDias(hoy, -19), 12, 5)), cantidad: -2, tipo: 'ajuste', motivo: 'Vencidos', usuario: 'Laura M.', stockResultante: 0 });
+  movimientos.push({ id: nuevoId(ctx, 'mov'), productoId: prod('SIL-NEU-280').id, fecha: aISO(conHora(sumarDias(hoy, -19), 12, 5)), cantidad: -2, tipo: 'ajuste', motivo: 'Vencidos', usuario: 'Laura V.', stockResultante: 0 });
 
   // Último conteo: estantes A a C, hace 16 días, con diferencias.
   const fechaConteo = conHora(sumarDias(hoy, -16), 16, 30);

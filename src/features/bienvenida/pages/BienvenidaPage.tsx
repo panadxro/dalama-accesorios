@@ -33,7 +33,7 @@ export default function BienvenidaPage() {
     <div className="dl-root flex min-h-screen flex-col bg-fondo lg:flex-row">
       {/* Marca */}
       <section className="flex flex-col justify-between gap-10 bg-ink-black px-6 py-8 text-neutro-0 sm:px-10 lg:w-[46%] lg:px-14 lg:py-12">
-        <img src="/brand/dalama-logo-negativo.png" alt="DALAMA · Accesorios para aberturas · Distribuidora" className="w-[220px] sm:w-[260px]" />
+        <img src="/brand/dalama-logo-negativo.svg" alt="DALAMA · Accesorios para aberturas · Distribuidora" className="w-[220px] sm:w-[260px]" />
         <div className="max-w-[520px]">
           <div className="text-overline uppercase text-neutro-300">Sistema de gestión</div>
           <span className="dl-brandline" aria-hidden="true" />
@@ -80,7 +80,14 @@ export default function BienvenidaPage() {
               <li className="flex gap-2"><Icon name="reset" size={16} className="mt-0.5 shrink-0 text-info" />Podés probar todo sin miedo: la demo se reinicia con un botón.</li>
             </ul>
           </div>
-          <p className="mt-4 text-center text-caption text-texto-secundario">Demo · datos ficticios</p>
+          <div className="mt-6 flex flex-col items-center gap-3 text-caption text-texto-secundario">
+            <span>Demo · datos ficticios</span>
+            <span className="flex items-center gap-2">
+              Desarrollado por
+              <img src="/brand/levn-logo.svg" alt="" width={15} height={20} className="h-5 w-auto" />
+              <strong className="font-semibold text-texto">Levn</strong>
+            </span>
+          </div>
         </div>
       </section>
     </div>

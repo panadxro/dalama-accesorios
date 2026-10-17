@@ -10,7 +10,7 @@ export function MobileBar({ title, overline, onMenu }: { title: string; overline
       <button type="button" className="dl-iconbtn -ml-2" aria-label="Abrir menú" onClick={onMenu}>
         <Icon name="menu" size={24} />
       </button>
-      <img src="/brand/dalama-isotipo-negativo.png" alt="" width={24} className="w-6 shrink-0" />
+      <img src="/brand/dalama-isotipo-negativo.svg" alt="" width={24} className="w-6 shrink-0" />
       <div className="min-w-0 flex-1">
         {overline && <div className="truncate text-[11px] font-semibold uppercase leading-4 tracking-[0.12em] text-neutro-300">{overline}</div>}
         <h1 className="truncate text-[18px] font-semibold leading-6">{title}</h1>

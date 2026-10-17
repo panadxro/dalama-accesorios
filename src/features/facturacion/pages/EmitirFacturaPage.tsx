@@ -259,7 +259,7 @@ export default function EmitirFacturaPage() {
           {/* Vista previa del comprobante */}
           <section aria-label="Vista previa del comprobante" className="rounded-sm border border-borde bg-superficie p-6 shadow-2">
             <div className="flex items-center justify-between gap-3 border-b-2 border-ink-black pb-3.5">
-              <img src="/brand/dalama-logo.png" alt="DALAMA · Accesorios para aberturas" className="w-[130px]" />
+              <img src="/brand/dalama-logo.svg" alt="DALAMA · Accesorios para aberturas" className="w-[130px]" />
               <div className="flex flex-col items-center gap-0.5"><span className="grid h-10 w-10 place-items-center border-2 border-ink-black text-[20px] font-bold">{letra}</span><span className="text-[9px] text-texto-secundario">COD. {letra === 'A' ? '01' : letra === 'B' ? '06' : '11'}</span></div>
               <div className="text-right"><div className="text-[12px] font-bold tracking-[0.12em]">FACTURA</div><div className="text-[11px] tabular">N.° {numeroFiscal(datos.empresa.puntoVenta, numero)}</div><div className="text-[11px] text-texto-secundario tabular">{formatFecha(new Date(y, m - 1, dd))}</div></div>
             </div>

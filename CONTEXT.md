@@ -5,9 +5,9 @@ Demo interactiva del CRM para DALAMA, distribuidora de accesorios para aberturas
 Objetivo: que Laura (dueña) recorra la demo sola y entienda cómo funcionaría su negocio con el sistema, como paso previo a contratar el desarrollo real.
 
 - Cliente: Laura (dueña, contadora) y Dario (dueño, arquitecto)
-- Equipo: Lucas (producto y diseño), Valentino (desarrollo), Yoel (marketing)
+- Desarrollador: Lucas
 - Diseño de referencia: /design (original: https://claude.ai/artifact/RgiZQRNc9T9xZa8sXoQxfj)
-- Demo publicada: _pendiente_
+- Demo publicada: (https://dalama-accesorios.vercel.app/)
 
 ## Alcance
 - Es una DEMO: sin backend, datos en localStorage, WhatsApp/IA/ARCA simulados.
@@ -86,6 +86,7 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 16/10/2026 | Recorrido guiado como tarjeta flotante que no bloquea la pantalla, con resaltado de la zona (data-tour) | Laura puede hacer lo que pide cada paso mientras lo lee |
 | 16/10/2026 | En reportes, el margen es real (después de descuentos de lista) y se marca bajo el 25 %; en Productos, el margen de lista se marca bajo el 30 % | Son dos medidas distintas; con un único umbral casi todo quedaba marcado |
 | 16/10/2026 | Páginas de revisión /kit y /kit/datos solo en desarrollo (el build de producción no las incluye) | No deben aparecer en la demo publicada |
+| 16/10/2026 | Deploy en Vercel como sitio estático: `npm ci` + `npm run build`, rewrites a index.html y caché de un año para /assets | Sin servidor ni variables de entorno; links directos y recargas funcionan |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -115,3 +116,6 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 16/10/2026 — [Agregado] Recorrido guiado de 6 pasos, ofrecido al entrar y disponible desde el menú de usuario y Configuración
 - 16/10/2026 — [Corregido] Desborde horizontal en celular causado por textos para lectores de pantalla dentro de tablas; pestañas y botones largos en pantallas angostas
 - 16/10/2026 — [Eliminado] Componente provisorio "En preparación" (todas las secciones están construidas) y páginas de revisión del build de producción
+- 16/10/2026 — [Agregado] Etapa 6: README con instrucciones para correr, publicar en Vercel (web y CLI), checklist post-deploy, datos de ejemplo, integraciones simuladas y cómo reemplazarlas, estructura y diseño
+- 16/10/2026 — [Cambiado] vercel.json con `npm ci` y caché para /assets; package.json con versión mínima de Node (18.18) y script `typecheck` corregido
+- 16/10/2026 — [Agregado] Crédito "Desarrollado por Levn" con el logo de Levn en la pantalla de bienvenida, en el pie de la barra lateral y en el README

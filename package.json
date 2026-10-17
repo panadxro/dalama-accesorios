@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.4",
@@ -34,5 +34,8 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"
+  },
+  "engines": {
+    "node": ">=18.18"
   }
 }

@@ -21,9 +21,9 @@ export function Sidebar({ collapsed, onToggle, counts = {}, onNavigate, classNam
       <div className="dl-sidebar-logo">
         <Link to="/inicio" onClick={onNavigate} className="rounded-sm focus-visible:outline-foco-oscuro" aria-label="DALAMA · Ir al inicio">
           {collapsed ? (
-            <img src="/brand/dalama-isotipo-negativo.png" alt="" width={36} style={{ width: 36 }} />
+            <img src="/brand/dalama-isotipo-negativo.svg" alt="" width={36} style={{ width: 36 }} />
           ) : (
-            <img src="/brand/dalama-logo-negativo.png" alt="" width={196} style={{ width: 196 }} />
+            <img src="/brand/dalama-logo-negativo.svg" alt="" width={196} style={{ width: 196 }} />
           )}
         </Link>
       </div>
@@ -51,14 +51,19 @@ export function Sidebar({ collapsed, onToggle, counts = {}, onNavigate, classNam
           </div>
         ))}
       </nav>
-      {onToggle && (
-        <div className="dl-sidebar-foot">
+      <div className="dl-sidebar-foot">
+        {onToggle && (
           <button type="button" className="dl-nav-item" onClick={onToggle} aria-expanded={!collapsed} title={collapsed ? 'Expandir menú' : undefined}>
             <Icon name={collapsed ? 'panel-right' : 'panel-left'} size={20} />
             <span className="dl-nav-label">{collapsed ? 'Expandir menú' : 'Colapsar menú'}</span>
           </button>
-        </div>
-      )}
+        )}
+        {/* Crédito del equipo que desarrolló la demo. */}
+        <p className={cn('m-0 flex items-center gap-2 pt-3 text-[11px] leading-4 text-neutro-300', collapsed ? 'justify-center' : 'px-3')} title="Desarrollado por el equipo de Levn">
+          <img src="/brand/levn-logo-negativo.svg" alt="" width={12} height={16} className="h-4 w-auto shrink-0" />
+          <span className="dl-nav-label">Desarrollado por <strong className="font-semibold text-neutro-0">Levn</strong></span>
+        </p>
+      </div>
     </aside>
   );
 }
