@@ -20,7 +20,7 @@ import { CONVERSACIONES_SEED } from './conversaciones';
 import { AJUSTES, EMPRESA, PLANTILLAS } from './empresa';
 
 /** Si cambia la forma de los datos, subir este número: las demos guardadas se regeneran. */
-export const ESQUEMA_DATOS = 3;
+export const ESQUEMA_DATOS = 4;
 
 // Elegida entre varias para que las comparaciones mes a mes sean creíbles cualquier día que se abra la demo.
 const SEMILLA = 20261013;
@@ -773,6 +773,7 @@ export function generarDatos(ahora = new Date(), semilla = SEMILLA): DatosDemo {
     movimientosStock: movimientos,
     conteos,
     ordenesCompra: ordenes.sort((a, b) => b.fecha.localeCompare(a.fecha)),
+    listaCompra: [],
     conversaciones,
     plantillas: PLANTILLAS.map((p) => ({ ...p })),
     actividad: actividad.sort((a, b) => b.fecha.localeCompare(a.fecha)),

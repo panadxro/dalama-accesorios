@@ -6,7 +6,8 @@ import { CATEGORIA, estadoStock, margenPct } from '@/domain/calculos';
 import type { Categoria, Producto } from '@/domain/types';
 import { descargarCSV, pesos } from '@/lib/csv';
 import { formatARS, formatPct } from '@/lib/format';
-import { actualizarPrecios, ejecutar } from '@/store/acciones';
+import { actualizarPrecios, agregarALista, ejecutar } from '@/store/acciones';
+import { useCantidadInicial } from '@/features/compras/sugerencias';
 import { useDemo } from '@/store/demo';
 import { normalizar, useDerivados } from '@/store/selectores';
 import { EditarProducto } from '../EditarProducto';
@@ -86,10 +87,17 @@ function ActualizacionMasiva({ open, onClose }: { open: boolean; onClose: () => 
   );
 }
 
+/** Suma un producto a la lista de pedido a proveedores y avisa dónde quedó. */
+function sumarALista(p: Producto, cantidad: number) {
+  ejecutar((d) => agregarALista(d, [{ productoId: p.id, cantidad }]));
+  toast.info('Sumado a la lista de pedido', `${p.nombre}: ${cantidad} ${p.unidad} · las órdenes se generan desde Compras → Lista de pedido.`);
+}
+
 export default function ProductosPage() {
   const [params] = useSearchParams();
   const datos = useDemo((s) => s.datos);
   const der = useDerivados();
+  const inicial = useCantidadInicial();
   const [vista, setVista] = useState<Vista>('todas');
   const [q, setQ] = useState(params.get('q') ?? '');
   const [proveedor, setProveedor] = useState('todos');
@@ -167,6 +175,7 @@ export default function ProductosPage() {
             rowActions={(p) => [
               { label: 'Editar', icon: 'pencil', onClick: () => setEditando(p) },
               { label: 'Ver stock y movimientos', icon: 'boxes', to: `/stock?q=${encodeURIComponent(p.codigo)}` },
+              { label: 'Agregar a la lista de pedido', icon: 'cart', onClick: () => sumarALista(p, inicial(p)) },
             ]}
             emptyIcon="tag"
             emptyTitle="No encontramos productos"

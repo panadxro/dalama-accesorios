@@ -560,7 +560,7 @@ export function cerrarConteo(d: DatosDemo, estante: string, items: Array<{ produ
 /* ───────────── Etapa 5: compras y configuración ───────────── */
 
 /** Crea y envía una orden de compra al proveedor (el envío es simulado). */
-export function crearOrdenCompra(d: DatosDemo, proveedorId: ID, renglones: Array<{ productoId: ID; cantidad: number }>): Resultado<OrdenCompra> {
+export function crearOrdenCompra(d: DatosDemo, proveedorId: ID, renglones: Array<{ productoId: ID; cantidad: number }>, nota?: string): Resultado<OrdenCompra> {
   const prov = d.proveedores.find((p) => p.id === proveedorId)!;
   const ahora = new Date();
   const oc: OrdenCompra = {
@@ -571,6 +571,7 @@ export function crearOrdenCompra(d: DatosDemo, proveedorId: ID, renglones: Array
     estado: 'enviada',
     renglones: renglones.map((r) => ({ ...r, costo: d.productos.find((p) => p.id === r.productoId)!.costo, recibido: 0 })),
     llegaEl: aISO(conHora(sumarDias(ahora, prov.plazoEntregaDias), 12)),
+    ...(nota?.trim() ? { nota: nota.trim() } : {}),
   };
   return {
     datos: {
@@ -581,6 +582,50 @@ export function crearOrdenCompra(d: DatosDemo, proveedorId: ID, renglones: Array
     },
     r: oc,
   };
+}
+
+/** Suma productos a la lista de pedido; si ya estaban, acumula la cantidad. */
+export function agregarALista(d: DatosDemo, items: Array<{ productoId: ID; cantidad: number }>): Resultado<{ nuevos: number }> {
+  const lista = d.listaCompra.map((x) => ({ ...x }));
+  let nuevos = 0;
+  for (const it of items) {
+    if (it.cantidad <= 0) continue;
+    const ya = lista.find((x) => x.productoId === it.productoId);
+    if (ya) ya.cantidad += it.cantidad;
+    else { lista.push({ ...it }); nuevos++; }
+  }
+  return { datos: { ...d, listaCompra: lista }, r: { nuevos } };
+}
+
+/** Cambia la cantidad de un renglón de la lista; con 0 lo quita. */
+export function cambiarCantidadLista(d: DatosDemo, productoId: ID, cantidad: number): Resultado<void> {
+  const listaCompra = cantidad > 0
+    ? d.listaCompra.map((x) => (x.productoId === productoId ? { ...x, cantidad } : x))
+    : d.listaCompra.filter((x) => x.productoId !== productoId);
+  return { datos: { ...d, listaCompra }, r: undefined };
+}
+
+/** Vacía la lista entera o solo los productos de un proveedor. */
+export function vaciarLista(d: DatosDemo, proveedorId?: ID): Resultado<void> {
+  const prov = new Map(d.productos.map((p) => [p.id, p.proveedorId]));
+  const listaCompra = proveedorId ? d.listaCompra.filter((x) => prov.get(x.productoId) !== proveedorId) : [];
+  return { datos: { ...d, listaCompra }, r: undefined };
+}
+
+/** Genera una orden por proveedor con lo que hay en la lista y saca de la lista lo pedido. */
+export function generarOrdenesDeLista(d: DatosDemo, proveedorIds: ID[], notas: Record<ID, string> = {}): Resultado<OrdenCompra[]> {
+  const prov = new Map(d.productos.map((p) => [p.id, p.proveedorId]));
+  let datos = d;
+  const ordenes: OrdenCompra[] = [];
+  for (const pid of proveedorIds) {
+    const renglones = d.listaCompra.filter((x) => prov.get(x.productoId) === pid && x.cantidad > 0);
+    if (!renglones.length) continue;
+    const { datos: sig, r } = crearOrdenCompra(datos, pid, renglones, notas[pid]);
+    datos = sig;
+    ordenes.push(r);
+  }
+  const listaCompra = d.listaCompra.filter((x) => !proveedorIds.includes(prov.get(x.productoId) ?? ''));
+  return { datos: { ...datos, listaCompra }, r: ordenes };
 }
 
 /** Recibe la mercadería de una orden: suma al stock lo recibido y deja la orden como recibida. */

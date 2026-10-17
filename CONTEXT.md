@@ -40,7 +40,7 @@ WhatsApp → Presupuesto con IA → Envío → Aceptación → Pedido → Factur
 | Cuentas corrientes | Requiere revisión | Etapas 3-4: listado con antigüedad general, cuenta por cliente, cobros con 4 medios, recibo PDF, recordatorios, cartera de cheques (depositar, endosar) |
 | Productos y precios | Requiere revisión | Etapa 4: catálogo con variantes, costo/precio/margen, alta y edición (con sinónimos para la IA), actualización masiva con vista previa, exportar lista |
 | Stock | Requiere revisión | Etapa 4: stock con nivel vs. mínimo y reservado, movimientos con origen, ajustes, conteos; conteo a ciegas para celular |
-| Compras | Requiere revisión | Etapa 5: órdenes en curso, sugeridas por stock mínimo (descuenta lo que viene en camino), envío simulado, recepción con remito y faltantes, proveedores |
+| Compras | Requiere revisión | Etapa 5: órdenes en curso, sugeridas por stock mínimo (descuenta lo que viene en camino), envío simulado, recepción con remito y faltantes, proveedores. Lista de pedido (/compras/lista): cualquier producto y cantidad, agrupada por proveedor, nota por orden, CSV y generación de una o todas las órdenes |
 | Reportes | Requiere revisión | Etapa 5: filtros por período, tipo de cliente y categoría; ventas por mes y por categoría, margen por producto, mejores clientes, Libro IVA Ventas; exportación CSV |
 | Configuración | Requiere revisión | Etapa 5: datos fiscales, plantillas de WhatsApp con vista previa, plazos de seguimiento y alertas, ARCA (simulado), recorrido y reinicio de la demo |
 | Recorrido guiado | Requiere revisión | Etapa 5: 6 pasos por el flujo principal, se ofrece al entrar, se puede saltear y reabrir (menú de usuario o Configuración) |
@@ -87,6 +87,7 @@ Estados: Pendiente · En progreso · Listo · Requiere revisión
 | 16/10/2026 | En reportes, el margen es real (después de descuentos de lista) y se marca bajo el 25 %; en Productos, el margen de lista se marca bajo el 30 % | Son dos medidas distintas; con un único umbral casi todo quedaba marcado |
 | 16/10/2026 | Páginas de revisión /kit y /kit/datos solo en desarrollo (el build de producción no las incluye) | No deben aparecer en la demo publicada |
 | 16/10/2026 | Deploy en Vercel como sitio estático: `npm ci` + `npm run build`, rewrites a index.html y caché de un año para /assets | Sin servidor ni variables de entorno; links directos y recargas funcionan |
+| 17/10/2026 | Pedido personalizado con una lista de pedido única guardada en los datos (`listaCompra`); se genera una orden por proveedor y lo pedido sale de la lista. Las sugeridas no repiten lo que ya está en la lista. Esquema de datos 4 | Laura arma el pedido de a poco desde Compras, Stock o Productos, y envía todo junto |
 
 ## Feedback de Laura
 _(Anotar acá los comentarios después de que pruebe la demo)_
@@ -119,3 +120,6 @@ Formato: `dd/mm/aaaa — [Agregado | Cambiado | Corregido | Eliminado] descripci
 - 16/10/2026 — [Agregado] Etapa 6: README con instrucciones para correr, publicar en Vercel (web y CLI), checklist post-deploy, datos de ejemplo, integraciones simuladas y cómo reemplazarlas, estructura y diseño
 - 16/10/2026 — [Cambiado] vercel.json con `npm ci` y caché para /assets; package.json con versión mínima de Node (18.18) y script `typecheck` corregido
 - 16/10/2026 — [Agregado] Crédito "Desarrollado por Levn" con el logo de Levn en la pantalla de bienvenida, en el pie de la barra lateral y en el README
+- 17/10/2026 — [Agregado] Lista de pedido a proveedores (/compras/lista): cualquier producto con cualquier cantidad, agrupada por proveedor, "Sumar lo sugerido", nota para el proveedor, descarga en CSV y generación de una o todas las órdenes
+- 17/10/2026 — [Agregado] "Agregar a la lista de pedido" en Stock y Productos, "Pasar a la lista" en las órdenes sugeridas y la nota visible en las órdenes en curso
+- 17/10/2026 — [Cambiado] Esquema de datos 4 (lista de pedido y nota en las órdenes de compra): las demos guardadas se regeneran

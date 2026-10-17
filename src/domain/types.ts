@@ -280,6 +280,14 @@ export interface OrdenCompra {
   llegaEl: FechaISO;
   recibidaEl?: FechaISO;
   remitoProveedor?: string;
+  /** Indicaciones que viajan con la orden (pedido personalizado). */
+  nota?: string;
+}
+
+/** Renglón de la lista de pedido: lo que se va a pedir a proveedores, todavía sin orden. */
+export interface ItemListaCompra {
+  productoId: ID;
+  cantidad: number;
 }
 
 /* ───────────── WhatsApp ───────────── */
@@ -392,6 +400,8 @@ export interface DatosDemo {
   movimientosStock: MovimientoStock[];
   conteos: Conteo[];
   ordenesCompra: OrdenCompra[];
+  /** Lista de pedido en armado; al generar las órdenes se vacía lo pedido. */
+  listaCompra: ItemListaCompra[];
   conversaciones: Conversacion[];
   plantillas: Plantilla[];
   actividad: Actividad[];

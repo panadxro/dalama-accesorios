@@ -1,39 +1,28 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Page, PageActions } from '@/app/layout/Page';
-import { Alert, Badge, Button, Card, ConfirmModal, Icon, KpiCard, SectionTitle, Select, Sheet, TextInput, toast } from '@/components/ui';
+import { Alert, Badge, Button, ButtonLink, Card, ConfirmModal, Icon, KpiCard, SectionTitle, Select, Sheet, TextInput, toast } from '@/components/ui';
 import { EmptyState } from '@/components/shared/States';
 import { estadoStock } from '@/domain/calculos';
 import type { OrdenCompra } from '@/domain/types';
 import { cn } from '@/lib/cn';
 import { diasEntre } from '@/lib/fechas';
 import { formatARS, formatFecha } from '@/lib/format';
-import { crearOrdenCompra, ejecutar, recibirOrden } from '@/store/acciones';
+import { agregarALista, crearOrdenCompra, ejecutar, recibirOrden } from '@/store/acciones';
 import { useDemo } from '@/store/demo';
 import { useDerivados } from '@/store/selectores';
+import { useSugerencias } from '../sugerencias';
 
 const totalOC = (o: OrdenCompra) => o.renglones.reduce((a, r) => a + r.cantidad * r.costo, 0);
 
 /** Órdenes sugeridas: lo que está bajo el mínimo, para reponer hasta N veces el mínimo. */
 function Sugeridas() {
   const datos = useDemo((s) => s.datos);
-  const der = useDerivados();
-  const veces = datos.ajustes.reponerHastaVecesMinimo;
-
-  // Lo que ya está pedido en órdenes enviadas no se vuelve a sugerir.
-  const enCamino = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const o of datos.ordenesCompra) if (o.estado === 'enviada') for (const r of o.renglones) m.set(r.productoId, (m.get(r.productoId) ?? 0) + r.cantidad);
-    return m;
-  }, [datos.ordenesCompra]);
-
-  const sugeridos = datos.productos
-    .filter((p) => p.activo && estadoStock(p) !== 'ok')
-    .map((p) => {
-      const necesario = p.stockMinimo * veces + (der.reservado.get(p.id) ?? 0) - p.stock - (enCamino.get(p.id) ?? 0);
-      return { p, cantidad: Math.max(0, Math.ceil(necesario / 5) * 5) };
-    })
-    .filter((x) => x.cantidad > 0);
+  const navigate = useNavigate();
+  const { sugeridos: todos, enCamino, veces } = useSugerencias();
+  // Lo que ya está en la lista de pedido se gestiona desde ahí.
+  const enLista = new Set(datos.listaCompra.map((x) => x.productoId));
+  const sugeridos = todos.filter((x) => !enLista.has(x.p.id));
 
   const proveedores = [...new Set(sugeridos.map((x) => x.p.proveedorId))];
   const [prov, setProv] = useState(proveedores[0] ?? '');
@@ -54,7 +43,11 @@ function Sugeridas() {
   if (!sugeridos.length) {
     return (
       <Card className="p-0" aria-label="Órdenes sugeridas">
-        <EmptyState icon="check-circle" title="No hay nada para reponer" text="Todo el stock está sobre el mínimo o ya está pedido en una orden en camino." />
+        {todos.length ? (
+          <EmptyState icon="clipboard" title="Lo que falta ya está en la lista de pedido" text={`${todos.length} ${todos.length === 1 ? 'producto bajo el mínimo espera' : 'productos bajo el mínimo esperan'} en la lista. Generá las órdenes desde ahí.`} action={<ButtonLink to="/compras/lista" variant="secondary" icon="clipboard">Ir a la lista de pedido</ButtonLink>} />
+        ) : (
+          <EmptyState icon="check-circle" title="No hay nada para reponer" text="Todo el stock está sobre el mínimo o ya está pedido en una orden en camino." />
+        )}
       </Card>
     );
   }
@@ -99,7 +92,14 @@ function Sugeridas() {
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-b-md border-t border-borde bg-arena-50 px-6 py-4">
         <span className="text-body">{lineas.length} productos · <strong className="tabular">{formatARS(total)}</strong> + IVA</span>
-        <Button icon="send" disabled={!lineas.length} onClick={() => setConfirmar(true)}>Generar OC y enviar</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" icon="clipboard" disabled={!lineas.length} onClick={() => {
+            ejecutar((d) => agregarALista(d, lineas.map((x) => ({ productoId: x.p.id, cantidad: x.cantidad }))));
+            toast.info('Pasado a la lista de pedido', `${lineas.length} productos de ${proveedor?.razonSocial}. Sumá lo que quieras de otros productos o proveedores y generá todas las órdenes juntas.`);
+            navigate('/compras/lista');
+          }}>Pasar a la lista</Button>
+          <Button icon="send" disabled={!lineas.length} onClick={() => setConfirmar(true)}>Generar OC y enviar</Button>
+        </div>
       </div>
       <ConfirmModal
         open={confirmar}
@@ -183,7 +183,11 @@ export default function ComprasPage() {
 
   return (
     <Page title="Compras y proveedores" overline="Catálogo">
-      <PageActions overline="Reposición del depósito" />
+      <PageActions overline="Reposición del depósito">
+        <ButtonLink to="/compras/lista" variant="secondary" icon="clipboard">
+          Lista de pedido{datos.listaCompra.length ? ` (${datos.listaCompra.length})` : ''}
+        </ButtonLink>
+      </PageActions>
 
       <section aria-label="Indicadores" className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
         <KpiCard label="Órdenes en camino" value={enCurso.length} icon="truck" trend="flat" delta={formatARS(enCurso.reduce((a, o) => a + totalOC(o), 0), { sinCentavos: true })} deltaLabel="+ IVA" />
@@ -203,6 +207,7 @@ export default function ComprasPage() {
                 <div className="flex items-center justify-between gap-2"><strong className="tabular">{o.numero}</strong>{o.estado === 'recibida' ? <Badge tone="success" icon="check">Recibida</Badge> : <Badge tone={l.tone} icon="clock">{l.txt}</Badge>}</div>
                 <div><div className="font-semibold">{prov.razonSocial}</div><div className="text-body-small text-texto-secundario">{o.estado === 'recibida' ? `Recibida el ${formatFecha(o.recibidaEl!)} · stock actualizado` : `Enviada el ${formatFecha(o.fecha).slice(0, 5)} · ${formatARS(totalOC(o))} + IVA`}</div></div>
                 <div className="text-caption text-texto-secundario">{o.renglones.length} productos · {o.renglones.reduce((a, r) => a + r.cantidad, 0)} unidades</div>
+                {o.nota && <p className="m-0 flex gap-1.5 text-caption text-texto-secundario"><Icon name="message" size={14} className="mt-0.5 shrink-0" /><span>“{o.nota}”</span></p>}
                 {o.estado === 'enviada' && <Button variant={diasEntre(der.hoy, o.llegaEl) <= 0 ? 'primary' : 'secondary'} size="s" icon="package-check" onClick={() => setRecibiendo(o)}>Registrar recepción</Button>}
               </Card>
             );

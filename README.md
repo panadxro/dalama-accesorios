@@ -73,6 +73,7 @@ npx vercel --prod   # publica en producción
   - "Simular nuevo mensaje" en la bandeja.
   - "El cliente acepta / no acepta" en un presupuesto enviado.
   - "Simular que ARCA no responde" al emitir una factura.
+- **Pedir a proveedores:** en *Compras → Lista de pedido* se suma cualquier producto con la cantidad que haga falta (también desde Stock y Productos, o con "Sumar lo sugerido"). La lista se agrupa por proveedor y genera una orden de compra por cada uno.
 
 ### Los datos de ejemplo
 

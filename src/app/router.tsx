@@ -25,6 +25,7 @@ const ProductosPage = lazy(() => import('@/features/productos/pages/ProductosPag
 const StockPage = lazy(() => import('@/features/stock/pages/StockPage'));
 const ConteoPage = lazy(() => import('@/features/stock/pages/ConteoPage'));
 const ComprasPage = lazy(() => import('@/features/compras/pages/ComprasPage'));
+const ListaPedidoPage = lazy(() => import('@/features/compras/pages/ListaPedidoPage'));
 const ReportesPage = lazy(() => import('@/features/reportes/pages/ReportesPage'));
 const ConfiguracionPage = lazy(() => import('@/features/configuracion/pages/ConfiguracionPage'));
 const BusquedaPage = lazy(() => import('@/features/busqueda/pages/BusquedaPage'));
@@ -76,6 +77,7 @@ export const router = createBrowserRouter([
       { path: '/stock', element: <StockPage /> },
       { path: '/stock/conteo', element: <ConteoPage /> },
       { path: '/compras', element: <ComprasPage /> },
+      { path: '/compras/lista', element: <ListaPedidoPage /> },
       { path: '/reportes', element: <ReportesPage /> },
       { path: '/configuracion', element: <ConfiguracionPage /> },
       { path: '/buscar', element: <BusquedaPage /> },

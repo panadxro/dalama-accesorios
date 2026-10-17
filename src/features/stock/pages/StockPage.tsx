@@ -8,7 +8,8 @@ import { cn } from '@/lib/cn';
 import { descargarCSV } from '@/lib/csv';
 import { diasEntre } from '@/lib/fechas';
 import { formatARS, formatFecha, formatFechaCorta, formatHora } from '@/lib/format';
-import { ajustarStock, ejecutar } from '@/store/acciones';
+import { agregarALista, ajustarStock, ejecutar } from '@/store/acciones';
+import { useCantidadInicial } from '@/features/compras/sugerencias';
 import { useDemo } from '@/store/demo';
 import { normalizar, useDerivados } from '@/store/selectores';
 
@@ -57,10 +58,17 @@ function AjustarStock({ producto, onClose }: { producto: Producto; onClose: () =
   );
 }
 
+/** Suma un producto a la lista de pedido a proveedores y avisa dónde quedó. */
+function sumarALista(p: Producto, cantidad: number) {
+  ejecutar((d) => agregarALista(d, [{ productoId: p.id, cantidad }]));
+  toast.info('Sumado a la lista de pedido', `${p.nombre}: ${cantidad} ${p.unidad} · las órdenes se generan desde Compras → Lista de pedido.`);
+}
+
 export default function StockPage() {
   const [params, setParams] = useSearchParams();
   const datos = useDemo((s) => s.datos);
   const der = useDerivados();
+  const inicial = useCantidadInicial();
   const [vista, setVista] = useState<Vista>('actual');
   const [q, setQ] = useState(params.get('q') ?? '');
   const [soloBajo, setSoloBajo] = useState(false);
@@ -147,7 +155,7 @@ export default function StockPage() {
                   { key: 'e', label: 'Estado', render: (p) => { const e = estadoStock(p); return e === 'sin_stock' ? <Badge tone="error" strong icon="alert-triangle">Sin stock</Badge> : e === 'bajo' ? <StatusBadge status="stock-bajo" /> : <Badge tone="success">OK</Badge>; } },
                 ]}
                 rowActions={(p) => [
-                  ...(estadoStock(p) !== 'ok' ? [{ label: 'Pedir al proveedor', icon: 'cart' as const, to: '/compras' }] : []),
+                  { label: 'Agregar a la lista de pedido', icon: 'cart' as const, onClick: () => sumarALista(p, inicial(p)) },
                   { label: 'Ver movimientos', icon: 'eye' as const, onClick: () => { setProductoMov(p.id); setVista('mov'); } },
                   { label: 'Ajustar', icon: 'pencil' as const, onClick: () => setAjustando(p) },
                 ]}
